@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import ProductList from './components/ProductList';
-import Footer from './components/Footer';
+import  { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
+import Homepage from './pages/homepage/Homepage';
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,12 +20,7 @@ function App() {
         <SplashScreen />
       ) : (
         <>
-          <Header />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8 text-center">Handcrafted </h1>
-            <ProductList />
-          </main>
-          <Footer />
+      <Homepage/>
         </>
       )}
     </div>
