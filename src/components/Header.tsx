@@ -1,7 +1,16 @@
-import { Search,Menu, User } from 'lucide-react';
-import logo from '../assets/images/logo.png'
+import { useState } from 'react';
+import { Search, Menu, User } from 'lucide-react';
+import LoginModal from './LoginModal';
 
-const Header = () => {
+interface HeaderProps {
+  logo: string;
+}
+
+const Header = ({ logo }: HeaderProps) => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  const navigationLinks: string[] = ['Home', 'Shop', 'Artists', 'About'];
+
   return (
     <header className="w-full bg-white shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
@@ -13,7 +22,7 @@ const Header = () => {
             </button>
             
             <div className="flex items-center gap-3">
-              <div className="w-40 h-20 bg-[#ffffff]  flex items-center justify-center">
+              <div className="w-40 h-20 bg-[#ffffff] flex items-center justify-center">
                 <img 
                   src={logo}
                   alt="Arts Shop Logo" 
@@ -25,7 +34,7 @@ const Header = () => {
 
           {/* Center Section - Navigation Links */}
           <div className="hidden lg:flex items-center gap-8">
-            {['Home', 'Shop', 'Artists', 'About'].map((item) => (
+            {navigationLinks.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -50,7 +59,10 @@ const Header = () => {
 
             {/* Auth Buttons */}
             <div className="hidden md:flex items-center gap-3">
-              <button className="text-[#094129] hover:opacity-80 transition-opacity mr-5 ml-5">
+              <button 
+                onClick={() => setIsLoginModalOpen(true)}
+                className="text-[#094129] hover:opacity-80 transition-opacity mr-5 ml-5"
+              >
                 Login
               </button>
               <button className="bg-[#094129] text-white px-4 py-2 rounded-full hover:opacity-80 transition-opacity">
@@ -59,13 +71,21 @@ const Header = () => {
             </div>
 
             {/* Mobile User Icon */}
-            <button className="md:hidden">
+            <button 
+              className="md:hidden"
+              onClick={() => setIsLoginModalOpen(true)}
+            >
               <User className="h-6 w-6 text-[#094129] hover:opacity-80" />
             </button>
-
           </div>
         </div>
       </nav>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </header>
   );
 };
