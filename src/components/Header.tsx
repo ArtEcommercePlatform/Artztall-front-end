@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Search, Menu, User } from 'lucide-react';
 import LoginModal from './LoginModal';
+import logo from '../assets/images/logo.png'
 
-interface HeaderProps {
-  logo: string;
-}
 
-const Header = ({ logo }: HeaderProps) => {
+
+const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const navigationLinks: string[] = ['Home', 'Shop', 'Artists', 'About'];
