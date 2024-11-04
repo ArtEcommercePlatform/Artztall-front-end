@@ -1,14 +1,24 @@
 import { useState } from 'react';
 import { Search, Menu, User } from 'lucide-react';
 import LoginModal from './LoginModal';
-import logo from '../assets/images/logo.png'
-
-
+import SignupModal from './SignupModal';
+import logo from '../assets/images/logo.png';
 
 const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState<boolean>(false);
 
   const navigationLinks: string[] = ['Home', 'Shop', 'Artists', 'About'];
+
+  const handleLoginClick = () => {
+    setIsSignupModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const handleSignupClick = () => {
+    setIsLoginModalOpen(false);
+    setIsSignupModalOpen(true);
+  };
 
   return (
     <header className="w-full bg-white shadow-sm">
@@ -59,31 +69,40 @@ const Header = () => {
             {/* Auth Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button 
-                onClick={() => setIsLoginModalOpen(true)}
+                onClick={handleLoginClick}
                 className="text-[#094129] hover:opacity-80 transition-opacity mr-5 ml-5"
               >
                 Login
               </button>
-              <button className="bg-[#094129] text-white px-4 py-2 rounded-full hover:opacity-80 transition-opacity">
+              <button 
+                onClick={handleSignupClick}
+                className="bg-[#094129] text-white px-4 py-2 rounded-full hover:opacity-80 transition-opacity"
+              >
                 Sign up
               </button>
             </div>
 
             {/* Mobile User Icon */}
-            <button 
-              className="md:hidden"
-              onClick={() => setIsLoginModalOpen(true)}
-            >
-              <User className="h-6 w-6 text-[#094129] hover:opacity-80" />
-            </button>
+            <div className="md:hidden flex items-center gap-2">
+              <button 
+                onClick={handleLoginClick}
+                className="hover:opacity-80"
+              >
+                <User className="h-6 w-6 text-[#094129]" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Login Modal */}
+      {/* Auth Modals */}
       <LoginModal 
         isOpen={isLoginModalOpen} 
         onClose={() => setIsLoginModalOpen(false)} 
+      />
+      <SignupModal 
+        isOpen={isSignupModalOpen} 
+        onClose={() => setIsSignupModalOpen(false)} 
       />
     </header>
   );
