@@ -4,6 +4,7 @@ import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 import logo from '../assets/images/logo.png';
 
+
 const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState<boolean>(false);
