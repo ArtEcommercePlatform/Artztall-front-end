@@ -134,7 +134,15 @@ const NewArtAdd = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl p-4 pt-10 mx-auto border rounded-lg shadow-lg">
+    <div
+      style={{
+        backgroundImage: "url('../assets/images/bg.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+      }}
+    >
+    <div className="w-full max-w-3xl p-4 mx-auto border rounded-lg shadow-lg">
       <h2 className="mb-4 text-2xl font-bold text-center">Create New Product</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -361,6 +369,7 @@ const NewArtAdd = () => {
         </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
