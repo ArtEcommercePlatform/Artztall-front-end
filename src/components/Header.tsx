@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Search, Menu, User } from 'lucide-react';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
+import NewArtAdd from '../pages/homepage/NewArtAdd';
 import logo from '../assets/images/logo.png';
 
 const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState<boolean>(false);
 
-  const navigationLinks: string[] = ['Home', 'Shop', 'Artists', 'About'];
+  const navigationLinks: string[] = ['Home', 'Shop', 'Artists', 'newartadd'];
 
   const handleLoginClick = () => {
     setIsSignupModalOpen(false);
@@ -22,7 +23,7 @@ const Header = () => {
 
   return (
     <header className="w-full bg-white shadow-sm">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <nav className="px-4 py-4 mx-auto max-w-7xl sm:px-6">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo & Menu */}
           <div className="flex items-center gap-4">
@@ -35,18 +36,18 @@ const Header = () => {
                 <img 
                   src={logo}
                   alt="Arts Shop Logo" 
-                  className="w-full h-full object-contain"
+                  className="object-contain w-full h-full"
                 />
               </div>
             </div>
           </div>
 
           {/* Center Section - Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="items-center hidden gap-8 lg:flex">
             {navigationLinks.map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={`${item.toLowerCase()}`}
                 className="text-[#094129] hover:opacity-80 transition-opacity"
               >
                 {item}
@@ -57,17 +58,19 @@ const Header = () => {
           {/* Right Section - Search, Auth & Icons */}
           <div className="flex items-center gap-4">
             {/* Search Bar */}
-            <div className="hidden sm:flex items-center bg-gray-100 rounded-full px-4 py-2">
-              <Search className="h-5 w-10 text-gray-400" />
+            <div className="items-center hidden px-4 py-2 bg-gray-100 rounded-full sm:flex">
+              <Search className="w-10 h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search art..."
-                className="bg-transparent border-none focus:outline-none ml-2 w-40"
+                className="w-40 ml-2 bg-transparent border-none focus:outline-none"
               />
             </div>
-
+   <button>
+    
+   </button>
             {/* Auth Buttons */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="items-center hidden gap-3 md:flex">
               <button 
                 onClick={handleLoginClick}
                 className="text-[#094129] hover:opacity-80 transition-opacity mr-5 ml-5"
@@ -83,7 +86,7 @@ const Header = () => {
             </div>
 
             {/* Mobile User Icon */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="flex items-center gap-2 md:hidden">
               <button 
                 onClick={handleLoginClick}
                 className="hover:opacity-80"

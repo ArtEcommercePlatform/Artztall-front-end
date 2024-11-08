@@ -50,7 +50,6 @@ const NewArtAdd = () => {
     
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
-      
       setProduct(prev => ({
         ...prev,
         [parent]: {
@@ -65,7 +64,14 @@ const NewArtAdd = () => {
       }));
     }
   };
-  
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setProduct(prev => ({
+      ...prev,
+      [name]: checked
+    }));
+  };
 
   const simulateUpload = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
@@ -131,7 +137,7 @@ const NewArtAdd = () => {
     <div className="w-full max-w-3xl p-4 mx-auto border rounded-lg shadow-lg">
       <h2 className="mb-4 text-2xl font-bold">Create New Product</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        
+
         {/* Image Upload Section */}
         <div className="space-y-4">
           <label className="block text-sm font-medium">Product Image</label>
@@ -205,18 +211,17 @@ const NewArtAdd = () => {
               className="w-full p-2 mt-1 border rounded"
             />
           </div>
-          
           <div>
-            <label htmlFor="description" className="block text-sm font-medium">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={product.description}
+            <label htmlFor="style" className="block text-sm font-medium">Style</label>
+            <input
+              id="style"
+              name="style"
+              value={product.style}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 border rounded"
-              rows={3}
             />
           </div>
+         
 
           <div>
             <label htmlFor="price" className="block text-sm font-medium">Price</label>
@@ -231,15 +236,130 @@ const NewArtAdd = () => {
               className="w-full p-2 mt-1 border rounded"
             />
           </div>
-        </div>
 
-        <button 
-          type="submit" 
-          className="w-full p-2 mt-4 font-bold text-white bg-blue-600 rounded"
-          disabled={isUploading}
+          <div>
+            <label htmlFor="artistId" className="block text-sm font-medium">Artist ID</label>
+            <input
+              id="artistId"
+              name="artistId"
+              value={product.artistId}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="category" className="block text-sm font-medium">Category</label>
+            <input
+              id="category"
+              name="category"
+              value={product.category}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="tags" className="block text-sm font-medium">Tags</label>
+            <input
+              id="tags"
+              name="tags"
+              value={product.tags}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="stockQuantity" className="block text-sm font-medium">Stock Quantity</label>
+            <input
+              id="stockQuantity"
+              name="stockQuantity"
+              type="number"
+              value={product.stockQuantity}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div className="flex items-center mt-2">
+            <input
+              id="isAvailable"
+              name="isAvailable"
+              type="checkbox"
+              checked={product.isAvailable}
+              onChange={handleCheckboxChange}
+              className="mr-2"
+            />
+            <label htmlFor="isAvailable" className="text-sm font-medium">Available</label>
+          </div>
+
+          {/* Dimensions */}
+          <div>
+            <label htmlFor="dimensions.length" className="block text-sm font-medium">Length</label>
+            <input
+              id="dimensions.length"
+              name="dimensions.length"
+              value={product.dimensions.length}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="dimensions.width" className="block text-sm font-medium">Width</label>
+            <input
+              id="dimensions.width"
+              name="dimensions.width"
+              value={product.dimensions.width}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="dimensions.unit" className="block text-sm font-medium">Unit</label>
+            <input
+              id="dimensions.unit"
+              name="dimensions.unit"
+              value={product.dimensions.unit}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="medium" className="block text-sm font-medium">Medium</label>
+            <input
+              id="medium"
+              name="medium"
+              value={product.medium}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+            />
+          </div>
+
+         
+        </div>
+        <div>
+            <label htmlFor="description" className="block text-sm font-medium">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={product.description}
+              onChange={handleInputChange}
+              className="w-full p-2 mt-1 border rounded"
+              rows={3}
+            />
+          </div>
+          <div className='px-50'>
+        <button
+          type="submit"
+          className="w-full px-4 py-2 mt-6 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700"
         >
           Create Product
         </button>
+        </div>
       </form>
     </div>
   );
