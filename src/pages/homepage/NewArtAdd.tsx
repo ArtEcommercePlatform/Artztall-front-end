@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, X } from 'lucide-react';
+import bg from '../../assets/images/bg.jpg'
 
 interface Dimensions {
   length: string;
@@ -134,15 +135,8 @@ const NewArtAdd = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: "url('../assets/images/bg.jpg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh',
-      }}
-    >
-    <div className="w-full max-w-3xl p-4 mx-auto border rounded-lg shadow-lg">
+    <div className='pt-10 pb-10 bg-emerald-900 '>
+    <div className="w-full max-w-3xl p-10 pt-10 mx-auto bg-white border rounded-lg shadow-lg">
       <h2 className="mb-4 text-2xl font-bold text-center">Create New Product</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -363,10 +357,11 @@ const NewArtAdd = () => {
           <div className='px-50'>
         <button
           type="submit"
-          className="w-full px-4 py-2 mt-6 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700"
+          className="w-full px-4 py-2 mt-6 font-semibold text-white bg-emerald-900 hover:bg-emerald-400 rounded-2xl"
         >
           Create Product
         </button>
+        
         </div>
       </form>
     </div>
