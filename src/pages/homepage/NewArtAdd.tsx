@@ -47,12 +47,14 @@ const NewArtAdd = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
+      
       setProduct(prev => ({
         ...prev,
         [parent]: {
-          ...(prev[parent as keyof Product] as Record<string, unknown>),
+          ...(prev[parent as keyof Product] as unknown as Record<string, unknown>),
           [child]: value
         }
       }));
@@ -63,6 +65,7 @@ const NewArtAdd = () => {
       }));
     }
   };
+  
 
   const simulateUpload = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
