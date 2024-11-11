@@ -1,368 +1,292 @@
-import React, { useState, useCallback } from 'react';
-import { Upload, X } from 'lucide-react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../config/firebaseConfig';
+import ImageUpload from '../../components/ImageUpload';
 
-interface Dimensions {
+interface FormData {
+  name: string;
+  price: string;
+  style: string;
+  category: string;
+  artistName: string;
+  tags: string;
+  stockQuantity: string;
   length: string;
   width: string;
   unit: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  artistId: string;
-  category: string;
-  tags: string;
-  imageUrl: string;
-  stockQuantity: string;
-  isAvailable: boolean;
-  dimensions: Dimensions;
+  orientation: string;
   medium: string;
-  style: string;
+  framed: string;
+  description: string;
+  imageUrls: string[];
 }
 
-const NewArtAdd = () => {
-  const [product, setProduct] = useState<Product>({
-    id: '',
+const CreatePostForm = () => {
+  const [formData, setFormData] = useState<FormData>({
     name: '',
-    description: '',
     price: '',
-    artistId: '',
+    style: '',
     category: '',
+    artistName: '',
     tags: '',
-    imageUrl: '',
     stockQuantity: '',
-    isAvailable: false,
-    dimensions: { length: '', width: '', unit: 'cm' },
+    length: '',
+    width: '',
+    unit: '',
+    orientation: '',
     medium: '',
-    style: ''
+    framed: '',
+    description: '',
+    imageUrls: [],
   });
-
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState('');
-  const [error, setError] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setProduct(prev => ({
-        ...prev,
-        [parent]: {
-          ...(prev[parent as keyof Product] as unknown as Record<string, unknown>),
-          [child]: value
-        }
-      }));
-    } else {
-      setProduct(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setProduct(prev => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: checked
+      [name]: value,
     }));
   };
 
-  const simulateUpload = async (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        setUploadProgress(progress);
-        
-        if (progress >= 100) {
-          clearInterval(interval);
-          resolve(`/api/placeholder/400/300`);
-        }
-      }, 200);
-    });
+  const handleImageSelect = (file: File) => {
+    setSelectedImage(file);
   };
 
-  const handleImageUpload = useCallback(async (file: File | null) => {
-    if (!file) return;
-
-    setError('');
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsUploading(true);
-    setUploadProgress(0);
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please upload an image file');
-      setIsUploading(false);
-      return;
+    let imageUrl = '';
+    if (selectedImage) {
+      const storageRef = ref(storage, `posts/${Date.now()}-${selectedImage.name}`);
+      
+      try {
+        const snapshot = await uploadBytes(storageRef, selectedImage);
+        imageUrl = await getDownloadURL(snapshot.ref);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        setIsUploading(false);
+        return;
+      }
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError('File size must be less than 5MB');
-      setIsUploading(false);
-      return;
-    }
+    const finalFormData = {
+      ...formData,
+      imageUrls: imageUrl ? [imageUrl] : [],
+    };
 
     try {
-      const previewURL = URL.createObjectURL(file);
-      setPreviewUrl(previewURL);
+      console.log(finalFormData);
+      // Send data to backend
+      const response = await fetch('https://dummyapi.com/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalFormData),
+      });
 
-      const downloadURL = await simulateUpload(file);
-      setProduct(prev => ({ ...prev, imageUrl: downloadURL }));
+      if (response.ok) {
+        // Refresh page after successful post creation
+        window.location.reload();
+      } else {
+        console.error('Failed to create post:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
       setIsUploading(false);
-    } catch (err) {
-      setError('Error uploading file: ' + (err as Error).message);
-      setIsUploading(false);
-      setPreviewUrl('');
     }
-  }, []);
-
-  const handleImageReset = () => {
-    setProduct(prev => ({ ...prev, imageUrl: '' }));
-    setPreviewUrl('');
-    setUploadProgress(0);
-    setError('');
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(product);
   };
 
   return (
-    <div className="w-full max-w-3xl p-4 mx-auto border rounded-lg shadow-lg">
-      <h2 className="mb-4 text-2xl font-bold">Create New Product</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className='bg-[#094129]'>
+    <div className="w-[60vw] mx-auto m-8 p-6 bg-white rounded-lg shadow">
+      <ImageUpload onImageSelect={handleImageSelect} />
 
-        {/* Image Upload Section */}
-        <div className="space-y-4">
-          <label className="block text-sm font-medium">Product Image</label>
-          <div className="p-6 text-center border-2 border-gray-300 border-dashed rounded-lg">
-            {!previewUrl && !product.imageUrl ? (
-              <div className="space-y-4">
-                <div className="flex items-center justify-center">
-                  <Upload className="w-12 h-12 text-gray-400" />
-                </div>
-                <div>
-                  <label
-                    htmlFor="image-upload"
-                    className="text-blue-600 cursor-pointer hover:text-blue-500"
-                  >
-                    Upload an image
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => handleImageUpload(e.target.files ? e.target.files[0] : null)}
-                  />
-                  <p className="mt-2 text-sm text-gray-500">
-                    PNG, JPG, GIF up to 5MB
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="relative w-full aspect-video">
-                  <img
-                    src={previewUrl || product.imageUrl}
-                    alt="Product preview"
-                    className="object-cover w-full h-full rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleImageReset}
-                    className="absolute p-1 text-white bg-red-500 rounded-full top-2 right-2 hover:bg-red-600"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-                {isUploading && (
-                  <div className="space-y-2">
-                    <progress max="100" value={uploadProgress} className="w-full" />
-                    <p className="text-sm text-gray-500">
-                      Uploading... {Math.round(uploadProgress)}%
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-            {error && (
-              <p className="mt-2 text-sm text-red-500">{error}</p>
-            )}
-          </div>
-        </div>
-
-        {/* Basic Information */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium">Product Name</label>
-            <input
-              id="name"
-              name="name"
-              value={product.name}
-              onChange={handleInputChange}
-              required
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="style" className="block text-sm font-medium">Style</label>
-            <input
-              id="style"
-              name="style"
-              value={product.style}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-         
-
-          <div>
-            <label htmlFor="price" className="block text-sm font-medium">Price</label>
-            <input
-              id="price"
-              name="price"
-              type="number"
-              step="0.01"
-              value={product.price}
-              onChange={handleInputChange}
-              required
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="artistId" className="block text-sm font-medium">Artist ID</label>
-            <input
-              id="artistId"
-              name="artistId"
-              value={product.artistId}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium">Category</label>
-            <input
-              id="category"
-              name="category"
-              value={product.category}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="tags" className="block text-sm font-medium">Tags</label>
-            <input
-              id="tags"
-              name="tags"
-              value={product.tags}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="stockQuantity" className="block text-sm font-medium">Stock Quantity</label>
-            <input
-              id="stockQuantity"
-              name="stockQuantity"
-              type="number"
-              value={product.stockQuantity}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div className="flex items-center mt-2">
-            <input
-              id="isAvailable"
-              name="isAvailable"
-              type="checkbox"
-              checked={product.isAvailable}
-              onChange={handleCheckboxChange}
-              className="mr-2"
-            />
-            <label htmlFor="isAvailable" className="text-sm font-medium">Available</label>
-          </div>
-
-          {/* Dimensions */}
-          <div>
-            <label htmlFor="dimensions.length" className="block text-sm font-medium">Length</label>
-            <input
-              id="dimensions.length"
-              name="dimensions.length"
-              value={product.dimensions.length}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dimensions.width" className="block text-sm font-medium">Width</label>
-            <input
-              id="dimensions.width"
-              name="dimensions.width"
-              value={product.dimensions.width}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dimensions.unit" className="block text-sm font-medium">Unit</label>
-            <input
-              id="dimensions.unit"
-              name="dimensions.unit"
-              value={product.dimensions.unit}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="medium" className="block text-sm font-medium">Medium</label>
-            <input
-              id="medium"
-              name="medium"
-              value={product.medium}
-              onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-            />
-          </div>
-
-         
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-4 text-[#094129]">
         <div>
-            <label htmlFor="description" className="block text-sm font-medium">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={product.description}
+          <label className="block text-sm font-medium">Art Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Price (Rs.)</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Style</label>
+          <select
+            name="style"
+            value={formData.style}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          >
+            <option value="abstract">Abstract</option>
+            <option value="minimalist">Minimalist</option>
+            <option value="evening">Evening</option>
+            <option value="night">Night</option>
+            <option value="nature">Nature</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Category</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          >
+            <option value="digital">Digital</option>
+            <option value="painting">Painting</option>
+            <option value="sculpture">Sculpture</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Artist Name</label>
+          <input
+            type="text"
+            name="artistName"
+            value={formData.artistName}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Tags</label>
+          <input
+            type="text"
+            name="tags"
+            value={formData.tags}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Stock Quantity</label>
+          <input
+            type="number"
+            name="stockQuantity"
+            value={formData.stockQuantity}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+          />
+        </div>
+
+        <div className="grid grid-cols-3 gap-2">
+          <div>
+            <label className="block text-sm font-medium ">Width</label>
+            <input
+              type="number"
+              name="width"
+              value={formData.width}
               onChange={handleInputChange}
-              className="w-full p-2 mt-1 border rounded"
-              rows={3}
+              className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+              required
             />
           </div>
-          <div className='px-50'>
-        <button
-          type="submit"
-          className="w-full px-4 py-2 mt-6 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          Create Product
-        </button>
+          <div>
+            <label className="block text-sm font-medium ">Height</label>
+            <input
+              type="number"
+              name="length"
+              value={formData.length}
+              onChange={handleInputChange}
+              className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium ">Unit</label>
+            <select
+              name="unit"
+              value={formData.unit}
+              onChange={handleInputChange}
+              className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+              required
+            >
+              <option value="cm">cm</option>
+              <option value="in">in</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Orientation</label>
+          <select
+            name="orientation"
+            value={formData.orientation}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          >
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Frame</label>
+          <select
+            name="framed"
+            value={formData.framed}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+            required
+          >
+            <option value="framed">Framed</option>
+            <option value="no-framed">No Framed</option>
+            <option value="wrapped">Wrapped</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium ">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            className="mt-1 w-full px-3 py-2 border border-[#14AF6C] rounded-md"
+          />
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="w-[30%] my-3 px-4 py-3 bg-[#094129] text-white rounded-md hover:bg-[#14AF6C] transition duration-300 disabled:opacity-50"
+            disabled={isUploading}
+          >
+            {isUploading ? 'Uploading...' : 'Submit'}
+          </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
 
-export default NewArtAdd;
+export default CreatePostForm;
