@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { X, Plus, Check } from 'lucide-react';
+import { storage } from '../config/firebase'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useToast } from '../assets/components/toast/Toast';
 
 interface SignupModalProps {
   isOpen: boolean;
@@ -11,24 +14,23 @@ interface Address {
   city: string;
   state: string;
   country: string;
-  zipCode: string;
-  primary: boolean;
+  postalCode: string;
+  isDefault: boolean;
 }
 
 interface SignupForm {
-  username: string;
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  password: string;
   phoneNumber: string;
-  role: 'ARTISAN' | 'CUSTOMER';
-  addresses: Address[];
-  profileImageUrl: string;
-  artistBio: string;
-  specialties: string[];
+  userType: 'ARTISAN' | 'BUYER';
+  bio?: string;
+  artworkCategories?: string[];
+  address?: Address;
+  profileImage?: File;
 }
 
-const AVAILABLE_SPECIALTIES = [
+const ARTWORK_CATEGORIES = [
   'Watercolor', 'Oil Painting', 'Digital Art', 'Sculpture', 
   'Photography', 'Ceramics', 'Mixed Media', 'Acrylic', 
   'Illustration', 'Printmaking'
@@ -36,24 +38,23 @@ const AVAILABLE_SPECIALTIES = [
 
 const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   const [step, setStep] = useState(1);
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<SignupForm>({
-    username: '',
+    name: '',
     email: '',
-    firstName: '',
-    lastName: '',
+    password: '',
     phoneNumber: '',
-    role: 'CUSTOMER',
-    addresses: [{
+    userType: 'BUYER',
+    address: {
       street: '',
       city: '',
       state: '',
       country: '',
-      zipCode: '',
-      primary: true
-    }],
-    profileImageUrl: '',
-    artistBio: '',
-    specialties: []
+      postalCode: '',
+      isDefault: true
+    },
+    artworkCategories: [],
   });
 
   if (!isOpen) return null;
@@ -65,50 +66,91 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     });
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const updatedAddresses = formData.addresses.map((address, i) => {
-      if (i === index) {
-        return {
-          ...address,
-          [e.target.name]: e.target.value
-        };
-      }
-      return address;
-    });
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      addresses: updatedAddresses
+      address: {
+        ...formData.address!,
+        [e.target.name]: e.target.value
+      }
     });
   };
 
-  const toggleSpecialty = (specialty: string) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({
+        ...formData,
+        profileImage: e.target.files[0]
+      });
+    }
+  };
+
+  const toggleCategory = (category: string) => {
     setFormData(prev => ({
       ...prev,
-      specialties: prev.specialties.includes(specialty)
-        ? prev.specialties.filter(s => s !== specialty)
-        : [...prev.specialties, specialty]
+      artworkCategories: prev.artworkCategories?.includes(category)
+        ? prev.artworkCategories.filter(c => c !== category)
+        : [...(prev.artworkCategories || []), category]
     }));
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const storageRef = ref(storage, `profile-images/${Date.now()}-${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    return await getDownloadURL(snapshot.ref);
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/users', {
+      setIsLoading(true);
+
+      let profileImageUrl = '';
+      if (formData.profileImage) {
+        profileImageUrl = await uploadImage(formData.profileImage);
+      }
+
+      // Prepare the request payload based on user type
+      const payload = formData.userType === 'BUYER' 
+        ? {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            phoneNumber: formData.phoneNumber,
+            userType: formData.userType,
+            address: formData.address,
+            profileImageUrl
+          }
+        : {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            phoneNumber: formData.phoneNumber,
+            userType: formData.userType,
+            bio: formData.bio,
+            artworkCategories: formData.artworkCategories,
+            profileImageUrl
+          };
+
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
       
       if (response.ok) {
+        toast.success('Account created successfully!');
         onClose();
-        // Handle success (e.g., show success message, redirect)
       } else {
-        // Handle error
-        console.error('Signup failed');
+        const error = await response.json();
+        toast.error(error.message || 'Failed to create account');
       }
     } catch (error) {
+      toast.error('An error occurred during signup');
       console.error('Error during signup:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -116,22 +158,24 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     <div className="space-y-4">
       <div className="flex gap-4">
         <button
+          type="button"
           className={`flex-1 py-3 text-center rounded-lg ${
-            formData.role === 'CUSTOMER'
+            formData.userType === 'BUYER'
               ? 'bg-[#094129] text-white'
               : 'border border-[#094129] text-[#094129]'
           }`}
-          onClick={() => setFormData({ ...formData, role: 'CUSTOMER' })}
+          onClick={() => setFormData({ ...formData, userType: 'BUYER' })}
         >
-          Customer
+          Buyer
         </button>
         <button
+          type="button"
           className={`flex-1 py-3 text-center rounded-lg ${
-            formData.role === 'ARTISAN'
+            formData.userType === 'ARTISAN'
               ? 'bg-[#094129] text-white'
               : 'border border-[#094129] text-[#094129]'
           }`}
-          onClick={() => setFormData({ ...formData, role: 'ARTISAN' })}
+          onClick={() => setFormData({ ...formData, userType: 'ARTISAN' })}
         >
           Artist
         </button>
@@ -139,12 +183,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Username
+          Full Name
         </label>
         <input
           type="text"
-          name="username"
-          value={formData.username}
+          name="name"
+          value={formData.name}
           onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
           required
@@ -164,40 +208,26 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
           required
         />
       </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Password
+        </label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+          required
+          minLength={6}
+        />
+      </div>
     </div>
   );
 
   const renderStep2 = () => (
     <div className="space-y-4">
-      <div className="flex gap-4">
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            First Name
-          </label>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-            required
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Last Name
-          </label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-            required
-          />
-        </div>
-      </div>
-
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Phone Number
@@ -214,13 +244,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Profile Image URL
+          Profile Image
         </label>
         <input
-          type="url"
-          name="profileImageUrl"
-          value={formData.profileImageUrl}
-          onChange={handleInputChange}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
         />
       </div>
@@ -229,124 +258,127 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
   const renderStep3 = () => (
     <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Street Address
-        </label>
-        <input
-          type="text"
-          name="street"
-          value={formData.addresses[0].street}
-          onChange={(e) => handleAddressChange(e, 0)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-          required
-        />
-      </div>
+      {formData.userType === 'BUYER' ? (
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Street Address
+            </label>
+            <input
+              type="text"
+              name="street"
+              value={formData.address?.street}
+              onChange={handleAddressChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+              required
+            />
+          </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            City
-          </label>
-          <input
-            type="text"
-            name="city"
-            value={formData.addresses[0].city}
-            onChange={(e) => handleAddressChange(e, 0)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            State
-          </label>
-          <input
-            type="text"
-            name="state"
-            value={formData.addresses[0].state}
-            onChange={(e) => handleAddressChange(e, 0)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-            required
-          />
-        </div>
-      </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                City
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.address?.city}
+                onChange={handleAddressChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                State
+              </label>
+              <input
+                type="text"
+                name="state"
+                value={formData.address?.state}
+                onChange={handleAddressChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+                required
+              />
+            </div>
+          </div>
 
-      <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Country
+              </label>
+              <input
+                type="text"
+                name="country"
+                value={formData.address?.country}
+                onChange={handleAddressChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Postal Code
+              </label>
+              <input
+                type="text"
+                name="postalCode"
+                value={formData.address?.postalCode}
+                onChange={handleAddressChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+                required
+              />
+            </div>
+          </div>
+        </>
+      ) : (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Country
+            Artist Bio
           </label>
-          <input
-            type="text"
-            name="country"
-            value={formData.addresses[0].country}
-            onChange={(e) => handleAddressChange(e, 0)}
+          <textarea
+            name="bio"
+            value={formData.bio}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
+            rows={4}
             required
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            ZIP Code
-          </label>
-          <input
-            type="text"
-            name="zipCode"
-            value={formData.addresses[0].zipCode}
-            onChange={(e) => handleAddressChange(e, 0)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-            required
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 
   const renderStep4 = () => (
     <div className="space-y-4">
-      {formData.role === 'ARTISAN' && (
-        <>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Artist Bio
-            </label>
-            <textarea
-              name="artistBio"
-              value={formData.artistBio}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#094129] focus:border-[#094129] outline-none"
-              rows={4}
-              required
-            />
+      {formData.userType === 'ARTISAN' && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Artwork Categories
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {ARTWORK_CATEGORIES.map((category) => (
+              <button
+                type="button"
+                key={category}
+                onClick={() => toggleCategory(category)}
+                className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${
+                  formData.artworkCategories?.includes(category)
+                    ? 'bg-[#094129] text-white'
+                    : 'border border-[#094129] text-[#094129]'
+                }`}
+              >
+                {category}
+                {formData.artworkCategories?.includes(category) ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Plus className="h-4 w-4" />
+                )}
+              </button>
+            ))}
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Specialties
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {AVAILABLE_SPECIALTIES.map((specialty) => (
-                <button
-                  key={specialty}
-                  onClick={() => toggleSpecialty(specialty)}
-                  className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${
-                    formData.specialties.includes(specialty)
-                      ? 'bg-[#094129] text-white'
-                      : 'border border-[#094129] text-[#094129]'
-                  }`}
-                >
-                  {specialty}
-                  {formData.specialties.includes(specialty) ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <Plus className="h-4 w-4" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </>
+        </div>
       )}
     </div>
   );
@@ -357,6 +389,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          disabled={isLoading}
         >
           <X className="h-6 w-6" />
         </button>
@@ -389,6 +422,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
                 type="button"
                 onClick={() => setStep(step - 1)}
                 className="flex-1 py-2 border border-[#094129] text-[#094129] rounded-lg hover:bg-gray-50"
+                disabled={isLoading}
               >
                 Back
               </button>

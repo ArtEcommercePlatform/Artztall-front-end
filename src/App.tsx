@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SplashScreen from './components/SplashScreen';
 import Homepage from './pages/homepage/Homepage';
 import NewArtAdd from './pages/homepage/NewArtAdd';
+import { ToastProvider } from './assets/components/toast/Toast';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,8 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <ToastProvider>
+      <Router>
       <div className="flex flex-col min-h-screen bg-gray-100">
         {loading ? (
           <SplashScreen />
@@ -30,6 +32,7 @@ function App() {
         )}
       </div>
     </Router>
+    </ToastProvider>
   );
 }
 

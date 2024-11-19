@@ -1,28 +1,53 @@
-import React, { useEffect, useState } from 'react';
+// ToastContext.tsx
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AlertCircle, CheckCircle, XCircle, X } from 'lucide-react';
 
 export type ToastType = 'success' | 'error' | 'warning';
 
+interface Toast {
+  id: number;
+  message: string;
+  type: ToastType;
+}
+
+interface ToastContextType {
+  addToast: (message: string, type: ToastType) => void;
+  removeToast: (id: number) => void;
+  toasts: Toast[];
+}
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  const addToast = useCallback((message: string, type: ToastType) => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message, type }]);
+  }, []);
+
+  const removeToast = useCallback((id: number) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ addToast, removeToast, toasts }}>
+      {children}
+      <ToastContainer />
+    </ToastContext.Provider>
+  );
+};
+
 interface ToastProps {
   message: string;
   type: ToastType;
-  duration?: number;
   onClose: () => void;
+  duration?: number;
 }
 
-interface ToastState {
-  message: string;
-  type: ToastType;
-  id: number;
-}
-
-// Toast Component
-const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000, onClose }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose();
-    }, duration);
-
+const Toast: React.FC<ToastProps> = ({ message, type, onClose, duration = 3000 }) => {
+  React.useEffect(() => {
+    const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
   }, [duration, onClose]);
 
@@ -49,7 +74,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000, onClose }
   };
 
   return (
-    <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-slide-down`}>
+    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-slide-down">
       <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${getColors()} shadow-lg`}>
         {getIcon()}
         <p className="text-gray-700">{message}</p>
@@ -61,15 +86,11 @@ const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000, onClose }
   );
 };
 
-// Toast Container Component
-export const ToastContainer: React.FC = () => {
-  const [toasts, setToasts] = useState<ToastState[]>([]);
+const ToastContainer: React.FC = () => {
+  const context = useContext(ToastContext);
+  if (!context) return null;
 
-
-
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
+  const { toasts, removeToast } = context;
 
   return (
     <>
@@ -85,20 +106,15 @@ export const ToastContainer: React.FC = () => {
   );
 };
 
-// Hook to use toast
 export const useToast = () => {
-  const [, setToasts] = useState<ToastState[]>([]);
-
-  const showToast = (message: string, type: ToastType) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { message, type, id }]);
-  };
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error('useToast must be used within a ToastProvider');
+  }
 
   return {
-    success: (message: string) => showToast(message, 'success'),
-    error: (message: string) => showToast(message, 'error'),
-    warning: (message: string) => showToast(message, 'warning'),
+    success: (message: string) => context.addToast(message, 'success'),
+    error: (message: string) => context.addToast(message, 'error'),
+    warning: (message: string) => context.addToast(message, 'warning'),
   };
 };
-
-export default Toast;
