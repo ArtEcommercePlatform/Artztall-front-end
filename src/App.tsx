@@ -1,40 +1,66 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import SplashScreen from './components/SplashScreen';
 import Homepage from './pages/homepage/Homepage';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
 
+// Import Artisan Dashboard Pages
+import Dashboard from './pages/artisan/Dashboard';
+import Products from './pages/artisan/Products';
+import Gallery from './pages/artisan/Gallery';
+import Auctions from './pages/artisan/Auctions';
+import ArtisanLayout from './pages/artisanLayout/ArtisanLayout';
+
+// Artisan Routes Component
+const ArtisanRoutes = () => {
+  return (
+    <ArtisanLayout>
+      <Routes>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="products" element={<Products />} />
+        <Route path="gallery" element={<Gallery />} />
+        <Route path="auctions" element={<Auctions />} />
+        {/* Redirect to dashboard if no specific route matches */}
+        <Route path="*" element={<Navigate to="dashboard" replace />} />
+      </Routes>
+    </ArtisanLayout>
+  );
+};
+
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); // Show splash screen for 2 seconds
+      setIsInitialLoad(false);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
+  if (isInitialLoad) {
+    return <SplashScreen />; // Show SplashScreen only on the initial load
+  }
+
   return (
     <ToastProvider>
       <Router>
-      <div className="flex flex-col min-h-screen bg-gray-100">
-        {loading ? (
-          <SplashScreen />
-        ) : (
+        <div className="flex flex-col min-h-screen bg-gray-100">
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-           
-            {/* Add other routes as needed */}
+
+            {/* Artisan Dashboard Routes */}
+            <Route
+              path="/artisan/*"
+              element={<ArtisanRoutes />}
+            />
           </Routes>
-        )}
-      </div>
-    </Router>
+        </div>
+      </Router>
     </ToastProvider>
   );
 }
-
 
 export default App;
