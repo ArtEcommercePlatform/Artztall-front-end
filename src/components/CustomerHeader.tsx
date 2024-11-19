@@ -24,10 +24,10 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const navigationItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/artisan/dashboard' },
-    { icon: Package, label: 'Products', href: '/artisan/products' },
-    { icon: ImageIcon, label: 'Gallery', href: '/artisan/gallery' },
-    { icon: Gavel, label: 'Auctions', href: '/artisan/auctions' },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/customer/dashboard' },
+    { icon: Package, label: 'Products', href: '/customer/products' },
+    { icon: ImageIcon, label: 'Gallery', href: '/customer/gallery' },
+    { icon: Gavel, label: 'Auctions', href: '/customer/auctions' },
     { icon: Settings, label: 'Settings', href: '/settings' }
   ];
 
@@ -38,7 +38,7 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         bg-white border-r border-gray-200`}>
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-[#094129]">Artisan</h1>
+          <h1 className="text-2xl font-bold text-[#094129]">Customer</h1>
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="text-gray-500 lg:hidden hover:text-gray-700"
