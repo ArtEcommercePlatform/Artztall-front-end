@@ -79,12 +79,13 @@ function App() {
               path="/artisan/*"
               element={<ArtisanRoutes />}
             />
-          </Routes>
-
-          <Route
+            <Route
               path="/customer/*"
               element={<CustomerRoutes />}
             />
+          </Routes>
+
+          
           
           
         </div>
