@@ -10,7 +10,7 @@ const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   // You can fetch user data here or pass it from a higher level component
   const userData = {
     userName: "John Doe",
-    userAvatar: "/api/placeholder/32/32" // Replace with actual user avatar
+    userAvatar: "/api/placeholder/32/2" // Replace with actual user avatar
   };
 
   return (
