@@ -1,8 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const AuctionPage = () => {
   const items = [
     {
+      id: 1,
       title: "Elephant Wall Art",
       price: "Rs. 20,000",
       bids: "0 bids",
@@ -10,6 +12,7 @@ const AuctionPage = () => {
       imageUrl: "https://i.pinimg.com/control2/736x/ba/dd/b9/baddb9ef421c96bd27a89784568e6f85.jpg",
     },
     {
+      id: 2,
       title: "Abstract Painting",
       price: "Rs. 35,000",
       bids: "5 bids",
@@ -17,13 +20,13 @@ const AuctionPage = () => {
       imageUrl: "https://i.pinimg.com/736x/4f/58/e5/4f58e509d7713f4e1f5ec84e95175c61.jpg",
     },
     {
+      id: 3,
       title: "Vintage Car Model",
       price: "Rs. 50,000",
       bids: "10 bids",
       timeLeft: "1d 12h",
       imageUrl: "https://i.pinimg.com/control2/736x/ff/da/c6/ffdac619c139d7bd60253550a131fea4.jpg",
     },
-    // Add more items here...
   ];
 
   return (
@@ -51,16 +54,18 @@ const AuctionPage = () => {
         </div>
       </div>
 
-      {/* Results Section */}
+      
       <div className="flex flex-col space-y-6">
-        {items.map((item, index) => (
-          <div key={index} className="p-4 border rounded shadow-sm">
+        {items.map((item) => (
+          <div key={item.id} className="p-4 border rounded shadow-sm">
             <div className="flex items-center">
-              <img
-                src={item.imageUrl}
-                alt={item.title}
-                className="object-cover w-40 h-40 mr-4 rounded"
-              />
+              <Link to={`/customer/auction/${item.id}`}>
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="object-cover w-40 h-40 mr-4 rounded cursor-pointer"
+                />
+              </Link>
               <div className="flex justify-between flex-1">
                 <div>
                   <h2 className="text-xl font-semibold">{item.title}</h2>
