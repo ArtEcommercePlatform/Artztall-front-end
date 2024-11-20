@@ -1,23 +1,62 @@
-// Layout.tsx
-import React from 'react';
-import CustomerHeader from '../../components/CustomerHeader';
+import React, { useState } from "react";
+import CustomerHeader from "../../components/CustomerHeader";
+import { LayoutDashboard, Package, Image as ImageIcon, Gavel, Settings, X } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
-  // You can fetch user data here or pass it from a higher level component
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   const userData = {
     userName: "John Doe",
-    userAvatar: "/api/placeholder/32/2" // Replace with actual user avatar
+    userAvatar: "/api/placeholder/32/2",
   };
 
+  const navigationItems = [
+    { icon: LayoutDashboard, label: "Dashboard", href: "/customer/dashboard" },
+    { icon: Package, label: "Products", href: "/customer/products" },
+    { icon: ImageIcon, label: "Gallery", href: "/customer/gallery" },
+    { icon: Gavel, label: "Auctions", href: "/customer/auctions" },
+    { icon: Settings, label: "Settings", href: "/settings" },
+  ];
+
   return (
-    <div className="min-h-screen">
-      <CustomerHeader {...userData} />
-      <div className="lg:pl-64">
-        {children}
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        } bg-white border-r border-gray-200`}
+      >
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-[#094129]">Customer</h1>
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="text-gray-500 lg:hidden hover:text-gray-700"
+          >
+            <X size={24} />
+          </button>
+        </div>
+        <nav className="px-4 mt-6 space-y-2">
+          {navigationItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="flex items-center px-4 py-2 text-gray-700 hover:bg-[#094129]/10 rounded-lg"
+            >
+              <item.icon size={20} className="mr-3" />
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex flex-col flex-1">
+        <CustomerHeader {...userData} />
+        <main className="flex-1 p-6 bg-gray-50">{children}</main>
       </div>
     </div>
   );
