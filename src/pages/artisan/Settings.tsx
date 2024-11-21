@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   UserCog, 
   Lock, 
-  Trash2
+  Edit 
 } from 'lucide-react';
 
 const Settings: React.FC = () => {
@@ -16,6 +16,10 @@ const Settings: React.FC = () => {
   const [originalData, setOriginalData] = useState({ ...formData });
   const [hasChanges, setHasChanges] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [editMode, setEditMode] = useState({
+    fullName: false,
+    email: false
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,12 +48,22 @@ const Settings: React.FC = () => {
     console.log('Saving changes:', formData);
     setOriginalData({ ...formData });
     setHasChanges(false);
+    setEditMode({ fullName: false, email: false });
   };
 
   const handleCancel = () => {
     setFormData({ ...originalData });
     setHasChanges(false);
     setPasswordError('');
+    setEditMode({ fullName: false, email: false });
+  };
+
+  const toggleEditMode = (field: 'fullName' | 'email') => {
+    setEditMode(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+    setHasChanges(true);
   };
 
   return (
@@ -72,22 +86,50 @@ const Settings: React.FC = () => {
                 Profile Information
               </h2>
               <div className="grid md:grid-cols-2 gap-3">
-                <input 
-                  type="text" 
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  placeholder="Full Name" 
-                  className="w-full px-3 py-2 border-2 border-emerald-100 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition duration-300"
-                />
-                <input 
-                  type="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email Address" 
-                  className="w-full px-3 py-2 border-2 border-emerald-100 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition duration-300"
-                />
+                <div className="relative">
+                  {editMode.fullName ? (
+                    <input 
+                      type="text" 
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      placeholder="Full Name" 
+                      className="w-full px-3 py-2 border-2 border-emerald-100 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition duration-300"
+                    />
+                  ) : (
+                    <div className="flex items-center">
+                      <span className="mr-2">{formData.fullName || 'Full Name'}</span>
+                      <button 
+                        onClick={() => toggleEditMode('fullName')}
+                        className="text-emerald-500 hover:text-emerald-700"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="relative">
+                  {editMode.email ? (
+                    <input 
+                      type="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Email Address" 
+                      className="w-full px-3 py-2 border-2 border-emerald-100 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition duration-300"
+                    />
+                  ) : (
+                    <div className="flex items-center">
+                      <span className="mr-2">{formData.email || 'Email Address'}</span>
+                      <button 
+                        onClick={() => toggleEditMode('email')}
+                        className="text-emerald-500 hover:text-emerald-700"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -128,34 +170,6 @@ const Settings: React.FC = () => {
                   <p className="text-red-500 text-sm mt-1 pl-2">{passwordError}</p>
                 )}
               </div>
-            </div>
-
-            <div className="bg-white rounded-xl border border-gray-100 shadow-md p-4">
-              <h2 className="text-lg font-semibold mb-3 flex items-center text-red-700">
-                <Trash2 className="mr-2 w-5 h-5" /> 
-                Danger Zone
-              </h2>
-              <button
-                className="
-                  w-full 
-                  bg-red-600 
-                  text-white 
-                  px-4 
-                  py-2 
-                  rounded-xl 
-                  hover:bg-red-700 
-                  transition-all 
-                  duration-300 
-                  shadow-md
-                  hover:shadow-lg
-                  active:scale-95
-                "
-              >
-                Delete Account
-              </button>
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                Warning: This action cannot be undone
-              </p>
             </div>
           </div>
         </div>
