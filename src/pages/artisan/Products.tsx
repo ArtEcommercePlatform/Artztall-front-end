@@ -80,26 +80,26 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8">
+    <div className="bg-gradient-to-br from-emerald-50 to-sky-100 min-h-screen p-8">
       <div className="container mx-auto">
         {/* Page Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">My Artworks</h1>
-            <p className="text-gray-500">Manage and showcase your creative collection</p>
+            <h1 className="text-3xl font-bold text-emerald-800">My Artworks</h1>
+            <p className="text-emerald-600">Manage and showcase your creative collection</p>
           </div>
           <button 
             onClick={handleAddProduct}
             className="
               flex 
               items-center 
-              bg-blue-600 
+              bg-emerald-600 
               text-white 
               px-5 
               py-3 
               rounded-full 
               shadow-lg 
-              hover:bg-blue-700 
+              hover:bg-emerald-700 
               transition-all 
               duration-300 
               ease-in-out 
@@ -118,9 +118,10 @@ const Products: React.FC = () => {
             <div 
               key={product.id} 
               className="
-                bg-white 
+                bg-white/80 
+                backdrop-blur-lg
                 rounded-xl 
-                shadow-lg 
+                shadow-xl 
                 overflow-hidden 
                 transform 
                 transition-all 
@@ -141,15 +142,15 @@ const Products: React.FC = () => {
               {/* Product Details */}
               <div className="p-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-blue-600 font-semibold">
+                  <span className="text-emerald-600 font-semibold">
                     Rs {product.price.toLocaleString()}
                   </span>
                   <div className="flex space-x-2">
                     <button 
                       onClick={handleEditProduct}
                       className="
-                        text-blue-500 
-                        hover:bg-blue-50 
+                        text-emerald-500 
+                        hover:bg-emerald-50 
                         p-2 
                         rounded-full
                       "
@@ -169,7 +170,10 @@ const Products: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
+                <h2 className="text-lg font-semibold text-emerald-800 mt-2">
+                  {product.title}
+                </h2>
+                <p className="text-sm text-emerald-600 mt-1">
                   {product.description}
                 </p>
               </div>
