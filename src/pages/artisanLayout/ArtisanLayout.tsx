@@ -31,7 +31,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
         } bg-white border-r border-gray-200`}
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-[#094129]">Customer</h1>
+          <h1 className="text-2xl font-bold text-[#094129]">Artisian</h1>
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="text-gray-500 lg:hidden hover:text-gray-700"
