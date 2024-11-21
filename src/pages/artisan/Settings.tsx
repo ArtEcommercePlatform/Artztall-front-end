@@ -67,10 +67,10 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-sky-100 py-6 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-100 to-blue-200 py-6 px-4">
       <div className="max-w-2xl mx-auto space-y-4">
         <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-emerald-500 to-blue-500 p-4">
+          <div className="bg-gradient-to-r from-emerald-600 to-blue-600 p-4">
             <h1 className="text-2xl font-bold text-white tracking-tight">
               Account Settings
             </h1>
@@ -80,9 +80,9 @@ const Settings: React.FC = () => {
           </div>
 
           <div className="p-4 space-y-4">
-            <div className="bg-white rounded-xl border border-gray-100 shadow-md p-4">
-              <h2 className="text-lg font-semibold mb-3 flex items-center text-emerald-700">
-                <UserCog className="mr-2 w-5 h-5" /> 
+            <div className="bg-white rounded-xl border border-emerald-100 shadow-md p-4">
+              <h2 className="text-lg font-semibold mb-3 flex items-center text-emerald-800">
+                <UserCog className="mr-2 w-5 h-5 text-emerald-600" /> 
                 Profile Information
               </h2>
               <div className="grid md:grid-cols-2 gap-3">
@@ -133,9 +133,9 @@ const Settings: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-gray-100 shadow-md p-4">
-              <h2 className="text-lg font-semibold mb-3 flex items-center text-emerald-700">
-                <Lock className="mr-2 w-5 h-5" /> 
+            <div className="bg-white rounded-xl border border-emerald-100 shadow-md p-4">
+              <h2 className="text-lg font-semibold mb-3 flex items-center text-emerald-800">
+                <Lock className="mr-2 w-5 h-5 text-blue-600" /> 
                 Change Password
               </h2>
               <div className="space-y-3">
@@ -197,10 +197,10 @@ const Settings: React.FC = () => {
                 className="
                   px-4 
                   py-2 
-                  bg-emerald-600 
+                  bg-emerald-700 
                   text-white 
                   rounded-lg 
-                  hover:bg-emerald-700 
+                  hover:bg-emerald-800 
                   transition-colors
                   text-sm
                   shadow-md
