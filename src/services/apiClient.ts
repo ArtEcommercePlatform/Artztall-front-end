@@ -52,7 +52,7 @@ class ApiClient {
           switch (error.response.status) {
             case 401:
               errorResponse.message = 'Unauthorized access';
-              // Handle logout or refresh token
+             
               break;
             case 403:
               errorResponse.message = 'Forbidden access';

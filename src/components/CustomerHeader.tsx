@@ -13,7 +13,7 @@ interface HeaderProps {
   userAvatar?: string;
 }
 
-const ArticianHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
+const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
@@ -81,4 +81,4 @@ const ArticianHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
   );
 };
 
-export default ArticianHeader;
+export default CustomerHeader;

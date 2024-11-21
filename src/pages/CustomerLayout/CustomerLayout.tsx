@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import ArticianHeader from "../../components/ArtisanHeader";
+import CustomerHeader from "../../components/CustomerHeader";
 import { LayoutDashboard, Package, Image as ImageIcon, Gavel, Settings, X } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
+const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const userData = {
@@ -15,10 +15,10 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   const navigationItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
-    { icon: Package, label: "Products", href: "/artisan/products" },
-    { icon: ImageIcon, label: "Gallery", href: "/artisan/gallery" },
-    { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/customer/dashboard" },
+    { icon: Package, label: "Products", href: "/customer/products" },
+    { icon: ImageIcon, label: "Gallery", href: "/customer/gallery" },
+    { icon: Gavel, label: "Auctions", href: "/customer/auctions" },
     { icon: Settings, label: "Settings", href: "/settings" },
   ];
 
@@ -55,11 +55,11 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        <ArticianHeader {...userData} />
+        <CustomerHeader {...userData} />
         <main className="flex-1 p-6 bg-gray-50">{children}</main>
       </div>
     </div>
   );
 };
 
-export default ArticianLayout;
+export default CustomerLayout;

@@ -27,7 +27,7 @@ const ProductCard = ({
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1">{title}</h3>
         <p className="text-gray-600 text-sm mb-2">by {artist}</p>
-        <p className="font-bold text-[#094129]">${price}</p>
+        <p className="font-bold text-[#094129]">LKR {price}</p>
       </div>
     </div>
   );
