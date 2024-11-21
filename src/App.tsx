@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Homepage from './pages/homepage/Homepage';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
+import AuctionDetails from './pages/Customer/AuctionInside';
 
 // Import Artisan Dashboard Pages
 import Dashboard from './pages/artisan/Dashboard';
@@ -45,7 +46,7 @@ const CustomerRoutes = () => {
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-        {/* Redirect to dashboard if no specific route matches */}
+        
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
@@ -73,16 +74,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-
-            {/* Artisan Dashboard Routes */}
-            <Route
-              path="/artisan/*"
-              element={<ArtisanRoutes />}
-            />
-            <Route
-              path="/customer/*"
-              element={<CustomerRoutes />}
-            />
+            <Route path="/artisan/*" element={<ArtisanRoutes />}/>
+            <Route path="/customer/*" element={<CustomerRoutes />}/>
+            <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
 
           

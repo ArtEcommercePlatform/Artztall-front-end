@@ -17,7 +17,7 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
-    <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+    <header className="flex items-center justify-between h-20 px-4 bg-white border-b border-gray-200">
       <div className="flex items-center">
         <button className="mr-4 text-gray-500 lg:hidden hover:text-gray-700">
           <Menu size={24} />
