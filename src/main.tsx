@@ -9,6 +9,6 @@ import ProductList from './components/ProductList.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-    <ProductList />
+    {/* <ProductList /> */}
   </StrictMode>
 );

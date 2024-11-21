@@ -41,13 +41,13 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
           <h1 className="text-2xl font-bold text-[#094129]">Artisan</h1>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="lg:hidden text-gray-500 hover:text-gray-700"
+            className="text-gray-500 lg:hidden hover:text-gray-700"
           >
             <X size={24} />
           </button>
         </div>
         
-        <nav className="mt-6 px-4 space-y-2">
+        <nav className="px-4 mt-6 space-y-2">
           {navigationItems.map((item) => (
             <a
               key={item.label}
@@ -62,18 +62,18 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex flex-col flex-1 min-h-screen">
         {/* Top Header */}
-        <header className="h-16 border-b border-gray-200 bg-white flex items-center justify-between px-4">
+        <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
           <div className="flex items-center">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden text-gray-500 hover:text-gray-700 mr-4"
+              className="mr-4 text-gray-500 lg:hidden hover:text-gray-700"
             >
               <Menu size={24} />
             </button>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" size={20} />
               <input
                 type="text"
                 placeholder="Search..."
@@ -85,7 +85,7 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
           <div className="flex items-center space-x-4">
             <button className="relative text-gray-500 hover:text-gray-700">
               <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+              <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
                 3
               </span>
             </button>
@@ -105,7 +105,7 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
               </button>
 
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200">
+                <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
                   <div className="py-2">
                     <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">Profile</a>
                     <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
@@ -113,7 +113,7 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
                     <Button
                       variant="text"
                       size="sm"
-                      className="w-full justify-start px-4"
+                      className="justify-start w-full px-4"
                       onClick={() => console.log('Logout clicked')}
                     >
                       Logout
@@ -126,7 +126,7 @@ const ArtisanHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-gray-50 p-6">
+        <main className="flex-1 p-6 overflow-auto bg-gray-50">
           {/* Content will be injected here */}
         </main>
       </div>

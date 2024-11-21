@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   Menu,
-  X,
+
   Search,
   Bell,
   ChevronDown,
@@ -17,7 +17,7 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
-    <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+    <header className="flex items-center justify-between px-4 bg-white border-b border-gray-200 h-26">
       <div className="flex items-center">
         <button className="mr-4 text-gray-500 lg:hidden hover:text-gray-700">
           <Menu size={24} />
@@ -33,12 +33,14 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
       </div>
 
       <div className="flex items-center space-x-4">
+        <a href="/customer/notifications" className="text-gray-500 hover:text-gray-700">
         <button className="relative text-gray-500 hover:text-gray-700">
           <Bell size={20} />
           <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
             3
           </span>
         </button>
+        </a>
 
         <div className="relative">
           <button
@@ -57,7 +59,7 @@ const CustomerHeader: React.FC<HeaderProps> = ({ userName, userAvatar }) => {
           {isProfileOpen && (
             <div className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
               <div className="py-2">
-                <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                <a href="/customer/profile" className="block px-4 py-2 hover:bg-gray-100">
                   Profile
                 </a>
                 <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">
