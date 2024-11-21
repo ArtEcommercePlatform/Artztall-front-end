@@ -10,6 +10,7 @@ import Dashboard from './pages/artisan/Dashboard';
 import Products from './pages/artisan/Products';
 import Gallery from './pages/artisan/Gallery';
 import Auctions from './pages/artisan/Auctions';
+import Settings from './pages/artisan/Settings';
 import ArtisanLayout from './pages/artisanLayout/ArtisanLayout';
 
 // Import Customer Dashboard Pages
@@ -28,6 +29,7 @@ const ArtisanRoutes = () => {
         <Route path="products" element={<Products />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
+        <Route path="settings" element={<Settings />} />
         {/* Redirect to dashboard if no specific route matches */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
