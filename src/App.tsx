@@ -1,10 +1,10 @@
-// import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-// import SplashScreen from './components/SplashScreen';
+import SplashScreen from './components/SplashScreen';
 import Homepage from './pages/homepage/Homepage';
+import Notifications from './components/Notifications';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
-import AuctionDetails from './pages/Customer/AuctionInside';
 
 // Import Artisan Dashboard Pages
 import Dashboard from './pages/artisan/Dashboard';
@@ -19,6 +19,7 @@ import CuProducts from './pages/Customer/Products';
 import CuGallery from './pages/Customer/Gallery';
 import CuAuctions from './pages/Customer/Auction';
 import CustomerLayout from './pages/CustomerLayout/CustomerLayout';
+import ProfileManagement from './pages/Customer/ProfileManagement';
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -29,6 +30,8 @@ const ArtisanRoutes = () => {
         <Route path="products" element={<Products />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
+        <Route path='newartadd' element={<NewArtAdd />} />
+        <Route path="notifications" element={<Notifications />} />
         {/* Redirect to dashboard if no specific route matches */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
@@ -45,27 +48,29 @@ const CustomerRoutes = () => {
         <Route path="dashboard" element={<CuDashboard />} />
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path='profile' element={<ProfileManagement />} />
         <Route path="auctions" element={<CuAuctions />} />
-        
+        {/* Redirect to dashboard if no specific route matches */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
   );
 };
 function App() {
-  // const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setIsInitialLoad(false);
-  //   }, 2000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 2000);
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // if (isInitialLoad) {
-  //   return <SplashScreen />; // Show SplashScreen only on the initial load
-  // }
+  if (isInitialLoad) {
+    return <SplashScreen />; // Show SplashScreen only on the initial load
+  }
 
   return (
     <ToastProvider>
@@ -74,9 +79,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-            <Route path="/artisan/*" element={<ArtisanRoutes />}/>
-            <Route path="/customer/*" element={<CustomerRoutes />}/>
-            <Route path="/customer/auction/:id" element={<AuctionDetails />} />
+
+            {/* Artisan Dashboard Routes */}
+            <Route
+              path="/artisan/*"
+              element={<ArtisanRoutes />}
+            />
+            <Route
+              path="/customer/*"
+              element={<CustomerRoutes />}
+            />
           </Routes>
 
           
