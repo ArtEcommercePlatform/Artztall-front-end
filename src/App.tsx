@@ -5,6 +5,7 @@ import Homepage from './pages/homepage/Homepage';
 import Notifications from './components/Notifications';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
+import AuctionDetails from './pages/Customer/AuctionInside';
 
 // Import Artisan Dashboard Pages
 import Dashboard from './pages/artisan/Dashboard';
@@ -51,7 +52,7 @@ const CustomerRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path='profile' element={<ProfileManagement />} />
         <Route path="auctions" element={<CuAuctions />} />
-        {/* Redirect to dashboard if no specific route matches */}
+        
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
@@ -79,16 +80,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-
-            {/* Artisan Dashboard Routes */}
-            <Route
-              path="/artisan/*"
-              element={<ArtisanRoutes />}
-            />
-            <Route
-              path="/customer/*"
-              element={<CustomerRoutes />}
-            />
+            <Route path="/artisan/*" element={<ArtisanRoutes />}/>
+            <Route path="/customer/*" element={<CustomerRoutes />}/>
+            <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
 
           
