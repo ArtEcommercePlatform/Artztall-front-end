@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import SplashScreen from './components/SplashScreen';
+// import SplashScreen from './components/SplashScreen';
 import Homepage from './pages/homepage/Homepage';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
@@ -52,19 +52,19 @@ const CustomerRoutes = () => {
   );
 };
 function App() {
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsInitialLoad(false);
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsInitialLoad(false);
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (isInitialLoad) {
-    return <SplashScreen />; // Show SplashScreen only on the initial load
-  }
+  // if (isInitialLoad) {
+  //   return <SplashScreen />; // Show SplashScreen only on the initial load
+  // }
 
   return (
     <ToastProvider>

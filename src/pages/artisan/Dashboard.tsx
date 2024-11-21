@@ -44,7 +44,7 @@ interface CardData {
   value: string | number;
   growth: number;
   bgColor: string;
-  details?: string; // Optional details to show when expanded
+  details?: string; 
 }
 
 interface PerformanceMetric {
@@ -141,7 +141,7 @@ const ArtisanDashboard: React.FC = () => {
       details: "Awaiting payment confirmation"
     },
     { 
-      icon: <ShoppingBag className="text-blue-600" />, 
+      icon: <ShoppingBag className="text-green-600" />, 
       title: "Active Products", 
       value: artisanStats.activeProducts,
       growth: artisanStats.analytics.monthlyGrowth.bids,
@@ -149,7 +149,7 @@ const ArtisanDashboard: React.FC = () => {
       details: "Currently listed artworks"
     },
     { 
-      icon: <Gavel className="text-purple-600" />, 
+      icon: <Gavel className="text-green-600" />, 
       title: "Active Auctions", 
       value: artisanStats.activeAuctions,
       growth: artisanStats.analytics.monthlyGrowth.bids,
@@ -181,23 +181,23 @@ const ArtisanDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
       <div className="container mx-auto px-4 py-6 flex-grow overflow-y-auto">
         {/* Header */}
         <div className="mb-6 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-blue-900 tracking-tight">Artisan Dashboard</h1>
+            <h1 className="text-3xl font-bold text-green-900 tracking-tight">Artisan Dashboard</h1>
             <p className="text-gray-600 text-sm">Insights into your creative journey</p>
           </div>
           <div className="flex space-x-4">
             <button className="
               flex items-center 
-              bg-blue-600 
+              bg-green-600 
               text-white 
               px-4 py-2 
               rounded-lg 
               text-sm
-              hover:bg-blue-700 
+              hover:bg-green-700 
               transition-all 
               duration-300 
               shadow-md
@@ -249,7 +249,7 @@ const ArtisanDashboard: React.FC = () => {
           {/* Overall Performance */}
           <div className="md:col-span-1 bg-white rounded-xl shadow-md p-4">
             <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <TrendingUp className="mr-2 text-blue-600 w-5 h-5" /> Performance Metrics
+              <TrendingUp className="mr-2 text-green-600 w-5 h-5" /> Performance Metrics
             </h2>
             <div className="space-y-3">
               {performanceMetrics.map((metric, index) => (
@@ -282,7 +282,7 @@ const ArtisanDashboard: React.FC = () => {
           {/* Recent Artwork Performance */}
           <div className="md:col-span-2 bg-white rounded-xl shadow-md p-4">
             <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <Eye className="mr-2 text-purple-600 w-5 h-5" /> Recent Artwork Performance
+              <Eye className="mr-2 text-green-600 w-5 h-5" /> Recent Artwork Performance
             </h2>
             <div className="space-y-3">
               {recentAnalytics.map((artwork, index) => (
@@ -293,7 +293,7 @@ const ArtisanDashboard: React.FC = () => {
                     items-center 
                     p-3 
                     rounded-lg 
-                    hover:bg-blue-50
+                    hover:bg-green-50
                     transition-colors
                   "
                 >
