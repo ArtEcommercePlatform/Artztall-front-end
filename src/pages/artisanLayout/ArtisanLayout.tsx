@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import ArticianHeader from "../../components/ArtisanHeader";
 import { LayoutDashboard, Package, Image as ImageIcon, Gavel, Settings, X } from "lucide-react";
+import logo from '../../assets/images/logo.png'
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const userData = {
     userName: "John Doe",
     userAvatar: "/api/placeholder/32/2",
+    onToggleSidebar: toggleSidebar
   };
 
   const navigationItems = [
@@ -24,14 +30,28 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex h-screen">
+      {/* Sidebar Overlay for Mobile */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden" 
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+
       {/* Sidebar */}
       <div
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } bg-white border-r border-gray-200`}
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50 w-64 
+          transform transition-transform duration-300 ease-in-out 
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+          lg:translate-x-0 
+          bg-white border-r border-gray-200
+        `}
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-[#094129]">Artisian</h1>
+       
+            <img src={logo} alt="artztall" className="object-contain w-full h-full"></img>
+          
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="text-gray-500 lg:hidden hover:text-gray-700"
@@ -54,9 +74,9 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <ArticianHeader {...userData} />
-        <main className="flex-1 p-6 bg-gray-50">{children}</main>
+        <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">{children}</main>
       </div>
     </div>
   );
