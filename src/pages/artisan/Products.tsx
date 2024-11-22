@@ -20,7 +20,7 @@ const Products: React.FC = () => {
       description: "A vibrant oil painting capturing the golden hour",
       category: "Landscape",
       price: 1500,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ const Products: React.FC = () => {
       description: "Modern abstract piece with vibrant colors",
       category: "Abstract",
       price: 2200,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ const Products: React.FC = () => {
       description: "Detailed cityscape drawing",
       category: "Urban",
       price: 1800,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 4,
@@ -44,8 +44,8 @@ const Products: React.FC = () => {
       description: "Tranquil mountain landscape",
       category: "Landscape",
       price: 2500,
-      images: ['/placeholder-image.jpg']
-    }
+      images: ["/placeholder-image.jpg"],
+    },
   ]);
 
   // Create a default product template
@@ -55,7 +55,7 @@ const Products: React.FC = () => {
     description: "New artwork description",
     category: "Uncategorized",
     price: 0,
-    images: ['/placeholder-image.jpg']
+    images: ["/placeholder-image.jpg"],
   });
 
   // Add new product
@@ -82,7 +82,9 @@ const Products: React.FC = () => {
         <div className="mb-6 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">My Artworks</h1>
-            <p className="text-gray-500">Manage and showcase your creative collection</p>
+            <p className="text-gray-500">
+              Manage and showcase your creative collection
+            </p>
           </div>
           <button
             onClick={handleAddProduct}
@@ -105,9 +107,9 @@ const Products: React.FC = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {products.map(product => (
-            <div 
-              key={product.id} 
+          {products.map((product) => (
+            <div
+              key={product.id}
               className="
                 bg-white 
                 rounded-xl 
@@ -120,8 +122,8 @@ const Products: React.FC = () => {
             >
               {/* Product Image */}
               <div className="relative">
-                <img 
-                  src={product.images[0] || '/placeholder-image.jpg'} 
+                <img
+                  src={product.images[0] || "/placeholder-image.jpg"}
                   alt={product.title}
                   className="w-full h-48 object-cover rounded-lg"
                 />

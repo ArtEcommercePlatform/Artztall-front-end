@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -25,6 +24,7 @@ import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 
+
 // Artisan Routes Component
 const ArtisanRoutes = () => {
   return (
@@ -34,6 +34,8 @@ const ArtisanRoutes = () => {
         <Route path="products" element={<Products />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
+        <Route path="settings" element={<Settings />} />
+
         {/* Redirect to dashboard if no specific route matches */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
