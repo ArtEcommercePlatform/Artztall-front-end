@@ -32,7 +32,9 @@ const AuctionInside = () => {
             <h1 className="mb-2 text-2xl font-semibold text-gray-800">
               Sealed Air NewAir I.B. Flex - Item ID: {id}
             </h1>
-            <p className="mb-1 text-lg font-medium text-gray-500">US $2,999.99</p>
+            <p className="mb-1 text-lg font-medium text-gray-500">
+              US $2,999.99
+            </p>
             <p className="mb-4 text-sm text-gray-400">Condition: Brand New</p>
             <div className="space-y-2">
               <button className="w-full py-2 text-white bg-blue-600 rounded hover:bg-blue-700">

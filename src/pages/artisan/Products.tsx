@@ -1,9 +1,5 @@
-import React from 'react';
-import { 
-  Plus, 
-  Edit, 
-  Trash2 
-} from 'lucide-react';
+import React from "react";
+import { Plus, Edit, Trash2 } from "lucide-react";
 
 // Define Product interface
 interface Product {
@@ -20,46 +16,46 @@ const Products: React.FC = () => {
   const [products, setProducts] = React.useState<Product[]>([
     {
       id: 1,
-      title: 'Sunset Landscape',
-      description: 'A vibrant oil painting capturing the golden hour',
-      category: 'Landscape',
+      title: "Sunset Landscape",
+      description: "A vibrant oil painting capturing the golden hour",
+      category: "Landscape",
       price: 1500,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 2,
-      title: 'Abstract Composition',
-      description: 'Modern abstract piece with vibrant colors',
-      category: 'Abstract',
+      title: "Abstract Composition",
+      description: "Modern abstract piece with vibrant colors",
+      category: "Abstract",
       price: 2200,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 3,
-      title: 'Urban Sketch',
-      description: 'Detailed cityscape drawing',
-      category: 'Urban',
+      title: "Urban Sketch",
+      description: "Detailed cityscape drawing",
+      category: "Urban",
       price: 1800,
-      images: ['/placeholder-image.jpg']
+      images: ["/placeholder-image.jpg"],
     },
     {
       id: 4,
-      title: 'Mountain Serenity',
-      description: 'Tranquil mountain landscape',
-      category: 'Landscape',
+      title: "Mountain Serenity",
+      description: "Tranquil mountain landscape",
+      category: "Landscape",
       price: 2500,
-      images: ['/placeholder-image.jpg']
-    }
+      images: ["/placeholder-image.jpg"],
+    },
   ]);
 
   // Create a default product template
   const createDefaultProduct = (): Product => ({
     id: products.length + 1,
     title: `Artwork ${products.length + 1}`,
-    description: 'New artwork description',
-    category: 'Uncategorized',
+    description: "New artwork description",
+    category: "Uncategorized",
     price: 0,
-    images: ['/placeholder-image.jpg']
+    images: ["/placeholder-image.jpg"],
   });
 
   // Add new product
@@ -70,13 +66,13 @@ const Products: React.FC = () => {
 
   // Delete product
   const handleDeleteProduct = (productId: number) => {
-    setProducts(products.filter(p => p.id !== productId));
+    setProducts(products.filter((p) => p.id !== productId));
   };
 
   // Edit product handler (placeholder)
   const handleEditProduct = () => {
     // Placeholder for future edit functionality
-    console.log('Edit product clicked');
+    console.log("Edit product clicked");
   };
 
   return (
@@ -86,9 +82,11 @@ const Products: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">My Artworks</h1>
-            <p className="text-gray-500">Manage and showcase your creative collection</p>
+            <p className="text-gray-500">
+              Manage and showcase your creative collection
+            </p>
           </div>
-          <button 
+          <button
             onClick={handleAddProduct}
             className="
               flex 
@@ -114,9 +112,9 @@ const Products: React.FC = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {products.map(product => (
-            <div 
-              key={product.id} 
+          {products.map((product) => (
+            <div
+              key={product.id}
               className="
                 bg-white 
                 rounded-xl 
@@ -131,8 +129,8 @@ const Products: React.FC = () => {
             >
               {/* Product Image */}
               <div className="relative">
-                <img 
-                  src={product.images[0] || '/placeholder-image.jpg'} 
+                <img
+                  src={product.images[0] || "/placeholder-image.jpg"}
                   alt={product.title}
                   className="w-full h-48 object-cover"
                 />
@@ -145,7 +143,7 @@ const Products: React.FC = () => {
                     Rs {product.price.toLocaleString()}
                   </span>
                   <div className="flex space-x-2">
-                    <button 
+                    <button
                       onClick={handleEditProduct}
                       className="
                         text-blue-500 
@@ -156,7 +154,7 @@ const Products: React.FC = () => {
                     >
                       <Edit className="w-5 h-5" />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteProduct(product.id)}
                       className="
                         text-red-500 

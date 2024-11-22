@@ -1,24 +1,29 @@
 // import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 // import SplashScreen from './components/SplashScreen';
-import Homepage from './pages/homepage/Homepage';
-import NewArtAdd from './pages/homepage/NewArtAdd';
-import { ToastProvider } from './assets/components/toast/Toast';
-import AuctionDetails from './pages/Customer/AuctionInside';
+import Homepage from "./pages/homepage/Homepage";
+import NewArtAdd from "./pages/homepage/NewArtAdd";
+import { ToastProvider } from "./assets/components/toast/Toast";
+import AuctionDetails from "./pages/Customer/AuctionInside";
 
 // Import Artisan Dashboard Pages
-import Dashboard from './pages/artisan/Dashboard';
-import Products from './pages/artisan/Products';
-import Gallery from './pages/artisan/Gallery';
-import Auctions from './pages/artisan/Auctions';
-import ArtisanLayout from './pages/artisanLayout/ArtisanLayout';
+import Dashboard from "./pages/artisan/Dashboard";
+import Products from "./pages/artisan/Products";
+import Gallery from "./pages/artisan/Gallery";
+import Auctions from "./pages/artisan/Auctions";
+import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
 
 // Import Customer Dashboard Pages
-import CuDashboard from './pages/Customer/Dashboard';
-import CuProducts from './pages/Customer/Products';
-import CuGallery from './pages/Customer/Gallery';
-import CuAuctions from './pages/Customer/Auction';
-import CustomerLayout from './pages/CustomerLayout/CustomerLayout';
+import CuDashboard from "./pages/Customer/Dashboard";
+import CuProducts from "./pages/Customer/Products";
+import CuGallery from "./pages/Customer/Gallery";
+import CuAuctions from "./pages/Customer/Auction";
+import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -36,7 +41,6 @@ const ArtisanRoutes = () => {
   );
 };
 
-
 // Cuatomer Routes Component
 const CustomerRoutes = () => {
   return (
@@ -46,7 +50,7 @@ const CustomerRoutes = () => {
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-        
+
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
@@ -74,14 +78,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-            <Route path="/artisan/*" element={<ArtisanRoutes />}/>
-            <Route path="/customer/*" element={<CustomerRoutes />}/>
+            <Route path="/artisan/*" element={<ArtisanRoutes />} />
+            <Route path="/customer/*" element={<CustomerRoutes />} />
             <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
-
-          
-          
-          
         </div>
       </Router>
     </ToastProvider>

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import CustomerHeader from "../../components/CustomerHeader";
-import { LayoutDashboard, Package, Image as ImageIcon, Gavel, Settings, X } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Image as ImageIcon,
+  Gavel,
+  Settings,
+  X,
+} from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -14,8 +14,9 @@ const Hero = () => {
       {/* Background image with zoom effect */}
       <div
         className="absolute inset-0 bg-center bg-cover transition-transform duration-500 hover:scale-105"
-        style={{  
-          backgroundImage: "url('https://c0.wallpaperflare.com/preview/807/214/326/4k-wallpaper-abstract-expressionism-abstract-painting-acrylic-paint.jpg')"
+        style={{
+          backgroundImage:
+            "url('https://c0.wallpaperflare.com/preview/807/214/326/4k-wallpaper-abstract-expressionism-abstract-painting-acrylic-paint.jpg')",
         }}
       >
         {/* Overlay for contrast */}
@@ -34,7 +35,8 @@ const Hero = () => {
         </h1>
 
         <p className="max-w-3xl mx-auto mb-12 text-xl lg:text-2xl text-white/90 drop-shadow-md">
-          Support independent artists and find your perfect piece that speaks to your soul.
+          Support independent artists and find your perfect piece that speaks to
+          your soul.
         </p>
 
         <motion.div

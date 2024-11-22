@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { X, Plus, Check } from 'lucide-react';
-import { useToast } from '../assets/components/toast/Toast';
+import React, { useState } from "react";
+import { X, Plus, Check } from "lucide-react";
+import { useToast } from "../assets/components/toast/Toast";
 
 interface SignupModalProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ interface SignupForm {
   email: string;
   password: string;
   phoneNumber: string;
-  userType: 'ARTISAN' | 'BUYER';
+  userType: "ARTISAN" | "BUYER";
   bio?: string;
   artworkCategories?: string[];
   address?: Address;
@@ -29,9 +29,16 @@ interface SignupForm {
 }
 
 const ARTWORK_CATEGORIES = [
-  'Watercolor', 'Oil Painting', 'Digital Art', 'Sculpture', 
-  'Photography', 'Ceramics', 'Mixed Media', 'Acrylic', 
-  'Illustration', 'Printmaking'
+  "Watercolor",
+  "Oil Painting",
+  "Digital Art",
+  "Sculpture",
+  "Photography",
+  "Ceramics",
+  "Mixed Media",
+  "Acrylic",
+  "Illustration",
+  "Printmaking",
 ];
 
 const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
@@ -39,28 +46,30 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<SignupForm>({
-    name: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-    userType: 'BUYER',
+    name: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+    userType: "BUYER",
     address: {
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      postalCode: '',
-      isDefault: true
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      postalCode: "",
+      isDefault: true,
     },
     artworkCategories: [],
   });
 
   if (!isOpen) return null;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -69,8 +78,8 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       ...formData,
       address: {
         ...formData.address!,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      },
     });
   };
 
@@ -78,71 +87,70 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     if (e.target.files && e.target.files[0]) {
       setFormData({
         ...formData,
-        profileImage: e.target.files[0]
+        profileImage: e.target.files[0],
       });
     }
   };
 
   const toggleCategory = (category: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       artworkCategories: prev.artworkCategories?.includes(category)
-        ? prev.artworkCategories.filter(c => c !== category)
-        : [...(prev.artworkCategories || []), category]
+        ? prev.artworkCategories.filter((c) => c !== category)
+        : [...(prev.artworkCategories || []), category],
     }));
   };
-
-
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
 
-      let profileImageUrl = '';
+      let profileImageUrl = "";
       if (formData.profileImage) {
-        profileImageUrl = 'string'
+        profileImageUrl = "string";
       }
 
       // Prepare the request payload based on user type
-      const payload = formData.userType === 'BUYER' 
-        ? {
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            phoneNumber: formData.phoneNumber,
-            userType: formData.userType,
-            address: formData.address,
-            profileImageUrl
-          }
-        : {
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            phoneNumber: formData.phoneNumber,
-            userType: formData.userType,
-            bio: formData.bio,
-            artworkCategories: formData.artworkCategories,
-            profileImageUrl
-          };
+      const payload =
+        formData.userType === "BUYER"
+          ? {
+              name: formData.name,
+              email: formData.email,
+              password: formData.password,
+              phoneNumber: formData.phoneNumber,
+              userType: formData.userType,
+              address: formData.address,
+              profileImageUrl,
+            }
+          : {
+              name: formData.name,
+              email: formData.email,
+              password: formData.password,
+              phoneNumber: formData.phoneNumber,
+              userType: formData.userType,
+              bio: formData.bio,
+              artworkCategories: formData.artworkCategories,
+              profileImageUrl,
+            };
 
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
-      
+
       if (response.ok) {
-        toast.success('Account created successfully!');
+        toast.success("Account created successfully!");
         onClose();
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Failed to create account');
+        toast.error(error.message || "Failed to create account");
       }
     } catch (error) {
-      toast.error('An error occurred during signup');
-      console.error('Error during signup:', error);
+      toast.error("An error occurred during signup");
+      console.error("Error during signup:", error);
     } finally {
       setIsLoading(false);
     }
@@ -154,22 +162,22 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
         <button
           type="button"
           className={`flex-1 py-3 text-center rounded-lg ${
-            formData.userType === 'BUYER'
-              ? 'bg-[#094129] text-white'
-              : 'border border-[#094129] text-[#094129]'
+            formData.userType === "BUYER"
+              ? "bg-[#094129] text-white"
+              : "border border-[#094129] text-[#094129]"
           }`}
-          onClick={() => setFormData({ ...formData, userType: 'BUYER' })}
+          onClick={() => setFormData({ ...formData, userType: "BUYER" })}
         >
           Buyer
         </button>
         <button
           type="button"
           className={`flex-1 py-3 text-center rounded-lg ${
-            formData.userType === 'ARTISAN'
-              ? 'bg-[#094129] text-white'
-              : 'border border-[#094129] text-[#094129]'
+            formData.userType === "ARTISAN"
+              ? "bg-[#094129] text-white"
+              : "border border-[#094129] text-[#094129]"
           }`}
-          onClick={() => setFormData({ ...formData, userType: 'ARTISAN' })}
+          onClick={() => setFormData({ ...formData, userType: "ARTISAN" })}
         >
           Artist
         </button>
@@ -252,7 +260,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
   const renderStep3 = () => (
     <div className="space-y-4">
-      {formData.userType === 'BUYER' ? (
+      {formData.userType === "BUYER" ? (
         <>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -346,7 +354,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
   const renderStep4 = () => (
     <div className="space-y-4">
-      {formData.userType === 'ARTISAN' && (
+      {formData.userType === "ARTISAN" && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Artwork Categories
@@ -359,8 +367,8 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
                 onClick={() => toggleCategory(category)}
                 className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${
                   formData.artworkCategories?.includes(category)
-                    ? 'bg-[#094129] text-white'
-                    : 'border border-[#094129] text-[#094129]'
+                    ? "bg-[#094129] text-white"
+                    : "border border-[#094129] text-[#094129]"
                 }`}
               >
                 {category}
@@ -397,7 +405,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               <div
                 key={i}
                 className={`h-2 flex-1 mx-1 rounded ${
-                  i <= step ? 'bg-[#094129]' : 'bg-gray-200'
+                  i <= step ? "bg-[#094129]" : "bg-gray-200"
                 }`}
               />
             ))}
@@ -421,7 +429,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
                 Back
               </button>
             )}
-            
+
             <button
               type="button"
               onClick={() => {
@@ -433,7 +441,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               }}
               className="flex-1 bg-[#094129] text-white py-2 rounded-lg hover:opacity-90 transition-opacity"
             >
-              {step === 4 ? 'Create Account' : 'Next'}
+              {step === 4 ? "Create Account" : "Next"}
             </button>
           </div>
         </form>

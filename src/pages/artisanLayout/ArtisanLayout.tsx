@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import ArticianHeader from "../../components/ArtisanHeader";
-import { LayoutDashboard, Package, Image as ImageIcon, Gavel, Settings, X } from "lucide-react";
-import logo from '../../assets/images/logo.png'
+import {
+  LayoutDashboard,
+  Package,
+  Image as ImageIcon,
+  Gavel,
+  Settings,
+  X,
+} from "lucide-react";
+import logo from "../../assets/images/logo.png";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,7 +16,7 @@ interface LayoutProps {
 
 const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -17,7 +24,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const userData = {
     userName: "John Doe",
     userAvatar: "/api/placeholder/32/2",
-    onToggleSidebar: toggleSidebar
+    onToggleSidebar: toggleSidebar,
   };
 
   const navigationItems = [
@@ -32,8 +39,8 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex h-screen">
       {/* Sidebar Overlay for Mobile */}
       {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden" 
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}
@@ -49,9 +56,12 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
         `}
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-       
-            <img src={logo} alt="artztall" className="object-contain w-full h-full"></img>
-          
+          <img
+            src={logo}
+            alt="artztall"
+            className="object-contain w-full h-full"
+          ></img>
+
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="text-gray-500 lg:hidden hover:text-gray-700"
@@ -76,7 +86,9 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-hidden">
         <ArticianHeader {...userData} />
-        <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  Menu,
-  X,
-  Search,
-  Bell,
-  ChevronDown,
+import { Menu, X, Search, Bell, ChevronDown } from "lucide-react";
 
-} from "lucide-react";
-
-import userIcon from '../assets/icons/user.png'
+import userIcon from "../assets/icons/user.png";
 
 interface HeaderProps {
   userName: string;
@@ -16,9 +9,9 @@ interface HeaderProps {
   onToggleSidebar: () => void;
 }
 
-const ArticianHeader: React.FC<HeaderProps> = ({ 
-  userName, 
-  onToggleSidebar 
+const ArticianHeader: React.FC<HeaderProps> = ({
+  userName,
+  onToggleSidebar,
 }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -35,16 +28,16 @@ const ArticianHeader: React.FC<HeaderProps> = ({
     <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
       {/* Mobile Hamburger and Logo */}
       <div className="flex items-center space-x-4">
-        <button 
+        <button
           onClick={onToggleSidebar}
           className="text-gray-500 lg:hidden hover:text-gray-700"
         >
           <Menu size={24} />
         </button>
-        
+
         {/* Mobile Search Toggle */}
-        <button 
-          onClick={toggleSearch} 
+        <button
+          onClick={toggleSearch}
           className="text-gray-500 lg:hidden hover:text-gray-700"
         >
           <Search size={20} />
@@ -54,7 +47,10 @@ const ArticianHeader: React.FC<HeaderProps> = ({
       {/* Desktop Search */}
       <div className="hidden lg:block w-full max-w-md">
         <div className="relative">
-          <Search className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" size={20} />
+          <Search
+            className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+            size={20}
+          />
           <input
             type="text"
             placeholder="Search..."
@@ -68,15 +64,18 @@ const ArticianHeader: React.FC<HeaderProps> = ({
         <div className="fixed inset-0 z-50 lg:hidden bg-white">
           <div className="flex items-center p-4 border-b">
             <div className="relative flex-1">
-              <Search className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" size={20} />
+              <Search
+                className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search..."
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#094129]"
               />
             </div>
-            <button 
-              onClick={toggleSearch} 
+            <button
+              onClick={toggleSearch}
               className="ml-4 text-gray-500 hover:text-gray-700"
             >
               <X size={24} />
@@ -109,12 +108,15 @@ const ArticianHeader: React.FC<HeaderProps> = ({
             <span className="hidden md:block">{userName}</span>
             <ChevronDown size={16} />
           </button>
-          
+
           {isProfileOpen && (
             <div className="fixed inset-0 z-50 lg:absolute lg:inset-auto lg:right-0 lg:top-full">
               {/* Mobile Full Screen Dropdown */}
-              <div className="fixed inset-0 bg-black/50 lg:hidden" onClick={toggleProfileDropdown}></div>
-              
+              <div
+                className="fixed inset-0 bg-black/50 lg:hidden"
+                onClick={toggleProfileDropdown}
+              ></div>
+
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 bg-white rounded-lg shadow-lg lg:static lg:transform-none lg:w-48 lg:mt-2 lg:border lg:border-gray-200">
                 <div className="p-4 lg:hidden">
                   <div className="flex items-center space-x-3 mb-4">
@@ -129,12 +131,18 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="py-2">
-                  <a href="/profile" className="block px-4 py-2 hover:bg-gray-100 lg:hidden">
+                  <a
+                    href="/profile"
+                    className="block px-4 py-2 hover:bg-gray-100 lg:hidden"
+                  >
                     Profile
                   </a>
-                  <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">
+                  <a
+                    href="/settings"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
                     Settings
                   </a>
                   <hr className="my-1" />
