@@ -9,7 +9,8 @@ const AuctionPage = () => {
       price: "Rs. 20,000",
       bids: "0 bids",
       timeLeft: "4d 20h",
-      imageUrl: "https://i.pinimg.com/control2/736x/ba/dd/b9/baddb9ef421c96bd27a89784568e6f85.jpg",
+      imageUrl:
+        "https://i.pinimg.com/control2/736x/ba/dd/b9/baddb9ef421c96bd27a89784568e6f85.jpg",
     },
     {
       id: 2,
@@ -17,7 +18,8 @@ const AuctionPage = () => {
       price: "Rs. 35,000",
       bids: "5 bids",
       timeLeft: "2d 8h",
-      imageUrl: "https://i.pinimg.com/736x/4f/58/e5/4f58e509d7713f4e1f5ec84e95175c61.jpg",
+      imageUrl:
+        "https://i.pinimg.com/736x/4f/58/e5/4f58e509d7713f4e1f5ec84e95175c61.jpg",
     },
     {
       id: 3,
@@ -25,7 +27,8 @@ const AuctionPage = () => {
       price: "Rs. 50,000",
       bids: "10 bids",
       timeLeft: "1d 12h",
-      imageUrl: "https://i.pinimg.com/control2/736x/ff/da/c6/ffdac619c139d7bd60253550a131fea4.jpg",
+      imageUrl:
+        "https://i.pinimg.com/control2/736x/ff/da/c6/ffdac619c139d7bd60253550a131fea4.jpg",
     },
   ];
 
@@ -54,7 +57,6 @@ const AuctionPage = () => {
         </div>
       </div>
 
-      
       <div className="flex flex-col space-y-6">
         {items.map((item) => (
           <div key={item.id} className="p-4 border rounded shadow-sm">
@@ -69,7 +71,9 @@ const AuctionPage = () => {
               <div className="flex justify-between flex-1">
                 <div>
                   <h2 className="text-xl font-semibold">{item.title}</h2>
-                  <p className="text-2xl font-bold text-green-600">{item.price}</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {item.price}
+                  </p>
                 </div>
                 <div className="text-right text-gray-500">
                   <p>{item.bids}</p>
