@@ -25,7 +25,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
     { icon: Package, label: "Products", href: "/artisan/products" },
     { icon: ImageIcon, label: "Gallery", href: "/artisan/gallery" },
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
-    { icon: Settings, label: "Settings", href: "/settings" },
+    { icon: Settings, label: "Settings", href: "/artisan/settings" },
   ];
 
   return (
