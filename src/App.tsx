@@ -23,6 +23,7 @@ import CuProducts from "./pages/Customer/Products";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
+import Settings from "./pages/artisan/Settings";
 
 
 // Artisan Routes Component
