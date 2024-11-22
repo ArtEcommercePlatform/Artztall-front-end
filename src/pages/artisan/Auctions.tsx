@@ -143,7 +143,7 @@ const Auctions: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-100 to-gray-200">
+    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
       {notification && (
         <div className="fixed flex items-center p-4 text-white bg-green-500 rounded shadow-lg top-4 right-4">
           <Trophy className="mr-2" />
@@ -151,20 +151,20 @@ const Auctions: React.FC = () => {
         </div>
       )}
 
-      <div className="container mx-auto space-y-6">
+      <div className="container mx-auto px-4 py-6 flex-grow overflow-y-auto space-y-6">
         {/* User Context */}
-        <div className="flex items-center justify-between p-4 bg-white rounded shadow">
-          <h1 className="text-2xl font-bold text-gray-800">Art Auction Platform</h1>
+        <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-md">
+          <h1 className="text-3xl font-bold text-green-900 tracking-tight">Art Auction Platform</h1>
           <div className="flex items-center">
             <span className="mr-2 text-gray-600">Current User:</span>
-            <span className="font-semibold text-blue-600">{currentUser}</span>
+            <span className="font-semibold text-green-600">{currentUser}</span>
           </div>
         </div>
 
         {/* Create Auction Section */}
-        <div className="p-6 bg-white rounded shadow">
-          <h2 className="flex items-center mb-4 text-lg font-bold">
-            <Gavel className="mr-2 text-blue-500" />
+        <div className="p-6 bg-white rounded-xl shadow-md">
+          <h2 className="flex items-center mb-4 text-lg font-semibold text-green-900">
+            <Gavel className="mr-2 text-green-500" />
             Create New Auction
           </h2>
           <form onSubmit={handleCreateAuction} className="space-y-4">
@@ -174,7 +174,7 @@ const Auctions: React.FC = () => {
               placeholder="Artwork Name"
               value={formData.artwork}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
               required
             />
             <textarea
@@ -182,85 +182,100 @@ const Auctions: React.FC = () => {
               placeholder="Artwork Description"
               value={formData.artworkDescription}
               onChange={handleChange}
-              className="w-full h-24 p-2 border border-gray-300 rounded"
+              className="w-full h-24 p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
             />
             
             <div className="grid grid-cols-2 gap-4">
-            <p>Minimum Budget</p>
-              <input
-                type="number"
-                name="minimumBid"
-                placeholder="Minimum Bid"
-                value={formData.minimumBid}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                min="0"
-                required
-              />
-               <p>Maximum Budget</p>
-              <input
-                type="number"
-                name="reservePrice"
-                placeholder="Reserve Price"
-                value={formData.reservePrice}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                min="0"
-                required
-              />
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Minimum Budget</p>
+                <input
+                  type="number"
+                  name="minimumBid"
+                  placeholder="Minimum Bid"
+                  value={formData.minimumBid}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
+                  min="0"
+                  required
+                />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Maximum Budget</p>
+                <input
+                  type="number"
+                  name="reservePrice"
+                  placeholder="Reserve Price"
+                  value={formData.reservePrice}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
+                  min="0"
+                  required
+                />
+              </div>
             </div>
           
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p>Start Date</p>
-              <input
-                type="datetime-local"
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+                <p className="text-sm text-gray-600 mb-1">Start Date</p>
+                <input
+                  type="datetime-local"
+                  name="startTime"
+                  value={formData.startTime}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
+                  required
+                />
               </div>
               <div>
-                <p className='items-center justify-center'>End Date</p>
-              <input
-                type="datetime-local"
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+                <p className="text-sm text-gray-600 mb-1">End Date</p>
+                <input
+                  type="datetime-local"
+                  name="endTime"
+                  value={formData.endTime}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-300"
+                  required
+                />
               </div>
             </div>
             <button
               type="submit"
-              className="flex items-center justify-center w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="
+                flex 
+                items-center 
+                justify-center 
+                w-full 
+                p-2 
+                text-white 
+                bg-green-600 
+                rounded-lg 
+                hover:bg-green-700 
+                transition-all 
+                duration-300 
+                shadow-md
+              "
             >
               <Gavel className="mr-2" /> Create Auction
             </button>
           </form>
         </div>
 
-      
         <div className="grid gap-6 md:grid-cols-2">
-          
-          <div className="p-6 bg-white rounded shadow">
-            <h2 className="flex items-center mb-4 text-lg font-bold">
-              <Clock className="mr-2 text-yellow-500" />
+          <div className="p-6 bg-white rounded-xl shadow-md">
+            <h2 className="flex items-center mb-4 text-lg font-semibold text-green-900">
+              <Clock className="mr-2 text-green-500" />
               Upcoming Auctions
             </h2>
             {auctions.filter((a) => a.status === 'upcoming').length > 0 ? (
               auctions
                 .filter((a) => a.status === 'upcoming')
                 .map((auction) => (
-                  <div key={auction.id} className="py-4 border-b border-gray-200">
-                    <h3 className="font-semibold text-gray-800">{auction.artwork}</h3>
-                    <p className="mb-2 text-sm text-gray-600">{auction.artworkDescription}</p>
+                  <div key={auction.id} className="py-4 border-b border-green-200">
+                    <h3 className="font-semibold text-green-800">{auction.artwork}</h3>
+                    <p className="mb-2 text-sm text-green-600">{auction.artworkDescription}</p>
                     <div className="flex items-center justify-between">
-                      <span>Starting Bid: ${auction.minimumBid}</span>
-                      <span className="text-yellow-600">
+                      <span>Starting Bid: Rs {auction.minimumBid}</span>
+                      <span className="text-green-600">
                         Starts: {new Date(auction.startTime).toLocaleString()}
                       </span>
                     </div>
@@ -271,9 +286,8 @@ const Auctions: React.FC = () => {
             )}
           </div>
 
-      
-          <div className="p-6 bg-white rounded shadow">
-            <h2 className="flex items-center mb-4 text-lg font-bold">
+          <div className="p-6 bg-white rounded-xl shadow-md">
+            <h2 className="flex items-center mb-4 text-lg font-semibold text-green-900">
               <Gavel className="mr-2 text-green-500" />
               Active Auctions
             </h2>
@@ -281,22 +295,31 @@ const Auctions: React.FC = () => {
               auctions
                 .filter((a) => a.status === 'active')
                 .map((auction) => (
-                  <div key={auction.id} className="py-4 border-b border-gray-200">
-                    <h3 className="font-semibold text-gray-800">{auction.artwork}</h3>
-                    <p className="mb-2 text-sm text-gray-600">{auction.artworkDescription}</p>
+                  <div key={auction.id} className="py-4 border-b border-green-200">
+                    <h3 className="font-semibold text-green-800">{auction.artwork}</h3>
+                    <p className="mb-2 text-sm text-green-600">{auction.artworkDescription}</p>
                     <div className="flex items-center justify-between">
-                      <span>Highest Bid: ${auction.highestBid}</span>
+                      <span>Highest Bid: Rs {auction.highestBid}</span>
                       <span className="text-green-600">
                         Ends: {new Date(auction.endTime).toLocaleString()}
                       </span>
                     </div>
                     <button
                       onClick={() => placeBid(auction.id, auction.highestBid + 10)}
-                      className="w-full p-2 mt-4 text-white bg-green-500 rounded hover:bg-green-600"
+                      className="
+                        w-full 
+                        p-2 
+                        mt-4 
+                        text-white 
+                        bg-green-600 
+                        rounded-lg 
+                        hover:bg-green-700 
+                        transition-all 
+                        duration-300 
+                        shadow-md
+                      "
                     >
-                      Place Bid (${
-                        auction.highestBid + 10
-                      })
+                      Place Bid (Rs {auction.highestBid + 10})
                     </button>
                   </div>
                 ))

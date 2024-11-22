@@ -24,7 +24,7 @@ const Products: React.FC = () => {
       description: 'A vibrant oil painting capturing the golden hour',
       category: 'Landscape',
       price: 1500,
-      images: ['/placeholder-image.jpg']
+      images: ['/api/placeholder/300/200']
     },
     {
       id: 2,
@@ -32,7 +32,7 @@ const Products: React.FC = () => {
       description: 'Modern abstract piece with vibrant colors',
       category: 'Abstract',
       price: 2200,
-      images: ['/placeholder-image.jpg']
+      images: ['/api/placeholder/300/200']
     },
     {
       id: 3,
@@ -40,7 +40,7 @@ const Products: React.FC = () => {
       description: 'Detailed cityscape drawing',
       category: 'Urban',
       price: 1800,
-      images: ['/placeholder-image.jpg']
+      images: ['/api/placeholder/300/200']
     },
     {
       id: 4,
@@ -48,7 +48,7 @@ const Products: React.FC = () => {
       description: 'Tranquil mountain landscape',
       category: 'Landscape',
       price: 2500,
-      images: ['/placeholder-image.jpg']
+      images: ['/api/placeholder/300/200']
     }
   ]);
 
@@ -59,7 +59,7 @@ const Products: React.FC = () => {
     description: 'New artwork description',
     category: 'Uncategorized',
     price: 0,
-    images: ['/placeholder-image.jpg']
+    images: ['/api/placeholder/300/200']
   });
 
   // Add new product
@@ -80,76 +80,69 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8">
-      <div className="container mx-auto">
+    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
+      <div className="container mx-auto px-4 py-6 flex-grow overflow-y-auto">
         {/* Page Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-6 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">My Artworks</h1>
-            <p className="text-gray-500">Manage and showcase your creative collection</p>
+            <h1 className="text-3xl font-bold text-green-900 tracking-tight">My Artworks</h1>
+            <p className="text-gray-600 text-sm">Manage and showcase your creative collection</p>
           </div>
           <button 
             onClick={handleAddProduct}
             className="
-              flex 
-              items-center 
-              bg-blue-600 
+              flex items-center 
+              bg-green-600 
               text-white 
-              px-5 
-              py-3 
-              rounded-full 
-              shadow-lg 
-              hover:bg-blue-700 
+              px-4 py-2 
+              rounded-lg 
+              text-sm
+              hover:bg-green-700 
               transition-all 
               duration-300 
-              ease-in-out 
-              transform 
-              hover:-translate-y-1 
-              hover:scale-105
+              shadow-md
             "
           >
-            <Plus className="mr-2" /> Add New Artwork
+            <Plus className="mr-2 w-4 h-4" /> Add Artwork
           </button>
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {products.map(product => (
             <div 
               key={product.id} 
               className="
                 bg-white 
                 rounded-xl 
-                shadow-lg 
-                overflow-hidden 
+                shadow-md 
+                p-4 
                 transform 
-                transition-all 
-                duration-300 
-                hover:shadow-2xl 
-                hover:-translate-y-2
+                transition-transform 
+                hover:-translate-y-1
               "
             >
               {/* Product Image */}
-              <div className="relative">
+              <div className="mb-4">
                 <img 
-                  src={product.images[0] || '/placeholder-image.jpg'} 
+                  src={product.images[0]} 
                   alt={product.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover rounded-lg"
                 />
               </div>
 
               {/* Product Details */}
-              <div className="p-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-blue-600 font-semibold">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-green-600 font-semibold text-lg">
                     Rs {product.price.toLocaleString()}
                   </span>
                   <div className="flex space-x-2">
                     <button 
                       onClick={handleEditProduct}
                       className="
-                        text-blue-500 
-                        hover:bg-blue-50 
+                        text-green-500 
+                        hover:bg-green-50 
                         p-2 
                         rounded-full
                       "
@@ -169,7 +162,10 @@ const Products: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
+                <h2 className="text-gray-800 font-semibold text-sm mb-1">
+                  {product.title}
+                </h2>
+                <p className="text-gray-600 text-xs">
                   {product.description}
                 </p>
               </div>
