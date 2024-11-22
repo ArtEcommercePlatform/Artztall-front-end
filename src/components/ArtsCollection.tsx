@@ -12,7 +12,7 @@ interface Product {
   category: string;
   imageUrl: string;
   available: boolean;
-  artistName?: string; 
+  artistName?: string;
 }
 
 interface ProductResponse {
@@ -45,12 +45,13 @@ const ArtsCollection: React.FC = () => {
         setIsLoading(true);
 
         // Fetch the products
-        const productResponse = await apiClient.get<ProductResponse>("products", {
-         
+        const productResponse = await apiClient.get<ProductResponse>(
+          "products",
+          {
             page: 0,
             size: 4,
-          
-        });
+          },
+        );
 
         const products = productResponse.data.content;
 
@@ -58,12 +59,14 @@ const ArtsCollection: React.FC = () => {
         const productsWithArtists = await Promise.all(
           products.map(async (product) => {
             try {
-              const artistResponse = await apiClient.get<Artisan>(`users/artisans/${product.artistId}`);
-              return { ...product, artistName: artistResponse.data.name }; 
+              const artistResponse = await apiClient.get<Artisan>(
+                `users/artisans/${product.artistId}`,
+              );
+              return { ...product, artistName: artistResponse.data.name };
             } catch {
-              return { ...product, artistName: "Unknown Artist" }; 
+              return { ...product, artistName: "Unknown Artist" };
             }
-          })
+          }),
         );
 
         setFeaturedArt(productsWithArtists);
@@ -107,14 +110,18 @@ const ArtsCollection: React.FC = () => {
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-[#094129]">Featured Artworks</h2>
+          <h2 className="text-3xl font-bold text-[#094129]">
+            Featured Artworks
+          </h2>
           <button className="text-[#094129] font-semibold flex items-center hover:underline">
             View All
             <ArrowRight className="ml-2 h-5 w-5" />
           </button>
         </div>
         {featuredArt.length === 0 ? (
-          <div className="text-center text-gray-500">No featured artworks available</div>
+          <div className="text-center text-gray-500">
+            No featured artworks available
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredArt.map((art) => (

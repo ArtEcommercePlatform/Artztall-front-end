@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 interface ApiResponse<T = any> {
   data: T;
@@ -16,10 +16,10 @@ class ApiClient {
 
   private constructor() {
     this.client = axios.create({
-      baseURL:  'http://localhost:8080/api',
+      baseURL: "http://localhost:8080/api",
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -27,13 +27,13 @@ class ApiClient {
     this.client.interceptors.request.use(
       (config) => {
         // Add auth token if exists
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Response interceptor
@@ -42,7 +42,7 @@ class ApiClient {
       (error: AxiosError<ErrorResponse>) => {
         const errorResponse = {
           success: false,
-          message: 'An error occurred',
+          message: "An error occurred",
           data: null,
         };
 
@@ -51,27 +51,28 @@ class ApiClient {
 
           switch (error.response.status) {
             case 401:
-              errorResponse.message = 'Unauthorized access';
-             
+              errorResponse.message = "Unauthorized access";
+
               break;
             case 403:
-              errorResponse.message = 'Forbidden access';
+              errorResponse.message = "Forbidden access";
               break;
             case 404:
-              errorResponse.message = 'Resource not found';
+              errorResponse.message = "Resource not found";
               break;
             case 500:
-              errorResponse.message = 'Internal server error';
+              errorResponse.message = "Internal server error";
               break;
             default:
-              errorResponse.message = responseData?.message || 'Something went wrong';
+              errorResponse.message =
+                responseData?.message || "Something went wrong";
           }
         } else if (error.request) {
-          errorResponse.message = 'No response from server';
+          errorResponse.message = "No response from server";
         }
 
         return Promise.reject(errorResponse);
-      }
+      },
     );
   }
 
