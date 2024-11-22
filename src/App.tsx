@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import SplashScreen from './components/SplashScreen';
+// import SplashScreen from './components/SplashScreen';
 import Homepage from './pages/homepage/Homepage';
 import NewArtAdd from './pages/homepage/NewArtAdd';
 import { ToastProvider } from './assets/components/toast/Toast';
+import AuctionDetails from './pages/Customer/AuctionInside';
 
 // Import Artisan Dashboard Pages
 import Dashboard from './pages/artisan/Dashboard';
@@ -45,26 +46,26 @@ const CustomerRoutes = () => {
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-        {/* Redirect to dashboard if no specific route matches */}
+        
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
   );
 };
 function App() {
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsInitialLoad(false);
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsInitialLoad(false);
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  if (isInitialLoad) {
-    return <SplashScreen />; // Show SplashScreen only on the initial load
-  }
+  // if (isInitialLoad) {
+  //   return <SplashScreen />; // Show SplashScreen only on the initial load
+  // }
 
   return (
     <ToastProvider>
@@ -73,16 +74,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/newartadd" element={<NewArtAdd />} />
-
-            {/* Artisan Dashboard Routes */}
-            <Route
-              path="/artisan/*"
-              element={<ArtisanRoutes />}
-            />
-            <Route
-              path="/customer/*"
-              element={<CustomerRoutes />}
-            />
+            <Route path="/artisan/*" element={<ArtisanRoutes />}/>
+            <Route path="/customer/*" element={<CustomerRoutes />}/>
+            <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
 
           
