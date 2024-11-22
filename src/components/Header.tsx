@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Search, Menu, User } from 'lucide-react';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
-import NewArtAdd from '../pages/homepage/NewArtAdd';
+// import NewArtAdd from '../pages/homepage/NewArtAdd';
 import logo from '../assets/images/logo.png';
 
 
