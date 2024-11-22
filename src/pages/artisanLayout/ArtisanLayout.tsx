@@ -13,6 +13,17 @@ const ArtisanLayout: React.FC<LayoutProps> = ({ children }) => {
     userAvatar: "/api/placeholder/32/32" // Replace with actual user avatar
   };
 
+<<<<<<< HEAD
+=======
+  const navigationItems = [
+    { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
+    { icon: Package, label: "Products", href: "/artisan/products" },
+    { icon: ImageIcon, label: "Gallery", href: "/artisan/gallery" },
+    { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
+    { icon: Settings, label: "Settings", href: "/artisan/settings" },
+  ];
+
+>>>>>>> a56be089286d34311ef0f1115fa2c55fd3fa19b5
   return (
     <div className="min-h-screen">
       <ArtisanHeader {...userData} />
