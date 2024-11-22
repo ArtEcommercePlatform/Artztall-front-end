@@ -1,5 +1,3 @@
-
-
 const Gallery = () => {
   return (
     <div className="p-6">

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { 
-  DollarSign, 
-  ShoppingBag, 
-  Eye, 
-  Heart, 
-  Gavel, 
+import React, { useState } from "react";
+import {
+  DollarSign,
+  ShoppingBag,
+  Eye,
+  Heart,
+  Gavel,
   TrendingUp,
   ChevronUp,
   ChevronDown,
-  Plus
-} from 'lucide-react';
+  Plus,
+} from "lucide-react";
 
 // Define interfaces for type safety
 interface ArtisanStats {
@@ -44,7 +44,7 @@ interface CardData {
   value: string | number;
   growth: number;
   bgColor: string;
-  details?: string; 
+  details?: string;
 }
 
 interface PerformanceMetric {
@@ -59,7 +59,7 @@ const ArtisanDashboard: React.FC = () => {
 
   // Mock data (replace with actual backend data)
   const artisanStats: ArtisanStats = {
-    totalEarnings: 24750.50,
+    totalEarnings: 24750.5,
     pendingPayouts: 5620.75,
     activeProducts: 18,
     activeAuctions: 5,
@@ -70,9 +70,9 @@ const ArtisanDashboard: React.FC = () => {
       monthlyGrowth: {
         views: 12.5,
         favorites: 8.3,
-        bids: 15.2
-      }
-    }
+        bids: 15.2,
+      },
+    },
   };
 
   const recentAnalytics: ArtworkAnalytics[] = [
@@ -82,7 +82,7 @@ const ArtisanDashboard: React.FC = () => {
       views: 342,
       favorites: 95,
       bids: 12,
-      price: 1200
+      price: 1200,
     },
     {
       artwork: "Abstract Composition",
@@ -90,7 +90,7 @@ const ArtisanDashboard: React.FC = () => {
       views: 276,
       favorites: 67,
       bids: 5,
-      price: 950
+      price: 950,
     },
     {
       artwork: "Urban Sketch",
@@ -98,8 +98,8 @@ const ArtisanDashboard: React.FC = () => {
       views: 213,
       favorites: 43,
       bids: 3,
-      price: 750
-    }
+      price: 750,
+    },
   ];
 
   // Explicitly type the percentage parameter
@@ -124,60 +124,60 @@ const ArtisanDashboard: React.FC = () => {
 
   // Define card data with proper typing and optional details
   const cardData: CardData[] = [
-    { 
-      icon: <DollarSign className="text-green-600" />, 
-      title: "Total Earnings", 
+    {
+      icon: <DollarSign className="text-green-600" />,
+      title: "Total Earnings",
       value: `Rs ${artisanStats.totalEarnings.toLocaleString()}`,
       growth: artisanStats.analytics.monthlyGrowth.views,
       bgColor: "bg-green-50",
-      details: `Earnings from ${artisanStats.activeProducts} active products`
+      details: `Earnings from ${artisanStats.activeProducts} active products`,
     },
-    { 
-      icon: <DollarSign className="text-yellow-600" />, 
-      title: "Pending Payouts", 
+    {
+      icon: <DollarSign className="text-yellow-600" />,
+      title: "Pending Payouts",
       value: `Rs ${artisanStats.pendingPayouts.toLocaleString()}`,
       growth: artisanStats.analytics.monthlyGrowth.favorites,
       bgColor: "bg-yellow-50",
-      details: "Awaiting payment confirmation"
+      details: "Awaiting payment confirmation",
     },
-    { 
-      icon: <ShoppingBag className="text-green-600" />, 
-      title: "Active Products", 
+    {
+      icon: <ShoppingBag className="text-green-600" />,
+      title: "Active Products",
       value: artisanStats.activeProducts,
       growth: artisanStats.analytics.monthlyGrowth.bids,
       bgColor: "bg-blue-50",
-      details: "Currently listed artworks"
+      details: "Currently listed artworks",
     },
-    { 
-      icon: <Gavel className="text-green-600" />, 
-      title: "Active Auctions", 
+    {
+      icon: <Gavel className="text-green-600" />,
+      title: "Active Auctions",
       value: artisanStats.activeAuctions,
       growth: artisanStats.analytics.monthlyGrowth.bids,
       bgColor: "bg-purple-50",
-      details: "Ongoing art auctions"
-    }
+      details: "Ongoing art auctions",
+    },
   ];
 
   // Define performance metrics with proper typing
   const performanceMetrics: PerformanceMetric[] = [
-    { 
-      icon: <Eye className="text-gray-600" />, 
-      title: "Total Views", 
+    {
+      icon: <Eye className="text-gray-600" />,
+      title: "Total Views",
       value: artisanStats.analytics.totalViews,
-      growth: artisanStats.analytics.monthlyGrowth.views
+      growth: artisanStats.analytics.monthlyGrowth.views,
     },
-    { 
-      icon: <Heart className="text-red-600" />, 
-      title: "Favorites", 
+    {
+      icon: <Heart className="text-red-600" />,
+      title: "Favorites",
       value: artisanStats.analytics.totalFavorites,
-      growth: artisanStats.analytics.monthlyGrowth.favorites
+      growth: artisanStats.analytics.monthlyGrowth.favorites,
     },
-    { 
-      icon: <Gavel className="text-green-600" />, 
-      title: "Total Bids", 
+    {
+      icon: <Gavel className="text-green-600" />,
+      title: "Total Bids",
       value: artisanStats.analytics.totalBids,
-      growth: artisanStats.analytics.monthlyGrowth.bids
-    }
+      growth: artisanStats.analytics.monthlyGrowth.bids,
+    },
   ];
 
   return (
@@ -186,11 +186,16 @@ const ArtisanDashboard: React.FC = () => {
         {/* Header */}
         <div className="mb-6 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-green-900 tracking-tight">Artisan Dashboard</h1>
-            <p className="text-gray-600 text-sm">Insights into your creative journey</p>
+            <h1 className="text-3xl font-bold text-green-900 tracking-tight">
+              Artisan Dashboard
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Insights into your creative journey
+            </p>
           </div>
           <div className="flex space-x-4">
-            <button className="
+            <button
+              className="
               flex items-center 
               bg-green-600 
               text-white 
@@ -201,7 +206,8 @@ const ArtisanDashboard: React.FC = () => {
               transition-all 
               duration-300 
               shadow-md
-            ">
+            "
+            >
               <Plus className="mr-2 w-4 h-4" />
               Add Artwork
             </button>
@@ -211,8 +217,8 @@ const ArtisanDashboard: React.FC = () => {
         {/* Financial and Product Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {cardData.map((card, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="
                 bg-white 
                 rounded-xl 
@@ -227,7 +233,9 @@ const ArtisanDashboard: React.FC = () => {
               onClick={() => handleCardExpand(index)}
             >
               <div className="flex justify-between items-center">
-                <div className={`${card.bgColor} p-2 rounded-full`}>{card.icon}</div>
+                <div className={`${card.bgColor} p-2 rounded-full`}>
+                  {card.icon}
+                </div>
                 {renderGrowthIndicator(card.growth)}
               </div>
               <div>
@@ -249,12 +257,13 @@ const ArtisanDashboard: React.FC = () => {
           {/* Overall Performance */}
           <div className="md:col-span-1 bg-white rounded-xl shadow-md p-4">
             <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <TrendingUp className="mr-2 text-green-600 w-5 h-5" /> Performance Metrics
+              <TrendingUp className="mr-2 text-green-600 w-5 h-5" /> Performance
+              Metrics
             </h2>
             <div className="space-y-3">
               {performanceMetrics.map((metric, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="
                     flex 
                     items-center 
@@ -282,12 +291,13 @@ const ArtisanDashboard: React.FC = () => {
           {/* Recent Artwork Performance */}
           <div className="md:col-span-2 bg-white rounded-xl shadow-md p-4">
             <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <Eye className="mr-2 text-green-600 w-5 h-5" /> Recent Artwork Performance
+              <Eye className="mr-2 text-green-600 w-5 h-5" /> Recent Artwork
+              Performance
             </h2>
             <div className="space-y-3">
               {recentAnalytics.map((artwork, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="
                     flex 
                     items-center 
@@ -297,14 +307,18 @@ const ArtisanDashboard: React.FC = () => {
                     transition-colors
                   "
                 >
-                  <img 
-                    src={artwork.image} 
-                    alt={artwork.artwork} 
+                  <img
+                    src={artwork.image}
+                    alt={artwork.artwork}
                     className="w-16 h-16 object-cover rounded-md mr-4"
                   />
                   <div className="flex-grow">
-                    <h3 className="font-semibold text-sm text-gray-800">{artwork.artwork}</h3>
-                    <p className="text-xs text-gray-500">Price: Rs {artwork.price.toLocaleString()}</p>
+                    <h3 className="font-semibold text-sm text-gray-800">
+                      {artwork.artwork}
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Price: Rs {artwork.price.toLocaleString()}
+                    </p>
                   </div>
                   <div className="flex space-x-3 text-xs">
                     <div className="flex items-center text-gray-600">

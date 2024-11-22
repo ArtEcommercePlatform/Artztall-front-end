@@ -1,7 +1,7 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { X, Eye, EyeOff } from 'lucide-react';
-import { apiClient } from '../services/apiClient';
-import { useToast } from '../assets/components/toast/Toast';
+import { useState, ChangeEvent, FormEvent } from "react";
+import { X, Eye, EyeOff } from "lucide-react";
+import { apiClient } from "../services/apiClient";
+import { useToast } from "../assets/components/toast/Toast";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -20,12 +20,12 @@ interface LoginResponse {
 }
 
 const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
-  const [activeTab, setActiveTab] = useState<'buyer' | 'artist'>('buyer');
+  const [activeTab, setActiveTab] = useState<"buyer" | "artist">("buyer");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const toast = useToast();
@@ -37,30 +37,31 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
     setIsLoading(true);
 
     try {
-      const response = await apiClient.post<LoginResponse>('/auth/login', {
+      const response = await apiClient.post<LoginResponse>("/auth/login", {
         ...formData,
-        role: activeTab.toUpperCase()
+        role: activeTab.toUpperCase(),
       });
 
       if (response.success && response.data.token) {
         // Store token in localStorage
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userRole', response.data.userType);
-        
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userRole", response.data.userType);
+
         // Show success message
-        toast.success('Successfully logged in!');
-        
+        toast.success("Successfully logged in!");
+
         // Call the success callback if provided
         if (onLoginSuccess) {
           onLoginSuccess(response.data.token);
         }
-        
+
         // Close the modal
         onClose();
       }
     } catch (error: any) {
       // Handle different types of errors
-      const errorMessage = error.message || 'Failed to log in. Please try again.';
+      const errorMessage =
+        error.message || "Failed to log in. Please try again.";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -70,7 +71,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -88,22 +89,22 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
         <div className="flex mb-6 border-b">
           <button
             className={`flex-1 py-3 text-center ${
-              activeTab === 'buyer'
-                ? 'border-b-2 border-[#094129] text-[#094129] font-medium'
-                : 'text-gray-500'
+              activeTab === "buyer"
+                ? "border-b-2 border-[#094129] text-[#094129] font-medium"
+                : "text-gray-500"
             }`}
-            onClick={() => setActiveTab('buyer')}
+            onClick={() => setActiveTab("buyer")}
             disabled={isLoading}
           >
             Buyer
           </button>
           <button
             className={`flex-1 py-3 text-center ${
-              activeTab === 'artist'
-                ? 'border-b-2 border-[#094129] text-[#094129] font-medium'
-                : 'text-gray-500'
+              activeTab === "artist"
+                ? "border-b-2 border-[#094129] text-[#094129] font-medium"
+                : "text-gray-500"
             }`}
-            onClick={() => setActiveTab('artist')}
+            onClick={() => setActiveTab("artist")}
             disabled={isLoading}
           >
             Artist
@@ -133,7 +134,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -160,15 +161,17 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
           <button
             type="submit"
             className={`w-full bg-[#094129] text-white py-2 rounded-lg transition-opacity ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:opacity-90"
             }`}
             disabled={isLoading}
           >
-            {isLoading ? 'Logging in...' : `Login as ${activeTab === 'buyer' ? 'Buyer' : 'Artist'}`}
+            {isLoading
+              ? "Logging in..."
+              : `Login as ${activeTab === "buyer" ? "Buyer" : "Artist"}`}
           </button>
 
           <p className="text-center text-sm text-gray-600">
-            Forgot password?{' '}
+            Forgot password?{" "}
             <a href="#" className="text-[#094129] hover:underline">
               Reset here
             </a>

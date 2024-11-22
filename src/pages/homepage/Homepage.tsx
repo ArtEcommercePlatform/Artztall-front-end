@@ -12,7 +12,6 @@ const Homepage = () => {
       <ArtsCollection />
       <Newsletter />
       <Footer />
-
     </div>
   );
 };

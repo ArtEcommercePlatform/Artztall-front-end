@@ -1,8 +1,7 @@
-
-import { 
-  Facebook, 
-  Instagram, 
-  Twitter, 
+import {
+  Facebook,
+  Instagram,
+  Twitter,
   Mail,
   MapPin,
   Phone,
@@ -13,65 +12,65 @@ import {
   CreditCard,
   Truck,
   Users,
-  Heart
-} from 'lucide-react';
+  Heart,
+} from "lucide-react";
 
 const Footer = () => {
   const footerSections = {
     shop: {
-      title: 'Shop',
+      title: "Shop",
       icon: <ShoppingBag className="h-4 w-4 inline mr-2" />,
       links: [
-        'Paintings',
-        'Sculptures',
-        'Digital Art',
-        'Photography',
-        'Limited Editions'
-      ]
+        "Paintings",
+        "Sculptures",
+        "Digital Art",
+        "Photography",
+        "Limited Editions",
+      ],
     },
     about: {
-      title: 'About',
+      title: "About",
       icon: <Info className="h-4 w-4 inline mr-2" />,
       links: [
-        'Our Story',
-        'Artists Community',
-        'Gallery Locations',
-        'Exhibition Space',
-        'Press & Media'
-      ]
+        "Our Story",
+        "Artists Community",
+        "Gallery Locations",
+        "Exhibition Space",
+        "Press & Media",
+      ],
     },
     support: {
-      title: 'Support',
+      title: "Support",
       icon: <HeadphonesIcon className="h-4 w-4 inline mr-2" />,
       links: [
-        'Contact Us',
-        'Shipping Info',
-        'Returns Policy',
-        'Payment Options',
-        'FAQ'
-      ]
-    }
+        "Contact Us",
+        "Shipping Info",
+        "Returns Policy",
+        "Payment Options",
+        "FAQ",
+      ],
+    },
   };
 
   const socialLinks = [
-    { icon: <Facebook className="h-5 w-5" />, href: '#', label: 'Facebook' },
-    { icon: <Instagram className="h-5 w-5" />, href: '#', label: 'Instagram' },
-    { icon: <Twitter className="h-5 w-5" />, href: '#', label: 'Twitter' }
+    { icon: <Facebook className="h-5 w-5" />, href: "#", label: "Facebook" },
+    { icon: <Instagram className="h-5 w-5" />, href: "#", label: "Instagram" },
+    { icon: <Twitter className="h-5 w-5" />, href: "#", label: "Twitter" },
   ];
 
   const contactInfo = [
-    { 
-      icon: <Mail className="h-4 w-4" />, 
-      text: 'contact@artsshop.com'
+    {
+      icon: <Mail className="h-4 w-4" />,
+      text: "contact@artsshop.com",
     },
-    { 
-      icon: <MapPin className="h-4 w-4" />, 
-      text: '123 Gallery Street, Art District'
+    {
+      icon: <MapPin className="h-4 w-4" />,
+      text: "123 Gallery Street, Art District",
     },
-    { 
-      icon: <Phone className="h-4 w-4" />, 
-      text: '+1 (555) 234-5678'
-    }
+    {
+      icon: <Phone className="h-4 w-4" />,
+      text: "+1 (555) 234-5678",
+    },
   ];
 
   return (
@@ -85,12 +84,18 @@ const Footer = () => {
               <Palette className="h-6 w-6 text-[#094129]" />
               <h4 className="font-bold text-xl text-[#094129]">ArtsShop</h4>
             </div>
-            <p className="text-gray-600">Connecting artists with art lovers worldwide. Discover unique artworks from emerging and established artists.</p>
-            
+            <p className="text-gray-600">
+              Connecting artists with art lovers worldwide. Discover unique
+              artworks from emerging and established artists.
+            </p>
+
             {/* Contact Information */}
             <div className="space-y-2 pt-4">
               {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 text-gray-600">
+                <div
+                  key={index}
+                  className="flex items-center gap-2 text-gray-600"
+                >
                   {item.icon}
                   <span>{item.text}</span>
                 </div>
@@ -108,8 +113,8 @@ const Footer = () => {
               <ul className="space-y-2">
                 {section.links.map((link, index) => (
                   <li key={index}>
-                    <a 
-                      href="#" 
+                    <a
+                      href="#"
                       className="text-gray-600 hover:text-[#094129] transition-colors duration-200"
                     >
                       {link}
@@ -136,7 +141,7 @@ const Footer = () => {
                 </a>
               ))}
             </div>
-            
+
             <div className="flex items-center gap-4 text-gray-600">
               <span>Payment Partners:</span>
               <CreditCard className="h-5 w-5" />
