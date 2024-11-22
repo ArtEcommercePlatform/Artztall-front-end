@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Gavel, Trophy, Archive } from 'lucide-react';
+import { Clock, Gavel, Trophy } from 'lucide-react';
 
 // Types for better type safety
 interface Auction {
