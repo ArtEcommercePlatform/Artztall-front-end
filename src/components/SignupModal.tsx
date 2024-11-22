@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { X, Plus, Check } from 'lucide-react';
-import { storage } from '../config/firebase'; 
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useToast } from '../assets/components/toast/Toast';
 
 interface SignupModalProps {
@@ -94,11 +92,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     }));
   };
 
-  const uploadImage = async (file: File): Promise<string> => {
-    const storageRef = ref(storage, `profile-images/${Date.now()}-${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    return await getDownloadURL(snapshot.ref);
-  };
+
 
   const handleSubmit = async () => {
     try {
@@ -106,7 +100,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
       let profileImageUrl = '';
       if (formData.profileImage) {
-        profileImageUrl = await uploadImage(formData.profileImage);
+        profileImageUrl = 'string'
       }
 
       // Prepare the request payload based on user type
