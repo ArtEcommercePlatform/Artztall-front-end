@@ -1,128 +1,249 @@
-import React from 'react';
-import { Star, Phone, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Phone, Mail, CheckCircle, Loader2 } from "lucide-react";
+import { apiClient } from "../services/apiClient";
+import Header from "../components/Header";
+
+interface Artist {
+  id: string;
+  email: string;
+  name: string;
+  phoneNumber: string;
+  profilePictureUrl: string | null;
+  bio: string;
+  artworkCategories: string[];
+  averageRating: number;
+  totalSales: number;
+  verified: boolean;
+}
+
+interface PaginationResponse {
+  content: Artist[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  size: number;
+}
+
+const CustomButton = ({
+  children,
+  onClick,
+  disabled = false,
+  active = false,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  active?: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={`
+      px-4 py-2 rounded-lg font-medium transition-all duration-200
+      ${
+        active
+          ? "bg-green-900 text-white hover:bg-green-800"
+          : "bg-white text-green-900 border border-green-900 hover:bg-green-50"
+      }
+      disabled:opacity-50 disabled:cursor-not-allowed
+    `}
+  >
+    {children}
+  </button>
+);
+
+const CustomCard = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div className={`bg-white rounded-xl shadow-md overflow-hidden ${className}`}>
+    {children}
+  </div>
+);
+
+const CustomBadge = ({ children }: { children: React.ReactNode }) => (
+  <span className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-900 font-medium">
+    {children}
+  </span>
+);
 
 const ArtistMain = () => {
-  const artists = [
-    {
-      id: "6741cc37b919bf425597e378",
-      email: "maduwantha@gmail.com",
-      name: "Asela Maduwantha",
-      phoneNumber: "0760248263",
-      profilePictureUrl: null,
-      bio: "Test artist",
-      artworkCategories: ["Watercolor", "Oil Painting", "Digital Art", "Mixed Media"],
-      averageRating: 0,
-      totalSales: 0,
-      verified: false,
-    },
-    {
-      id: "b8242f49c7a93f8210a45e93",
-      email: "kamal@gmail.com",
-      name: "Kamal Perera",
-      phoneNumber: "0771234567",
-      profilePictureUrl: null,
-      bio: "An experienced oil painter.",
-      artworkCategories: ["Oil Painting", "Acrylic"],
-      averageRating: 4.5,
-      totalSales: 15,
-      verified: true,
-    },
-    {
-      id: "c9837d13d8a4ef57f678b890",
-      email: "nimal@gmail.com",
-      name: "Nimal Silva",
-      phoneNumber: "0719876543",
-      profilePictureUrl: null,
-      bio: "Digital artist and illustrator.",
-      artworkCategories: ["Digital Art", "Sketching"],
-      averageRating: 4.2,
-      totalSales: 20,
-      verified: true,
-    },
-    {
-      id: "d7438f27f8b65e2019c72b89",
-      email: "sanjeewa@gmail.com",
-      name: "Sanjeewa Fernando",
-      phoneNumber: "0753456789",
-      profilePictureUrl: null,
-      bio: "Mixed media expert.",
-      artworkCategories: ["Mixed Media", "Sculpture"],
-      averageRating: 4.8,
-      totalSales: 30,
-      verified: true,
-    },
-  ];
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const pageSize = 10;
+
+  const fetchArtists = async (page: number) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiClient.get<PaginationResponse>(
+        "/users/artisans",
+        {
+          page,
+          size: pageSize,
+          sort: "string",
+        },
+      );
+
+      setArtists(response.data.content);
+      setTotalPages(response.data.totalPages);
+    } catch (err: any) {
+      setError(err.message || "Failed to fetch artists");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArtists(currentPage);
+  }, [currentPage]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 text-green-900 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <CustomCard className="bg-red-50 border border-red-200">
+          <div className="p-6">
+            <p className="text-center text-red-700">{error}</p>
+          </div>
+        </CustomCard>
+      </div>
+    );
+  }
 
   return (
-    <div className="container p-6 mx-auto ">
-      <h1 className="mb-8 text-3xl font-bold text-center">Our Artists</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-        {artists.map((artist) => (
-          <div
-            key={artist.id}
-            className="flex flex-col p-6 transition-shadow bg-white rounded-lg shadow-lg hover:shadow-xl"
-          >
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="flex items-center justify-center w-16 h-16 text-xl font-bold bg-gray-200 rounded-full">
-                {artist.name.split(' ').map((n) => n[0]).join('')}
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="bg-green-900 py-12 px-4 mb-8">
+        <h1 className="text-4xl font-bold text-center text-white mb-2">
+          Our Featured Artists
+        </h1>
+        <p className="text-center text-green-100">
+          Discover unique talent and exceptional artwork
+        </p>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {artists.map((artist) => (
+            <CustomCard
+              key={artist.id}
+              className="transition-all duration-300 hover:shadow-xl"
+            >
+              <div className="border-b bg-green-50 p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-green-900 rounded-full flex items-center justify-center text-xl font-bold text-white flex-shrink-0">
+                    {artist.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h2 className="text-xl font-bold text-green-900 truncate">
+                        {artist.name}
+                      </h2>
+                      {artist.verified && (
+                        <CheckCircle className="w-5 h-5 text-green-700 flex-shrink-0" />
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {artist.bio}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold">{artist.name}</h2>
-                  {artist.verified && (
-                    <span className="px-2 py-1 text-sm text-blue-800 bg-blue-100 rounded-full">
-                      Verified
+              <div className="p-6 space-y-6">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-gray-600 hover:text-green-900 transition-colors">
+                    <Mail className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-sm truncate">{artist.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-600 hover:text-green-900 transition-colors">
+                    <Phone className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-sm truncate">
+                      {artist.phoneNumber}
                     </span>
-                  )}
+                  </div>
                 </div>
-                <p className="text-gray-600">{artist.bio}</p>
-              </div>
-            </div>
 
-            <div className="mb-4 text-gray-600">
-              <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-                <span>{artist.email}</span>
-              </div>
-              <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4" />
-                <span>{artist.phoneNumber}</span>
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <h3 className="mb-2 font-semibold">Artwork Categories</h3>
-              <div className="flex flex-wrap gap-2">
-                {artist.artworkCategories.map((category) => (
-                  <span
-                    key={category}
-                    className="px-3 py-1 text-sm bg-gray-100 rounded-full"
-                  >
-                    {category}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-gray-50">
-                <div className="flex items-center gap-2 mb-1">
-                <Star className="w-4 h-4 text-yellow-500" />
-                  <span className="font-semibold">Average Rating</span>
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-600 mb-3">
+                    Specializations
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {artist.artworkCategories.map((category) => (
+                      <CustomBadge key={category}>{category}</CustomBadge>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-2xl font-bold">
-                  {artist.averageRating.toFixed(1)}
-                </p>
-              </div>
 
-              <div className="p-4 rounded-lg bg-gray-50">
-                <span className="font-semibold">Total Sales</span>
-                <p className="text-2xl font-bold">{artist.totalSales}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Star className="w-4 h-4 text-yellow-500" />
+                      <span className="text-sm font-semibold text-green-900">
+                        Rating
+                      </span>
+                    </div>
+                    <p className="text-2xl font-bold text-green-900">
+                      {artist.averageRating.toFixed(1)}
+                    </p>
+                  </div>
+
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <span className="text-sm font-semibold text-green-900 block mb-1">
+                      Sales
+                    </span>
+                    <p className="text-2xl font-bold text-green-900">
+                      {artist.totalSales.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </CustomCard>
+          ))}
+        </div>
+
+        <div className="flex justify-center gap-2 mt-12 mb-8">
+          <CustomButton
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 0}
+          >
+            Previous
+          </CustomButton>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <CustomButton
+              key={index}
+              onClick={() => setCurrentPage(index)}
+              active={currentPage === index}
+            >
+              {index + 1}
+            </CustomButton>
+          ))}
+
+          <CustomButton
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages - 1}
+          >
+            Next
+          </CustomButton>
+        </div>
       </div>
     </div>
   );
