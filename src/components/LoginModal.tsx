@@ -6,7 +6,7 @@ import { useToast } from "../assets/components/toast/Toast";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess?: (token: string) => void;
+  onLoginSuccess?: (userData: LoginResponse) => void;
 }
 
 interface FormData {
@@ -14,9 +14,26 @@ interface FormData {
   password: string;
 }
 
+interface Address {
+  id: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  default: boolean;
+}
+
 interface LoginResponse {
   token: string;
+  id: string;
+  email: string;
+  name: string;
   userType: string;
+  bio: string;
+  artworkCategories: string[];
+  address: Address;
+  verified: boolean;
 }
 
 const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
@@ -42,27 +59,31 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
         role: activeTab.toUpperCase(),
       });
 
-      if (response.success && response.data.token) {
-        // Store token in localStorage
+      if (response.success && response.data) {
+        // Store user data in localStorage
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.id);
         localStorage.setItem("userRole", response.data.userType);
+        localStorage.setItem("userName", response.data.name);
 
         // Show success message
-        toast.success("Successfully logged in!");
+        toast.success(`Welcome back, ${response.data.name}!`);
 
         // Call the success callback if provided
         if (onLoginSuccess) {
-          onLoginSuccess(response.data.token);
+          onLoginSuccess(response.data);
         }
 
         // Close the modal
         onClose();
       }
     } catch (error: any) {
-      // Handle different types of errors
-      const errorMessage =
-        error.message || "Failed to log in. Please try again.";
-      toast.error(errorMessage);
+      // Handle error cases
+      if (error.message === "Unauthorized access") {
+        toast.error("Invalid email or password. Please try again.");
+      } else {
+        toast.error(error.message || "Failed to log in. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -95,6 +116,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
             }`}
             onClick={() => setActiveTab("buyer")}
             disabled={isLoading}
+            type="button"
           >
             Buyer
           </button>
@@ -106,6 +128,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
             }`}
             onClick={() => setActiveTab("artist")}
             disabled={isLoading}
+            type="button"
           >
             Artist
           </button>
@@ -113,10 +136,14 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
@@ -129,11 +156,15 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
@@ -148,6 +179,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 disabled={isLoading}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5" />

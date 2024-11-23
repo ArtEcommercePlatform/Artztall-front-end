@@ -19,7 +19,7 @@ import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
 
 // Import Customer Dashboard Pages
 import CuDashboard from "./pages/Customer/Dashboard";
-import CuProducts from "./pages/Customer/Products";
+import CuProducts from "./pages/Customer/PendingOrders";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
