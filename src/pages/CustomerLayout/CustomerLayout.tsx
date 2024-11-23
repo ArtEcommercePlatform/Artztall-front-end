@@ -13,7 +13,7 @@ import {
   LucideProps,
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
-import user from '../../assets/icons/user.png';
+
 
 // Wrapper function for lucide-react icons
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
@@ -26,9 +26,10 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const userData: UserData = {
-    userName: "John Doe",
-    userAvatar: "/api/placeholder/32/32",
+    userName: localStorage.getItem('userName') ?? '',
+    userAvatar: localStorage.getItem('profImg') ?? '',
   };
+  
 
   const navigationItems: NavigationItem[] = [
     { icon: WrappedIcon(LayoutDashboard), label: "Dashboard", href: "/customer/dashboard" },
@@ -126,7 +127,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
               {/* User Profile Section */}
               <div className="flex items-center space-x-3">
                 <img
-                  src={user}
+                  src={userData.userAvatar}
                   alt="Profile"
                   className="w-8 h-8 rounded-full"
                 />
