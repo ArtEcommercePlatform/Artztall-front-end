@@ -12,7 +12,7 @@ const Header = () => {
   const navigationLinks = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
-    { name: "Artists", path: "/artists" },
+    { name: "Artists", path: "/artismain" },
   ];
 
   const handleLoginClick = () => {

@@ -9,6 +9,7 @@ import Homepage from "./pages/homepage/Homepage";
 import { ToastProvider } from "./assets/components/toast/Toast";
 import AuctionDetails from "./pages/Customer/AuctionInside";
 import Shop from "./pages/common/Shop";
+import ArtistMain from "./pages/ArtistMain";
 
 // Import Artisan Dashboard Pages
 import Dashboard from "./pages/artisan/Dashboard";
@@ -80,6 +81,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/artismain" element={<ArtistMain />} />
             <Route path="/artisan/*" element={<ArtisanRoutes />} />
             <Route path="/customer/*" element={<CustomerRoutes />} />
             <Route path="/customer/auction/:id" element={<AuctionDetails />} />
