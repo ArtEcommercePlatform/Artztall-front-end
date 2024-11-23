@@ -1,11 +1,5 @@
-
-
 const Settings = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default Settings
+export default Settings;
