@@ -9,7 +9,7 @@ const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState<boolean>(false);
 
-  const navigationLinks: string[] = ["Home", "Shop", "Artists", "newartadd"];
+  const navigationLinks: string[] = ["Home", "Shop", "Artists"];
 
   const handleLoginClick = () => {
     setIsSignupModalOpen(false);
