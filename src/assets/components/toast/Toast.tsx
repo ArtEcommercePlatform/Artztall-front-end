@@ -1,8 +1,14 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { AlertCircle, CheckCircle, XCircle, X } from 'lucide-react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
+import { AlertCircle, CheckCircle, XCircle, X } from "lucide-react";
 
 // Types and Context
-export type ToastType = 'success' | 'error' | 'warning';
+export type ToastType = "success" | "error" | "warning";
 
 interface Toast {
   id: number;
@@ -31,16 +37,16 @@ interface ToastVariant {
 
 type ToastVariants = {
   [key in ToastType]: ToastVariant;
-}
+};
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 // Individual Toast Component
-const Toast: React.FC<ToastProps> = ({ 
-  message, 
-  type, 
-  onClose, 
-  duration = 3000 
+const Toast: React.FC<ToastProps> = ({
+  message,
+  type,
+  onClose,
+  duration = 3000,
 }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, duration);
@@ -50,19 +56,19 @@ const Toast: React.FC<ToastProps> = ({
   const variants: ToastVariants = {
     success: {
       icon: <CheckCircle className="w-5 h-5 text-green-600" />,
-      style: 'border-green-500 bg-green-50',
-      progressBar: 'bg-green-500'
+      style: "border-green-500 bg-green-50",
+      progressBar: "bg-green-500",
     },
     error: {
       icon: <XCircle className="w-5 h-5 text-red-600" />,
-      style: 'border-red-500 bg-red-50',
-      progressBar: 'bg-red-500'
+      style: "border-red-500 bg-red-50",
+      progressBar: "bg-red-500",
     },
     warning: {
       icon: <AlertCircle className="w-5 h-5 text-yellow-600" />,
-      style: 'border-yellow-500 bg-yellow-50',
-      progressBar: 'bg-yellow-500'
-    }
+      style: "border-yellow-500 bg-yellow-50",
+      progressBar: "bg-yellow-500",
+    },
   };
 
   const [progress, setProgress] = useState(100);
@@ -80,15 +86,15 @@ const Toast: React.FC<ToastProps> = ({
   }, [duration]);
 
   return (
-    <div className={`relative flex items-center w-96 p-4 rounded-lg border shadow-lg transform transition-all duration-500 ease-in-out ${variants[type].style}`}>
-      <div className="flex-shrink-0 mr-3">
-        {variants[type].icon}
-      </div>
-      
+    <div
+      className={`relative flex items-center w-96 p-4 rounded-lg border shadow-lg transform transition-all duration-500 ease-in-out ${variants[type].style}`}
+    >
+      <div className="flex-shrink-0 mr-3">{variants[type].icon}</div>
+
       <div className="flex-grow mr-2">
         <p className="text-sm font-medium text-gray-800">{message}</p>
       </div>
-      
+
       <button
         onClick={onClose}
         className="flex-shrink-0 rounded-full p-1 transition-colors duration-200 hover:bg-gray-200"
@@ -96,11 +102,12 @@ const Toast: React.FC<ToastProps> = ({
         <X className="w-4 h-4 text-gray-600" />
       </button>
 
-      <div className="absolute bottom-0 left-0 h-1 rounded-b-lg transition-all duration-300 ease-in-out" 
-           style={{ 
-             width: `${progress}%`,
-             backgroundColor: variants[type].progressBar.split(' ')[1] 
-           }} 
+      <div
+        className="absolute bottom-0 left-0 h-1 rounded-b-lg transition-all duration-300 ease-in-out"
+        style={{
+          width: `${progress}%`,
+          backgroundColor: variants[type].progressBar.split(" ")[1],
+        }}
       />
     </div>
   );
@@ -119,7 +126,7 @@ const ToastContainer: React.FC = () => {
           key={toast.id}
           className="transform transition-all duration-500 ease-in-out"
           style={{
-            animation: 'slideIn 0.5s ease-out'
+            animation: "slideIn 0.5s ease-out",
           }}
         >
           <Toast
@@ -162,13 +169,13 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error("useToast must be used within a ToastProvider");
   }
 
   return {
-    success: (message: string) => context.addToast(message, 'success'),
-    error: (message: string) => context.addToast(message, 'error'),
-    warning: (message: string) => context.addToast(message, 'warning'),
+    success: (message: string) => context.addToast(message, "success"),
+    error: (message: string) => context.addToast(message, "error"),
+    warning: (message: string) => context.addToast(message, "warning"),
   };
 };
 

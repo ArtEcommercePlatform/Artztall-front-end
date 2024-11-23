@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
 
-
 // Wrapper function for lucide-react icons
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
   return (props: { size?: number; className?: string }) => (
@@ -26,17 +25,32 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const userData: UserData = {
-    userName: localStorage.getItem('userName') ?? '',
-    userAvatar: localStorage.getItem('profImg') ?? '',
+    userName: localStorage.getItem("userName") ?? "",
+    userAvatar: localStorage.getItem("profImg") ?? "",
   };
-  
 
   const navigationItems: NavigationItem[] = [
-    { icon: WrappedIcon(LayoutDashboard), label: "Dashboard", href: "/customer/dashboard" },
-    { icon: WrappedIcon(Package), label: "Pending Orders", href: "/customer/products" },
-    { icon: WrappedIcon(ImageIcon), label: "Gallery", href: "/customer/gallery" },
+    {
+      icon: WrappedIcon(LayoutDashboard),
+      label: "Dashboard",
+      href: "/customer/dashboard",
+    },
+    {
+      icon: WrappedIcon(Package),
+      label: "Pending Orders",
+      href: "/customer/products",
+    },
+    {
+      icon: WrappedIcon(ImageIcon),
+      label: "Gallery",
+      href: "/customer/gallery",
+    },
     { icon: WrappedIcon(Gavel), label: "Auctions", href: "/customer/auctions" },
-    { icon: WrappedIcon(Settings), label: "Settings", href: "/cutomer/settings" },
+    {
+      icon: WrappedIcon(Settings),
+      label: "Settings",
+      href: "/cutomer/settings",
+    },
   ];
 
   const handleLogout = () => {
@@ -123,7 +137,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
                   2
                 </span>
               </button>
-              
+
               {/* User Profile Section */}
               <div className="flex items-center space-x-3">
                 <img
@@ -132,7 +146,9 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
                   className="w-8 h-8 rounded-full"
                 />
                 <div className="hidden md:block">
-                  <p className="text-sm font-medium text-gray-800">{userData.userName}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {userData.userName}
+                  </p>
                   <p className="text-xs text-gray-500">Customer</p>
                 </div>
               </div>

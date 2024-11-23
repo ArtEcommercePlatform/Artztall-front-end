@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X, Plus, Check } from "lucide-react";
 import { useToast } from "../assets/components/toast/Toast";
-import { uploadImageToCloudinary } from '../services/cloudinary';
+import { uploadImageToCloudinary } from "../services/cloudinary";
 import { apiClient } from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ interface SignupModalProps {
   onClose: () => void;
 }
 
-interface ApiResponse{
+interface ApiResponse {
   token: string;
   id: string;
   email: string;
@@ -109,13 +109,13 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
         toast.error("Image size should be less than 5MB");
         return;
       }
-      
+
       // Check file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         toast.error("Please upload an image file");
         return;
       }
-      
+
       setFormData({
         ...formData,
         profileImage: file,
@@ -140,7 +140,9 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       let profileImageUrl = "";
       if (formData.profileImage) {
         try {
-          profileImageUrl = await uploadImageToCloudinary(formData.profileImage);
+          profileImageUrl = await uploadImageToCloudinary(
+            formData.profileImage,
+          );
           setUploadProgress(100);
         } catch (error) {
           toast.error("Failed to upload profile image");
@@ -158,7 +160,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               phoneNumber: formData.phoneNumber,
               userType: formData.userType,
               address: formData.address,
-              profImg:profileImageUrl,
+              profImg: profileImageUrl,
             }
           : {
               name: formData.name,
@@ -168,34 +170,37 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               userType: formData.userType,
               bio: formData.bio,
               artworkCategories: formData.artworkCategories,
-              profImg:profileImageUrl,
+              profImg: profileImageUrl,
             };
 
-            const response = await apiClient.post<ApiResponse>("/auth/signup", payload);
+      const response = await apiClient.post<ApiResponse>(
+        "/auth/signup",
+        payload,
+      );
 
-            if (response.success) {
-              localStorage.setItem("token", response.data.token);
+      if (response.success) {
+        localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("userRole", response.data.userType);
         localStorage.setItem("userName", response.data.name);
         localStorage.setItem("profImg", response.data.profImg);
-              toast.success("Account created successfully!");
-              if(response.data?.userType === 'BUYER'){
-                navigate('/customer/dashboard')
-              }else if(response.data?.userType === 'ARTISAN'){
-                navigate('/artisan/dashboard')
-              }
-              onClose();
-            } else {
-              toast.error(response.message || "Failed to create account");
-            }
-          } catch (error: any) {
-            toast.error(error.message || "An error occurred during signup");
-            console.error("Error during signup:", error);
-          } finally {
-            setIsLoading(false);
-            setUploadProgress(0);
-          }
+        toast.success("Account created successfully!");
+        if (response.data?.userType === "BUYER") {
+          navigate("/customer/dashboard");
+        } else if (response.data?.userType === "ARTISAN") {
+          navigate("/artisan/dashboard");
+        }
+        onClose();
+      } else {
+        toast.error(response.message || "Failed to create account");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "An error occurred during signup");
+      console.error("Error during signup:", error);
+    } finally {
+      setIsLoading(false);
+      setUploadProgress(0);
+    }
   };
 
   const renderStep1 = () => (
@@ -499,14 +504,32 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Processing...
                 </span>
+              ) : step === 4 ? (
+                "Create Account"
               ) : (
-                step === 4 ? "Create Account" : "Next"
+                "Next"
               )}
             </button>
           </div>

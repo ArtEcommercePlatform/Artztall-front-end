@@ -54,7 +54,7 @@ class ApiClient {
           switch (error.response.status) {
             case 401:
               localStorage.clear();
-              this.navigate('/')
+              this.navigate("/");
               errorResponse.message = "Unauthorized access";
 
               break;

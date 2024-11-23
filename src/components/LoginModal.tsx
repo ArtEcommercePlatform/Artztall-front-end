@@ -72,10 +72,10 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
 
         // Show success message
         toast.success(`Welcome back, ${response.data.name}!`);
-        if(response.data.userType ==='BUYER'){
-          navigate('/customer/dashboard')
-        }else if(response.data.userType ==='ARTISAN'){
-          navigate('/artisan/dashboard')
+        if (response.data.userType === "BUYER") {
+          navigate("/customer/dashboard");
+        } else if (response.data.userType === "ARTISAN") {
+          navigate("/artisan/dashboard");
         }
 
         // Call the success callback if provided
