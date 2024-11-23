@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { apiClient } from "../services/apiClient";
 import { useToast } from "../assets/components/toast/Toast";
+import { useNavigate } from "react-router-dom";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ interface LoginResponse {
   id: string;
   email: string;
   name: string;
+  profImg: string;
   userType: string;
   bio: string;
   artworkCategories: string[];
@@ -46,6 +48,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
   });
 
   const toast = useToast();
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -65,9 +68,15 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("userRole", response.data.userType);
         localStorage.setItem("userName", response.data.name);
+        localStorage.setItem("profImg", response.data.profImg);
 
         // Show success message
         toast.success(`Welcome back, ${response.data.name}!`);
+        if (response.data.userType === "BUYER") {
+          navigate("/customer/dashboard");
+        } else if (response.data.userType === "ARTISAN") {
+          navigate("/artisan/dashboard");
+        }
 
         // Call the success callback if provided
         if (onLoginSuccess) {

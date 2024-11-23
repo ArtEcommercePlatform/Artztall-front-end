@@ -1,6 +1,6 @@
 // StatCard.tsx
-import React from 'react';
-import { StatCardProps } from '../../../types/types';
+import React from "react";
+import { StatCardProps } from "../../../types/types";
 
 export const StatCard: React.FC<StatCardProps> = ({
   title,
