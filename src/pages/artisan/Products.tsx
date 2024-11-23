@@ -76,10 +76,10 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8">
-      <div className="container mx-auto">
+    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
+      <div className="container mx-auto px-4 py-6 flex-grow overflow-y-auto">
         {/* Page Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-6 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">My Artworks</h1>
             <p className="text-gray-500">
@@ -89,24 +89,19 @@ const Products: React.FC = () => {
           <button
             onClick={handleAddProduct}
             className="
-              flex 
-              items-center 
-              bg-blue-600 
+              flex items-center 
+              bg-green-600 
               text-white 
-              px-5 
-              py-3 
-              rounded-full 
-              shadow-lg 
-              hover:bg-blue-700 
+              px-4 py-2 
+              rounded-lg 
+              text-sm
+              hover:bg-green-700 
               transition-all 
               duration-300 
-              ease-in-out 
-              transform 
-              hover:-translate-y-1 
-              hover:scale-105
+              shadow-md
             "
           >
-            <Plus className="mr-2" /> Add New Artwork
+            <Plus className="mr-2 w-4 h-4" /> Add Artwork
           </button>
         </div>
 
@@ -118,13 +113,11 @@ const Products: React.FC = () => {
               className="
                 bg-white 
                 rounded-xl 
-                shadow-lg 
-                overflow-hidden 
+                shadow-md 
+                p-4 
                 transform 
-                transition-all 
-                duration-300 
-                hover:shadow-2xl 
-                hover:-translate-y-2
+                transition-transform 
+                hover:-translate-y-1
               "
             >
               {/* Product Image */}
@@ -132,22 +125,22 @@ const Products: React.FC = () => {
                 <img
                   src={product.images[0] || "/placeholder-image.jpg"}
                   alt={product.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover rounded-lg"
                 />
               </div>
 
               {/* Product Details */}
-              <div className="p-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-blue-600 font-semibold">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-green-600 font-semibold text-lg">
                     Rs {product.price.toLocaleString()}
                   </span>
                   <div className="flex space-x-2">
                     <button
                       onClick={handleEditProduct}
                       className="
-                        text-blue-500 
-                        hover:bg-blue-50 
+                        text-green-500 
+                        hover:bg-green-50 
                         p-2 
                         rounded-full
                       "
@@ -167,7 +160,10 @@ const Products: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
+                <h2 className="text-gray-800 font-semibold text-sm mb-1">
+                  {product.title}
+                </h2>
+                <p className="text-gray-600 text-xs">
                   {product.description}
                 </p>
               </div>

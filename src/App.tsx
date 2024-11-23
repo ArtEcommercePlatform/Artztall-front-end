@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -25,6 +24,7 @@ import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 import Settings from "./pages/artisan/Settings";
+
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
