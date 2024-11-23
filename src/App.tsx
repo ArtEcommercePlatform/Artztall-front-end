@@ -6,9 +6,9 @@ import {
 } from "react-router-dom";
 // import SplashScreen from './components/SplashScreen';
 import Homepage from "./pages/homepage/Homepage";
-import NewArtAdd from "./pages/homepage/NewArtAdd";
 import { ToastProvider } from "./assets/components/toast/Toast";
 import AuctionDetails from "./pages/Customer/AuctionInside";
+import Shop from "./pages/common/Shop";
 
 // Import Artisan Dashboard Pages
 import Dashboard from "./pages/artisan/Dashboard";
@@ -24,7 +24,6 @@ import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 import Settings from "./pages/artisan/Settings";
-
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -80,7 +79,7 @@ function App() {
         <div className="flex flex-col min-h-screen bg-gray-100">
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/newartadd" element={<NewArtAdd />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/artisan/*" element={<ArtisanRoutes />} />
             <Route path="/customer/*" element={<CustomerRoutes />} />
             <Route path="/customer/auction/:id" element={<AuctionDetails />} />
