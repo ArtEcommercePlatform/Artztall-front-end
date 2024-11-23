@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
 
 interface ApiResponse<T = any> {
   data: T;
@@ -14,7 +13,6 @@ interface ErrorResponse {
 class ApiClient {
   private client: AxiosInstance;
   private static instance: ApiClient;
-  private navigate = useNavigate();
 
   private constructor() {
     this.client = axios.create({
@@ -54,7 +52,6 @@ class ApiClient {
           switch (error.response.status) {
             case 401:
               localStorage.clear();
-              this.navigate("/");
               errorResponse.message = "Unauthorized access";
 
               break;
