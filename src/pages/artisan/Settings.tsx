@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { User, Mail, Phone, Home, Lock, Save, X } from 'lucide-react';
+import { User, Mail, Phone, Home, Lock, Save, X, Eye, EyeOff } from 'lucide-react';
+
+// Define types for our password-related state
+type PasswordVisibilityState = {
+  currentPassword: boolean;
+  newPassword: boolean;
+  confirmPassword: boolean;
+};
+
+type PasswordField = keyof PasswordVisibilityState;
 
 const Settings = () => {
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
@@ -15,6 +24,12 @@ const Settings = () => {
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
+  });
+
+  const [passwordVisibility, setPasswordVisibility] = useState<PasswordVisibilityState>({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
   });
 
   const [notification, setNotification] = useState("");
@@ -35,6 +50,13 @@ const Settings = () => {
     }));
   };
 
+  const togglePasswordVisibility = (field: PasswordField) => {
+    setPasswordVisibility(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     showNotification("Profile updated successfully!");
@@ -52,6 +74,11 @@ const Settings = () => {
       newPassword: "",
       confirmPassword: "",
     });
+    setPasswordVisibility({
+      currentPassword: false,
+      newPassword: false,
+      confirmPassword: false,
+    });
     showNotification("Password updated successfully!");
   };
 
@@ -59,6 +86,41 @@ const Settings = () => {
     setNotification(message);
     setTimeout(() => setNotification(""), 3000);
   };
+
+  const PasswordInput = ({ 
+    label, 
+    name, 
+    value, 
+    onChange, 
+    isVisible 
+  }: {
+    label: string;
+    name: PasswordField;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isVisible: boolean;
+  }) => (
+    <div>
+      <label className="text-sm font-medium text-gray-700 block mb-1">{label}</label>
+      <div className="relative">
+        <input
+          type={isVisible ? "text" : "password"}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full p-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white hover:bg-green-50 transition-colors pr-10"
+          required
+        />
+        <button
+          type="button"
+          onClick={() => togglePasswordVisibility(name)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+        >
+          {isVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
@@ -194,39 +256,27 @@ const Settings = () => {
             </div>
 
             <form onSubmit={handlePasswordSubmit} className="space-y-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">Current Password</label>
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={passwordData.currentPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full p-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white hover:bg-green-50 transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">New Password</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full p-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white hover:bg-green-50 transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">Confirm New Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full p-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white hover:bg-green-50 transition-colors"
-                  required
-                />
-              </div>
+              <PasswordInput
+                label="Current Password"
+                name="currentPassword"
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                isVisible={passwordVisibility.currentPassword}
+              />
+              <PasswordInput
+                label="New Password"
+                name="newPassword"
+                value={passwordData.newPassword}
+                onChange={handlePasswordChange}
+                isVisible={passwordVisibility.newPassword}
+              />
+              <PasswordInput
+                label="Confirm New Password"
+                name="confirmPassword"
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordChange}
+                isVisible={passwordVisibility.confirmPassword}
+              />
 
               <div className="flex justify-end space-x-2 mt-4">
                 <button
