@@ -11,7 +11,6 @@ import {
   Calendar
 } from 'lucide-react';
 
-// Modal Component remains the same
 const Modal = ({ isOpen, onClose, children }: { 
   isOpen: boolean; 
   onClose: () => void; 
@@ -31,7 +30,6 @@ const Modal = ({ isOpen, onClose, children }: {
   );
 };
 
-// Interfaces remain the same
 interface Order {
   id: string;
   customerName: string;
@@ -61,7 +59,6 @@ const OrderAndTransaction: React.FC = () => {
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Updated mock data with 3 orders
   const orders: Order[] = [
     {
       id: "ORD-001",
@@ -101,7 +98,6 @@ const OrderAndTransaction: React.FC = () => {
     }
   ];
 
-  // Updated mock data with 3 transactions
   const transactions: Transaction[] = [
     {
       id: "TRX-001",
@@ -129,7 +125,6 @@ const OrderAndTransaction: React.FC = () => {
     }
   ];
 
-  // Rest of the component logic remains the same
   const getOrderStatusColor = (status: Order['status']) => {
     const statusColors = {
       pending: 'bg-yellow-100 text-yellow-800 ring-1 ring-yellow-200',
@@ -218,7 +213,6 @@ const OrderAndTransaction: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-gray-800">Rs {order.amount.toLocaleString()}</p>
                     <button className="mt-2 text-sm text-green-600 hover:text-green-700 font-medium">
                       View Details
                     </button>
@@ -283,11 +277,6 @@ const OrderAndTransaction: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className={`font-bold ${transaction.type === 'payment' ? 'text-green-600' : 'text-blue-600'}`}>
-                      {transaction.type === 'payment' ? '+' : '-'} Rs {transaction.amount.toLocaleString()}
-                    </p>
-                  </div>
                 </div>
               </div>
             ))}
@@ -326,7 +315,6 @@ const OrderAndTransaction: React.FC = () => {
                   <p className="text-sm text-gray-600">Customer: {selectedOrder.customerName}</p>
                   <p className="text-sm text-gray-600">Date: {selectedOrder.date}</p>
                   <p className="text-sm text-gray-600">Payment Method: {selectedOrder.paymentMethod}</p>
-                  <p className="font-medium">Amount: Rs {selectedOrder.amount.toLocaleString()}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-700">Shipping Address:</p>
