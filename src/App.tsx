@@ -26,6 +26,14 @@ import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 import Settings from "./pages/artisan/Settings";
 
+//Import Admin Pages
+import AdDashborad from "./pages/Admin/Dashboard";
+import AdArtWork from "./pages/Admin/Artwork";
+import AdAuction from "./pages/Admin/Auction";
+import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
+import AdUserManagment from "./pages/Admin/UserManagment";
+import AdminLayout from "./pages/AdminLayout/AdminLayout";
+
 // Artisan Routes Component
 const ArtisanRoutes = () => {
   return (
@@ -59,6 +67,24 @@ const CustomerRoutes = () => {
     </CustomerLayout>
   );
 };
+
+
+// Admin Routes Component
+const AdminRoutes = () => {
+  return (
+    <AdminLayout>
+      <Routes>
+        <Route path="dashboard" element={<AdDashborad />} />
+        <Route path="auction" element={<AdAuction />} />
+        <Route path="artwork" element={<AdArtWork />} />
+        <Route path="order" element={<AdOrderTransaction />} />
+        <Route path="user" element={<AdUserManagment />} />
+
+        <Route path="*" element={<Navigate to="dashboard" replace />} />
+      </Routes>
+    </AdminLayout>
+  );
+};
 function App() {
   // const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -84,6 +110,7 @@ function App() {
             <Route path="/artismain" element={<ArtistMain />} />
             <Route path="/artisan/*" element={<ArtisanRoutes />} />
             <Route path="/customer/*" element={<CustomerRoutes />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
         </div>
