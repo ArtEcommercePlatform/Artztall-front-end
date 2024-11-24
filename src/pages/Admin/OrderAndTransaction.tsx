@@ -327,15 +327,12 @@ const OrderAndTransaction: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-6 flex justify-end space-x-3">
+            <div className="mt-6 flex justify-end">
               <button 
                 className="px-4 py-2 border border-gray-200 rounded-lg text-sm hover:bg-gray-50"
                 onClick={() => setIsModalOpen(false)}
               >
                 Close
-              </button>
-              <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
-                Update Status
               </button>
             </div>
           </>
