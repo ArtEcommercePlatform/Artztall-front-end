@@ -30,7 +30,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const navigationItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
     { icon: Package, label: "Products", href: "/artisan/products" },
-    { icon: ImageIcon, label: "Gallery", href: "/artisan/gallery" },
+   
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
     { icon: Settings, label: "Settings", href: "/artisan/settings" },
   ];
@@ -86,7 +86,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-hidden">
         <ArticianHeader {...userData} />
-        <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+        <main className="flex-1 p-6 overflow-y-auto bg-gray-50">
           {children}
         </main>
       </div>
