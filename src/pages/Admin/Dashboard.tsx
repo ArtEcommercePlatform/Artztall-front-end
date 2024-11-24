@@ -6,7 +6,6 @@ import {
   AlertCircle,
   Clock,
   DollarSign,
-  Eye,
   Gavel,
   ChevronUp,
   ChevronDown,
@@ -251,7 +250,7 @@ const AdminDashboard: React.FC = () => {
             <div className="space-y-4 custom-scrollbar">
               {recentActivity.map((activity) => (
                 <div key={activity.id} 
-                     className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all duration-300 border border-gray-100 hover:border-green-200">
+                     className="flex items-center p-4 hover:bg-gray-50 rounded-lg transition-all duration-300 border border-gray-100 hover:border-green-200">
                   <div className="flex items-center space-x-4">
                     <div className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}>
                       {activity.status}
@@ -261,7 +260,6 @@ const AdminDashboard: React.FC = () => {
                       <p className="text-xs text-gray-500 mt-1">by {activity.user} • {activity.timestamp}</p>
                     </div>
                   </div>
-                  <Eye className="w-4 h-4 text-gray-400 hover:text-green-600 cursor-pointer" />
                 </div>
               ))}
             </div>
