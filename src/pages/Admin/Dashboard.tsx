@@ -153,7 +153,22 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8 flex-grow overflow-y-auto">
+      {/* Add custom scrollbar styling */}
+      <style>
+        {`
+          /* Hide scrollbar for Chrome, Safari and Opera */
+          .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          
+          /* Hide scrollbar for IE, Edge and Firefox */
+          .custom-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
+        `}
+      </style>
+      <div className="container mx-auto px-4 py-8 flex-grow overflow-y-auto custom-scrollbar">
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
@@ -233,7 +248,7 @@ const AdminDashboard: React.FC = () => {
             <h2 className="text-xl font-semibold mb-6 flex items-center">
               <Clock className="mr-3 text-green-600 w-6 h-6" /> Recent Activity
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 custom-scrollbar">
               {recentActivity.map((activity) => (
                 <div key={activity.id} 
                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-all duration-300 border border-gray-100 hover:border-green-200">
@@ -257,7 +272,7 @@ const AdminDashboard: React.FC = () => {
             <h2 className="text-xl font-semibold mb-6 flex items-center">
               <Bell className="mr-3 text-green-600 w-6 h-6" /> Notifications
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 custom-scrollbar">
               {notifications.map((notification) => (
                 <div key={notification.id} 
                      className={`p-4 rounded-lg transition-all duration-300 hover:shadow-md
