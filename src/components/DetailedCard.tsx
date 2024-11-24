@@ -151,7 +151,7 @@ const DetailedCard = ({
       {/* Footer */}
       <div className="p-4 flex gap-2">
         <CustomButton
-          className="flex-1 flex bg-green-900 items-center justify-center"
+          className="flex-1 flex bg-green-900 items-center justify-center hover:bg-green-800"
           onClick={() => onBuy(id)}
           disabled={!available}
         >

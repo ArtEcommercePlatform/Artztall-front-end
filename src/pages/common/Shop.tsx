@@ -95,11 +95,14 @@ const Shop = () => {
 
   return (
     <>
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-          Art Gallery Shop
-        </h1>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="bg-green-900 py-12 px-4 mb-8">
+          <h1 className="text-4xl font-bold text-center text-white mb-2">
+            Our Featured Arts
+          </h1>
+          <p className="text-center text-green-100">Discover unique Arts</p>
+        </div>
 
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[400px]">

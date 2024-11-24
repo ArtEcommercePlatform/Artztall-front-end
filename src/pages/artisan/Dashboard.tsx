@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   DollarSign,
   ShoppingBag,
@@ -9,7 +9,9 @@ import {
   ChevronUp,
   ChevronDown,
   Plus,
+  X,
 } from "lucide-react";
+import NewArtAdd from "../homepage/NewArtAdd";
 
 // Define interfaces for type safety
 interface ArtisanStats {
@@ -54,8 +56,40 @@ interface PerformanceMetric {
   growth: number;
 }
 
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50"
+        onClick={onClose}
+      />
+      <div className="relative z-50 bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 p-2 hover:bg-gray-100 rounded-full"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="p-6">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ArtisanDashboard: React.FC = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [showAddArtwork, setShowAddArtwork] = useState(false);
 
   // Mock data (replace with actual backend data)
   const artisanStats: ArtisanStats = {
@@ -116,6 +150,8 @@ const ArtisanDashboard: React.FC = () => {
       </span>
     );
   };
+
+  
 
   // Use the handleCardExpand method when creating card data
   const handleCardExpand = (index: number) => {
@@ -195,24 +231,26 @@ const ArtisanDashboard: React.FC = () => {
           </div>
           <div className="flex space-x-4">
             <button
+              onClick={() => setShowAddArtwork(true)}
               className="
-              flex items-center 
-              bg-green-600 
-              text-white 
-              px-4 py-2 
-              rounded-lg 
-              text-sm
-              hover:bg-green-700 
-              transition-all 
-              duration-300 
-              shadow-md
-            "
+                flex items-center 
+                bg-green-600 
+                text-white 
+                px-4 py-2 
+                rounded-lg 
+                text-sm
+                hover:bg-green-700 
+                transition-all 
+                duration-300 
+                shadow-md
+              "
             >
               <Plus className="mr-2 w-4 h-4" />
               Add Artwork
             </button>
           </div>
         </div>
+
 
         {/* Financial and Product Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -340,7 +378,14 @@ const ArtisanDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+      <Modal 
+          isOpen={showAddArtwork} 
+          onClose={() => setShowAddArtwork(false)}
+        >
+          <NewArtAdd />
+        </Modal>
+    
+      </div>
   );
 };
 
