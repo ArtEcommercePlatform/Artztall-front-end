@@ -109,9 +109,7 @@ const Auction = () => {
                   <p className="font-medium">{auction.totalBids}</p>
                 </div>
                 <div>
-                  <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                    View Details
-                  </button>
+                 
                 </div>
               </div>
             </div>
@@ -215,9 +213,7 @@ const Auction = () => {
                     </p>
                   </div>
                   <div>
-                    <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                      Manage Bids
-                    </button>
+                   
                   </div>
                 </div>
               </div>
@@ -249,9 +245,7 @@ const Auction = () => {
                     <p className="font-medium">{auction.winner}</p>
                   </div>
                   <div>
-                    <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                      View Details
-                    </button>
+                    
                   </div>
                 </div>
               </div>
