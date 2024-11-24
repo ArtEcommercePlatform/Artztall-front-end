@@ -49,7 +49,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
     {
       icon: WrappedIcon(Settings),
       label: "Settings",
-      href: "/cutomer/settings",
+      href: "/customer/settings",
     },
   ];
 
@@ -63,7 +63,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
       {/* Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -74,7 +74,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } bg-white border-r border-gray-200`}
       >
-        <div className="flex items-center justify-between py-5 px-6 border-b border-gray-200">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
           <div className="flex items-center">
             <h1 className="text-2xl font-bold text-[#094129]">ArtZtall</h1>
           </div>
@@ -127,7 +127,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
             <div className="flex items-center space-x-4">
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <Bell size={20} />
-                <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                <span className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full">
                   3
                 </span>
               </button>
@@ -156,7 +156,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                className="flex items-center px-3 py-2 space-x-2 text-gray-700 rounded-lg hover:bg-gray-100"
               >
                 <LogOut size={20} />
                 <span className="hidden md:inline">Logout</span>
@@ -167,7 +167,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-auto">
-          <div className="container mx-auto px-6 py-8">{children}</div>
+          <div className="container px-6 py-8 mx-auto">{children}</div>
         </main>
       </div>
     </div>

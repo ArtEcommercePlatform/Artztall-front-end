@@ -101,7 +101,7 @@ const Settings = () => {
     isVisible: boolean;
   }) => (
     <div>
-      <label className="text-sm font-medium text-gray-700 block mb-1">{label}</label>
+      <label className="block mb-1 text-sm font-medium text-gray-700">{label}</label>
       <div className="relative">
         <input
           type={isVisible ? "text" : "password"}
@@ -114,9 +114,9 @@ const Settings = () => {
         <button
           type="button"
           onClick={() => togglePasswordVisibility(name)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          className="absolute text-gray-500 -translate-y-1/2 right-2 top-1/2 hover:text-gray-700"
         >
-          {isVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          {isVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
     </div>
@@ -131,39 +131,39 @@ const Settings = () => {
         </div>
       )}
 
-      <div className="container mx-auto px-4 py-4 flex-grow overflow-y-auto">
+      <div className="container flex-grow px-4 py-4 mx-auto overflow-y-auto">
         {/* Header */}
-        <div className="mb-4 flex justify-between items-center">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-green-900 tracking-tight">
+            <h1 className="text-2xl font-bold tracking-tight text-green-900">
               Profile Settings
             </h1>
-            <p className="text-gray-600 text-sm">
+            <p className="text-sm text-gray-600">
               Manage your account information
             </p>
           </div>
         </div>
 
-        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-4">
+        <div className="max-w-2xl p-4 mx-auto transition-all duration-300 bg-white shadow-md rounded-xl hover:shadow-xl">
           <form onSubmit={handleSubmit} className="space-y-3">
             {/* User ID Field */}
             <div>
-              <label className="text-sm font-medium text-gray-700 flex items-center mb-1">
-                <User className="mr-2 h-4 w-4 text-green-600" />
+              <label className="flex items-center mb-1 text-sm font-medium text-gray-700">
+                <User className="w-4 h-4 mr-2 text-green-600" />
                 User ID
               </label>
               <input
                 type="text"
                 value={formData.userId}
-                className="w-full p-1.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none cursor-not-allowed"
+                className="mt-2 w-full p-1.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none cursor-not-allowed"
                 disabled
               />
             </div>
 
-            {/* Name Field */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 flex items-center mb-1">
-                <User className="mr-2 h-4 w-4 text-green-600" />
+            
+            <div className='mt-3'>
+              <label className="flex items-center mt-3 mb-1 text-sm font-medium text-gray-700">
+                <User className="w-4 h-4 mr-2 text-green-600" />
                 Name
               </label>
               <input
@@ -175,10 +175,10 @@ const Settings = () => {
               />
             </div>
 
-            {/* Email Field */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 flex items-center mb-1">
-                <Mail className="mr-2 h-4 w-4 text-green-600" />
+        
+            <div className='mt-3'>
+              <label className="flex items-center mt-3 mb-1 text-sm font-medium text-gray-700">
+                <Mail className="w-4 h-4 mr-2 text-green-600" />
                 Email
               </label>
               <input
@@ -192,8 +192,8 @@ const Settings = () => {
 
             {/* Phone Field */}
             <div>
-              <label className="text-sm font-medium text-gray-700 flex items-center mb-1">
-                <Phone className="mr-2 h-4 w-4 text-green-600" />
+              <label className="flex items-center mb-1 text-sm font-medium text-gray-700">
+                <Phone className="w-4 h-4 mr-2 text-green-600" />
                 Phone
               </label>
               <input
@@ -207,8 +207,8 @@ const Settings = () => {
 
             {/* Address Field */}
             <div>
-              <label className="text-sm font-medium text-gray-700 flex items-center mb-1">
-                <Home className="mr-2 h-4 w-4 text-green-600" />
+              <label className="flex items-center mb-1 text-sm font-medium text-gray-700">
+                <Home className="w-4 h-4 mr-2 text-green-600" />
                 Address
               </label>
               <input
@@ -221,7 +221,7 @@ const Settings = () => {
             </div>
 
             {/* Button Group */}
-            <div className="space-y-2 pt-2">
+            <div className="pt-2 space-y-2">
               <button
                 type="button"
                 onClick={() => setIsPasswordDialogOpen(true)}
@@ -243,15 +243,15 @@ const Settings = () => {
 
       {/* Password Dialog */}
       {isPasswordDialogOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl p-4 w-full max-w-md shadow-xl">
-            <div className="flex justify-between items-center mb-3">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-full max-w-md p-4 bg-white shadow-xl rounded-xl">
+            <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-bold text-green-900">Change Password</h2>
               <button
                 onClick={() => setIsPasswordDialogOpen(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <X className="h-6 w-6" />
+                <X className="w-6 h-6" />
               </button>
             </div>
 
@@ -278,7 +278,7 @@ const Settings = () => {
                 isVisible={passwordVisibility.confirmPassword}
               />
 
-              <div className="flex justify-end space-x-2 mt-4">
+              <div className="flex justify-end mt-4 space-x-2">
                 <button
                   type="button"
                   onClick={() => setIsPasswordDialogOpen(false)}
