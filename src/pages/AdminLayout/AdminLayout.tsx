@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import {
-  LayoutDashboard,
-  Package,
-  Image as ImageIcon,
-  Gavel,
-  Settings,
+  Activity,
+  Brush,
+  Hammer,
+  Users,
+  CreditCard,
   X,
   Menu,
   Bell,
   ShoppingCart,
   LogOut,
   LucideProps,
+  LayoutDashboard,
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
 
-// Wrapper function for lucide-react icons
+
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
   return (props: { size?: number; className?: string }) => (
     <Icon {...props} size={props.size?.toString()} />
@@ -36,22 +37,22 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
       href: "/admin/dashboard",
     },
     {
-      icon: WrappedIcon(Package),
+      icon: WrappedIcon(Brush),
       label: "Artwork Management",
       href: "/admin/artwork",
     },
     {
-      icon: WrappedIcon(ImageIcon),
+      icon: WrappedIcon(Hammer),
       label: "Auction Management",
       href: "/admin/auction",
     },
     {
-      icon: WrappedIcon(Gavel),
+      icon: WrappedIcon(Users),
       label: "Users Management",
       href: "/admin/user",
     },
     {
-      icon: WrappedIcon(Settings),
+      icon: WrappedIcon(CreditCard),
       label: "Order And Transaction",
       href: "/admin/order",
     },
@@ -63,7 +64,7 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Overlay */}
+    
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
@@ -71,7 +72,7 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
         />
       )}
 
-      {/* Sidebar */}
+      
       <div
         className={`fixed lg:static inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -103,12 +104,9 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-     
       <div className="flex flex-col flex-1 overflow-hidden">
-        
         <header className="bg-white border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
-         
             <button
               onClick={() => setIsSidebarOpen(true)}
               className="text-gray-500 lg:hidden hover:text-gray-700"
@@ -116,9 +114,8 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
               <Menu size={24} />
             </button>
 
-          
             <div className="flex items-center ml-auto space-x-4">
-              {/* Notifications */}
+            
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <Bell size={20} />
                 <span className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full">
@@ -126,7 +123,7 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
                 </span>
               </button>
 
-              {/* User Profile */}
+            
               <div className="flex items-center space-x-3">
                 <img
                   src={userData.userAvatar}
@@ -141,7 +138,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
               </div>
 
-              {/* Logout Button */}
               <button
                 onClick={handleLogout}
                 className="flex items-center px-3 py-2 space-x-2 text-gray-700 rounded-lg hover:bg-gray-100"
@@ -153,7 +149,7 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Main Content Area */}
+  
         <main className="flex-1 overflow-auto">
           <div className="container px-6 py-8 mx-auto">{children}</div>
         </main>
