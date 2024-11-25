@@ -1,11 +1,11 @@
-import { Heart} from 'lucide-react';
+import { Heart } from "lucide-react";
 
-const ProductCard = ({ 
+const ProductCard = ({
   imageUrl = "/api/placeholder/300/300",
   title = "",
   artist = "",
   price = 0,
-  isNew = false
+  isNew = false,
 }) => {
   return (
     <div className="relative group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
@@ -27,7 +27,7 @@ const ProductCard = ({
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1">{title}</h3>
         <p className="text-gray-600 text-sm mb-2">by {artist}</p>
-        <p className="font-bold text-[#094129]">${price}</p>
+        <p className="font-bold text-[#094129]">LKR {price}</p>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-// ProductList.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 interface Product {
   id: string;
@@ -23,88 +23,144 @@ interface Product {
   available: boolean;
 }
 
-// Dummy data
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Abstract Art Piece",
-    description: "A beautiful abstract painting in vibrant colors.",
-    price: 100,
-    artistId: "artist-1",
-    category: "Painting",
-    tags: ["abstract", "colorful"],
-    imageUrl: "https://via.placeholder.com/150",
-    stockQuantity: 10,
-    createdAt: "2024-11-08T06:30:39.637Z",
-    updatedAt: "2024-11-08T06:30:39.637Z",
-    dimensions: { length: 20, width: 30, unit: "cm" },
-    medium: "Acrylic",
-    style: "Abstract",
-    available: true,
-  },
-  {
-    id: "2",
-    name: "Landscape Masterpiece",
-    description: "A serene landscape painting capturing nature’s beauty.",
-    price: 200,
-    artistId: "artist-2",
-    category: "Painting",
-    tags: ["landscape", "nature"],
-    imageUrl: "https://via.placeholder.com/150",
-    stockQuantity: 5,
-    createdAt: "2024-11-08T06:30:39.637Z",
-    updatedAt: "2024-11-08T06:30:39.637Z",
-    dimensions: { length: 30, width: 40, unit: "cm" },
-    medium: "Oil",
-    style: "Landscape",
-    available: true,
-  },
-  // Add more mock products as needed
-];
+interface ProductResponse {
+  content: Product[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  size: number;
+}
 
 const ProductList: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
-  const size = 2; // Display two products per page
-  const totalPages = Math.ceil(mockProducts.length / size);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Calculate the products to display based on current page
-  const productsToDisplay = mockProducts.slice(page * size, (page + 1) * size);
+  const pageSize = 8; // Display 8 products per page
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get<ProductResponse>(
+          "http://localhost:8080/api/products",
+          {
+            params: {
+              page,
+              size: pageSize,
+            },
+          },
+        );
+
+        setProducts(response.data.content);
+        setTotalPages(response.data.totalPages);
+      } catch (err) {
+        setError("Failed to fetch products");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [page]);
+
+  const handlePreviousPage = () => {
+    if (page > 0) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages - 1) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <h1 className="text-2xl font-bold text-primary mb-4">Product List</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {productsToDisplay.map((product) => (
-          <div key={product.id} className="bg-white p-4 rounded shadow-md">
-            <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover mb-2 rounded"/>
-            <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="text-gray-500 text-sm">{product.category}</p>
-            <p className="text-primary font-bold">${product.price.toFixed(2)}</p>
-            <p className="text-gray-600">{product.description}</p>
-          </div>
-        ))}
-      </div>
+      <h1 className="text-3xl font-bold text-primary mb-6 text-center">
+        Art Gallery
+      </h1>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-8">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0}
-          className="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-400"
-        >
-          Previous
-        </button>
-        <span className="text-gray-700">
-          Page {page + 1} of {totalPages}
-        </span>
-        <button
-          onClick={() => setPage((prev) => (prev < totalPages - 1 ? prev + 1 : prev))}
-          disabled={page === totalPages - 1}
-          className="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-400"
-        >
-          Next
-        </button>
-      </div>
+      {products.length === 0 ? (
+        <div className="text-center text-gray-500">No products found</div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:shadow-xl"
+              >
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="w-full h-48 object-cover mb-4 rounded-md"
+                />
+                <div className="space-y-2">
+                  <h2 className="text-xl font-semibold text-gray-800 truncate">
+                    {product.name}
+                  </h2>
+                  <p className="text-sm text-gray-500">{product.category}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-primary font-bold text-lg">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <span
+                      className={`text-sm font-medium ${product.available ? "text-green-600" : "text-red-600"}`}
+                    >
+                      {product.available ? "In Stock" : "Sold Out"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center mt-8 space-x-4">
+            <button
+              onClick={handlePreviousPage}
+              disabled={page === 0}
+              className="px-6 py-2 bg-primary text-white rounded-md disabled:bg-gray-400 transition-colors"
+            >
+              Previous
+            </button>
+            <span className="text-gray-700">
+              Page {page + 1} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={page === totalPages - 1}
+              className="px-6 py-2 bg-primary text-white rounded-md disabled:bg-gray-400 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
