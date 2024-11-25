@@ -8,11 +8,14 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.1",
     "@cloudinary/url-gen": "^1.21.0",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
     "@types/node": "^22.9.1",
     "axios": "^1.7.7",
     "firebase": "^11.0.2",
