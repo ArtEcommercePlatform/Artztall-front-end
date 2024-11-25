@@ -8,7 +8,7 @@ const ArtsCollection = () => {
       { id: 3, title: "Urban Life", artist: "Alice Johnson", price: 399.99, isNew: true , imageUrl:'https://img.freepik.com/free-photo/man-practicing-rock-climbing-bouldering-wall-sports_23-2151724810.jpg?semt=ais_hybrid'},
       { id: 4, title: "Sunset Valley", artist: "Bob Wilson", price: 249.99 , imageUrl:'https://img.freepik.com/premium-photo/sunrise-sunset-dusk-orange-sunlight-forest-fields-landscape-wallpaper-background_911849-563140.jpg?semt=ais_siglip'}
     ];
-  
+  //test
     return (
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
