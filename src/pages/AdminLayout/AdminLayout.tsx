@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import {
-  LayoutDashboard,
-  Package,
-  Image as ImageIcon,
-  Gavel,
-  Settings,
+  Activity,
+  Brush,
+  Hammer,
+  Users,
+  CreditCard,
   X,
   Menu,
   Bell,
   ShoppingCart,
   LogOut,
   LucideProps,
+  LayoutDashboard,
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
 
-// Wrapper function for lucide-react icons
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
   return (props: { size?: number; className?: string }) => (
     <Icon {...props} size={props.size?.toString()} />
   );
 };
 
-export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
+export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const userData: UserData = {
@@ -33,34 +33,36 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
     {
       icon: WrappedIcon(LayoutDashboard),
       label: "Dashboard",
-      href: "/customer/dashboard",
+      href: "/admin/dashboard",
     },
     {
-      icon: WrappedIcon(Package),
-      label: "Pending Orders",
-      href: "/customer/products",
+      icon: WrappedIcon(Brush),
+      label: "Artwork Management",
+      href: "/admin/artwork",
     },
     {
-      icon: WrappedIcon(ImageIcon),
-      label: "Gallery",
-      href: "/customer/gallery",
+      icon: WrappedIcon(Hammer),
+      label: "Auction Management",
+      href: "/admin/auction",
     },
-    { icon: WrappedIcon(Gavel), label: "Auctions", href: "/customer/auctions" },
     {
-      icon: WrappedIcon(Settings),
-      label: "Settings",
-      href: "/customer/settings",
+      icon: WrappedIcon(Users),
+      label: "Users Management",
+      href: "/admin/user",
+    },
+    {
+      icon: WrappedIcon(CreditCard),
+      label: "Order And Transaction",
+      href: "/admin/order",
     },
   ];
 
   const handleLogout = () => {
-    // Add your logout logic here
     console.log("Logging out...");
   };
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
@@ -68,16 +70,13 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
         />
       )}
 
-      {/* Sidebar */}
       <div
         className={`fixed lg:static inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } bg-white border-r border-gray-200`}
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
-          <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-[#094129]">ArtZtall</h1>
-          </div>
+          <h1 className="text-2xl font-bold text-[#094129]">ArtZtall</h1>
           <button
             onClick={() => setIsSidebarOpen(false)}
             className="text-gray-500 lg:hidden hover:text-gray-700"
@@ -102,9 +101,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Header */}
         <header className="bg-white border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
             <button
@@ -114,31 +111,14 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
               <Menu size={24} />
             </button>
 
-            <div className="flex items-center flex-1 px-4 space-x-4">
-              <div className="flex-1 max-w-2xl">
-                <input
-                  type="search"
-                  placeholder="Search for paintings..."
-                  className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#094129]/20"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center ml-auto space-x-4">
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <Bell size={20} />
                 <span className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full">
                   3
                 </span>
               </button>
-              <button className="relative p-2 text-gray-500 hover:text-gray-700">
-                <ShoppingCart size={20} />
-                <span className="absolute top-0 right-0 w-4 h-4 bg-[#094129] rounded-full text-xs text-white flex items-center justify-center">
-                  2
-                </span>
-              </button>
 
-              {/* User Profile Section */}
               <div className="flex items-center space-x-3">
                 <img
                   src={userData.userAvatar}
@@ -149,11 +129,10 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
                   <p className="text-sm font-medium text-gray-800">
                     {userData.userName}
                   </p>
-                  <p className="text-xs text-gray-500">Customer</p>
+                  <p className="text-xs text-gray-500">Admin</p>
                 </div>
               </div>
 
-              {/* Logout Button */}
               <button
                 onClick={handleLogout}
                 className="flex items-center px-3 py-2 space-x-2 text-gray-700 rounded-lg hover:bg-gray-100"
@@ -165,7 +144,6 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Main Content Area */}
         <main className="flex-1 overflow-auto">
           <div className="container px-6 py-8 mx-auto">{children}</div>
         </main>
@@ -174,4 +152,4 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-export default CustomerLayout;
+export default AdminLayout;

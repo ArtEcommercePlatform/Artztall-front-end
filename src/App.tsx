@@ -17,6 +17,7 @@ import Products from "./pages/artisan/Products";
 import Gallery from "./pages/artisan/Gallery";
 import Auctions from "./pages/artisan/Auctions";
 import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
+import Settings from "./pages/artisan/Settings";
 
 // Import Customer Dashboard Pages
 import CuDashboard from "./pages/Customer/Dashboard";
@@ -24,7 +25,15 @@ import CuProducts from "./pages/Customer/PendingOrders";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
-import Settings from "./pages/artisan/Settings";
+import CuSettings from "./pages/Customer/settings";
+
+//Import Admin Pages
+import AdDashborad from "./pages/Admin/Dashboard";
+import AdArtWork from "./pages/Admin/Artwork";
+import AdAuction from "./pages/Admin/Auction";
+import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
+import AdUserManagment from "./pages/Admin/UserManagment";
+import AdminLayout from "./pages/AdminLayout/AdminLayout";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -53,10 +62,27 @@ const CustomerRoutes = () => {
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-
+        <Route path="settings" element={<CuSettings />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
+  );
+};
+
+// Admin Routes Component
+const AdminRoutes = () => {
+  return (
+    <AdminLayout>
+      <Routes>
+        <Route path="dashboard" element={<AdDashborad />} />
+        <Route path="auction" element={<AdAuction />} />
+        <Route path="artwork" element={<AdArtWork />} />
+        <Route path="order" element={<AdOrderTransaction />} />
+        <Route path="user" element={<AdUserManagment />} />
+
+        <Route path="*" element={<Navigate to="dashboard" replace />} />
+      </Routes>
+    </AdminLayout>
   );
 };
 function App() {
@@ -84,6 +110,7 @@ function App() {
             <Route path="/artismain" element={<ArtistMain />} />
             <Route path="/artisan/*" element={<ArtisanRoutes />} />
             <Route path="/customer/*" element={<CustomerRoutes />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/customer/auction/:id" element={<AuctionDetails />} />
           </Routes>
         </div>

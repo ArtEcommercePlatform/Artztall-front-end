@@ -134,20 +134,20 @@ const PendingOrders: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-md p-4 ">
+    <div className="p-4 bg-white rounded-md">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Orders Management</h1>
-        <p className="text-gray-600 mt-2">
+        <p className="mt-2 text-gray-600">
           Manage and track all your orders in one place
         </p>
       </div>
 
       {/* Filters and Search */}
-      <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 mb-6 sm:flex-row">
         <div className="flex gap-4">
           <div className="relative">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
               size={20}
             />
             <input
@@ -174,25 +174,22 @@ const PendingOrders: React.FC = () => {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="overflow-hidden bg-white rounded-lg shadow">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Order Details
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Customer
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Amount
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
                 </th>
               </tr>
             </thead>
@@ -204,7 +201,7 @@ const PendingOrders: React.FC = () => {
                       <img
                         src={order.items[0].image}
                         alt={order.items[0].name}
-                        className="h-10 w-10 rounded-md object-cover"
+                        className="object-cover w-10 h-10 rounded-md"
                       />
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
@@ -238,80 +235,11 @@ const PendingOrders: React.FC = () => {
                         order.status.slice(1)}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-3">
-                      <select
-                        className="text-sm border border-gray-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#094129]/20"
-                        value={order.status}
-                        onChange={(e) =>
-                          handleStatusUpdate(
-                            order.id,
-                            e.target.value as Order["status"],
-                          )
-                        }
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
-                      <button
-                        onClick={() => {
-                          // Handle view details action
-                          console.log("View details for order:", order.id);
-                        }}
-                        className="text-[#094129] hover:text-[#094129]/80"
-                      >
-                        <MoreVertical size={20} />
-                      </button>
-                    </div>
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        {filteredOrders.length === 0 && (
-          <div className="text-center py-12">
-            <AlertCircle className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">
-              No orders found
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">
-              No orders match your current filters.
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-        {[
-          { label: "Total Orders", value: orders.length },
-          {
-            label: "Pending Orders",
-            value: orders.filter((o) => o.status === "pending").length,
-          },
-          {
-            label: "Processing Orders",
-            value: orders.filter((o) => o.status === "processing").length,
-          },
-          {
-            label: "Shipped Orders",
-            value: orders.filter((o) => o.status === "shipped").length,
-          },
-        ].map((stat, index) => (
-          <div key={index} className="bg-white rounded-lg shadow p-6">
-            <div className="text-sm font-medium text-gray-500">
-              {stat.label}
-            </div>
-            <div className="mt-2 text-3xl font-semibold text-gray-900">
-              {stat.value}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
