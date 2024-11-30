@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   // State for fade-in animation
@@ -45,9 +46,11 @@ const Hero = () => {
           animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.9 }}
           transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
         >
-          <button className="px-8 py-4 text-lg font-semibold transition-transform duration-200 transform bg-white rounded-full text-emerald-900 hover:scale-105 hover:shadow-lg">
-            Shop Now
-          </button>
+          <Link to="/shop">
+            <button className="px-8 py-4 text-lg font-semibold transition-transform duration-200 transform bg-white rounded-full text-emerald-900 hover:scale-105 hover:shadow-lg">
+              Shop Now
+            </button>
+          </Link>
 
           <button className="px-8 py-4 text-lg font-semibold text-white transition-transform duration-200 transform border-2 border-white rounded-full hover:scale-105 hover:bg-white/10">
             Learn More

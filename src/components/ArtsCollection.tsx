@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "../assets/components/productCard/ProductCard";
 import { apiClient } from "../services/apiClient";
+import { Link } from "react-router-dom";
 
 interface Product {
   id: string;
@@ -113,10 +114,12 @@ const ArtsCollection: React.FC = () => {
           <h2 className="text-3xl font-bold text-[#094129]">
             Featured Artworks
           </h2>
-          <button className="text-[#094129] font-semibold flex items-center hover:underline">
-            View All
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </button>
+          <Link to="/shop">
+            <button className="text-[#094129] font-semibold flex items-center hover:underline">
+              View All
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </button>
+          </Link>
         </div>
         {featuredArt.length === 0 ? (
           <div className="text-center text-gray-500">
