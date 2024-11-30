@@ -1,138 +1,165 @@
-import React from "react";
-import {
-  Clock,
-  Heart,
-  ShoppingBag,
-  Trophy,
-  Package,
-  LucideProps,
-} from "lucide-react";
-import { StatCard } from "../../assets/components/statCard/StatCard";
+import { useState } from 'react';
+import { Package, MessageSquare, 
+         Heart, Clock, Mail, Phone } from 'lucide-react';
 
-// Wrapper function for lucide-react icons
-const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
-  return (props: { size?: number; className?: string }) => (
-    <Icon {...props} size={props.size?.toString()} />
-  );
-};
+//import src/assets/images/customerDhashbord folder imagers
+import  image1  from '../../assets/images/customerDhashbord/pexels-anniroenkae-2983141 (1).jpg';
+import  image3  from '../../assets/images/customerDhashbord/pexels-sergey-bosak-1503313829-27049007.jpg';
+import  image2  from '../../assets/images/customerDhashbord/pexels-frank-cone-140140-2258536 (1).jpg';
+import  image4  from '../../assets/images/customerDhashbord/pexels-mccutcheon-1149019.jpg';
 
-export const Dashboard: React.FC = () => {
-  const stats = [
-    {
-      title: "Active Bids",
-      value: "5",
-      icon: WrappedIcon(Clock),
-      bgColor: "bg-purple-50",
-      textColor: "text-purple-700",
-    },
-    {
-      title: "Won Auctions",
-      value: "12",
-      icon: WrappedIcon(Trophy),
-      bgColor: "bg-blue-50",
-      textColor: "text-blue-700",
-    },
-    {
-      title: "Total Orders",
-      value: "8",
-      icon: WrappedIcon(ShoppingBag),
-      bgColor: "bg-green-50",
-      textColor: "text-green-700",
-    },
-    {
-      title: "Wishlist Items",
-      value: "15",
-      icon: WrappedIcon(Heart),
-      bgColor: "bg-red-50",
-      textColor: "text-red-700",
-    },
+import  image5  from '../../assets/images/customerDhashbord/pexels-msaimakin-29429466.jpg';
+
+
+
+const CustomerDashboard = () => {
+  const [activeTab, setActiveTab] = useState('all');
+
+  
+  // Mock data
+  const recentItems = [
+    { id: 1, name: "Abstract Art Print", price: "$299", image: image4 },
+    { id: 2, name: "Nature Photography", price: "$199", image: image2 },
+    { id: 3, name: "Modern Sculpture", price: "$599", image:image3 }
   ];
 
+  const orders = [
+    { id: 1, product: "Canvas Print", status: "Delivered", date: "2024-03-15", total: "$299" },
+    { id: 2, product: "Wall Art", status: "Pending", date: "2024-03-18", total: "$199" },
+    { id: 3, product: "Digital Print", status: "Cancelled", date: "2024-03-10", total: "$99" }
+  ];
+
+  const wishlistItems = [
+    { id: 1, name: "Abstract Painting", price: "$399", image: image1 },
+    { id: 2, name: "Landscape Photo", price: "$249", image: image5 }
+  ];
+
+ 
   return (
-    <div>
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">
-          Welcome back, John!
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Here's what's happening with your account today.
-        </p>
-      </div>
+    <div className="flex bg-gray-50">
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat) => (
-          <StatCard key={stat.title} {...stat} />
-        ))}
-      </div>
 
-      {/* Live Auctions */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 className="text-xl font-bold mb-6">Live Auctions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="border rounded-lg p-4">
-              <img
-                src="https://img.freepik.com/free-photo/abstract-nature-illustration-tree-backdrop-watercolor-painted-image-generated-by-ai_188544-15564.jpg?semt=ais_hybrid"
-                alt={`Auction ${item}`}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="font-semibold mb-2">Masterpiece #{item}</h3>
-              <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
-                <span>Current Bid: LKR 1,{item}00</span>
-                <span>Ends in: 2h 45m</span>
-              </div>
-              <button className="w-full bg-[#094129] text-white py-2 rounded-lg hover:bg-[#094129]/90 transition-colors">
-                Place Bid
-              </button>
+      <div className="flex-1 ">
+  
+        <div className="p-6 space-y-6">
+          {/* Welcome Section */}
+          <div className="p-6 text-white rounded-lg bg-gradient-to-r from-green-600 to-green-700">
+            <h1 className="mb-2 text-3xl font-bold">Welcome back, John Doe!</h1>
+            <p>Here's what's happening with your account today.</p>
+          </div>
+
+          {/* Recently Viewed Items */}
+          <div className="p-6 bg-white border rounded-lg shadow-sm">
+            <h2 className="flex items-center mb-4 text-xl font-semibold">
+              <Clock size={20} className="mr-2" /> Recently Viewed Items
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {recentItems.map(item => (
+                <div key={item.id} className="p-4 transition-shadow border rounded-lg hover:shadow-md">
+                  <img src={item.image} alt={item.name} className="object-cover w-full h-40 mb-3 rounded-md" />
+                  <h3 className="font-medium">{item.name}</h3>
+                  <p className="text-green-600">{item.price}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">Featured Paintings</h2>
-        <div className="grid grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="border rounded-lg p-4">
-              <img
-                src="https://img.freepik.com/free-photo/digital-art-style-illustration-river-nature_23-2151825737.jpg?semt=ais_hybrid"
-                alt="Painting"
-                className="w-full h-40 object-cover rounded-lg mb-4"
-              />
-              <h3 className="font-semibold mb-2">Nature Scene #{item}</h3>
-              <p className="text-gray-600 mb-2">By Artist Name</p>
-              <div className="flex justify-between items-center">
-                <span className="font-bold">LKR {item}99.99</span>
-                <button className="bg-[#094129] text-white px-4 py-2 rounded-lg  hover:bg-[#094129]/90 transition-colors">
-                  Add to Cart
+          {/* Order Summary */}
+          <div className="p-6 bg-white border rounded-lg shadow-sm">
+            <h2 className="flex items-center mb-4 text-xl font-semibold">
+              <Package size={20} className="mr-2" /> Order Summary
+            </h2>
+            <div className="mb-4 space-x-2">
+              {['all', 'pending', 'delivered', 'cancelled'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-4 py-2 rounded-full capitalize ${
+                    activeTab === tab 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  {tab}
                 </button>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="space-y-3">
+              {orders.map(order => (
+                <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <h3 className="font-medium">{order.product}</h3>
+                    <p className="text-sm text-gray-500">{order.date}</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="font-medium">{order.total}</span>
+                    <span className={`px-3 py-1 rounded-full text-sm ${
+                      order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                      order.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {order.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-6">Recent Activity</h2>
-        <div className="space-y-4">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="flex items-center p-4 border rounded-lg">
-              <div className="w-12 h-12 bg-[#094129]/10 rounded-lg flex items-center justify-center mr-4">
-                <Package className="text-[#094129]" />
+          {/* Wishlist */}
+          <div className="p-6 bg-white border rounded-lg shadow-sm">
+            <h2 className="flex items-center mb-4 text-xl font-semibold">
+              <Heart size={20} className="mr-2" /> Wishlist
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {wishlistItems.map(item => (
+                <div key={item.id} className="flex p-4 transition-shadow border rounded-lg hover:shadow-md">
+                  <img src={item.image} alt={item.name} className="object-cover w-24 h-24 rounded-md" />
+                  <div className="flex-1 ml-4">
+                    <h3 className="font-medium">{item.name}</h3>
+                    <p className="text-green-600">{item.price}</p>
+                    <button className="px-4 py-2 mt-2 text-white bg-green-600 rounded-lg hover:bg-green-700">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-6 bg-white border rounded-lg shadow-sm">
+            <h2 className="flex items-center mb-4 text-xl font-semibold">
+              <MessageSquare size={20} className="mr-2" /> Customer Support
+            </h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <h3 className="font-medium">Contact Us</h3>
+                <div className="flex items-center space-x-2">
+                  <Mail size={16} className="text-green-600" />
+                  <span>support@example.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Phone size={16} className="text-green-600" />
+                  <span>1-800-123-4567</span>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold">Order #{item}234 Placed</h3>
-                <p className="text-sm text-gray-600">2 hours ago</p>
+              <div className="space-y-4">
+                <h3 className="font-medium">Submit a Ticket</h3>
+                <div>
+                  <input type="text" placeholder="Subject" className="w-full p-2 mb-2 border rounded-lg" />
+                  <textarea placeholder="Describe your issue..." className="w-full p-2 border rounded-lg"></textarea>
+                  <button className="px-4 py-2 mt-2 text-white bg-green-600 rounded-lg hover:bg-green-700">
+                    Submit Ticket
+                  </button>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+
+export default CustomerDashboard;
