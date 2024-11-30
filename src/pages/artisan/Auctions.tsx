@@ -44,7 +44,7 @@ const Auctions: React.FC = () => {
       "ModernArtFan",
     ];
     setCurrentUser(
-      randomUsernames[Math.floor(Math.random() * randomUsernames.length)]
+      randomUsernames[Math.floor(Math.random() * randomUsernames.length)],
     );
   }, []);
 
@@ -77,7 +77,7 @@ const Auctions: React.FC = () => {
 
   // Existing handlers remain the same
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -96,7 +96,7 @@ const Auctions: React.FC = () => {
 
     setAuctions([...auctions, newAuction]);
     showNotification(
-      `Auction for "${newAuction.artwork}" created successfully!`
+      `Auction for "${newAuction.artwork}" created successfully!`,
     );
     resetForm();
   };
@@ -125,7 +125,7 @@ const Auctions: React.FC = () => {
               { bidder: currentUser, amount: bidAmount, timestamp: Date.now() },
             ],
           }
-        : a
+        : a,
     );
 
     setAuctions(updatedAuctions);

@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
 
-
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
   return (props: { size?: number; className?: string }) => (
     <Icon {...props} size={props.size?.toString()} />
@@ -64,7 +63,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-    
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
@@ -72,7 +70,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
         />
       )}
 
-      
       <div
         className={`fixed lg:static inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -115,7 +112,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
             </button>
 
             <div className="flex items-center ml-auto space-x-4">
-            
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <Bell size={20} />
                 <span className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full">
@@ -123,7 +119,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
                 </span>
               </button>
 
-            
               <div className="flex items-center space-x-3">
                 <img
                   src={userData.userAvatar}
@@ -149,7 +144,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </header>
 
-  
         <main className="flex-1 overflow-auto">
           <div className="container px-6 py-8 mx-auto">{children}</div>
         </main>

@@ -30,7 +30,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const navigationItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
     { icon: Package, label: "Products", href: "/artisan/products" },
-   
+
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
     { icon: Settings, label: "Settings", href: "/artisan/settings" },
   ];

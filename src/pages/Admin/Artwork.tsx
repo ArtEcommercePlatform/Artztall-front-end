@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import axios from "axios";
 
 interface Artwork {
   id: string;
@@ -39,27 +46,29 @@ const Artwork: React.FC = () => {
       artistName: "Emily Brown",
     },
   ]);
-  const [filter, setFilter] = useState<string>('earliest');
+  const [filter, setFilter] = useState<string>("earliest");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
   // Fetch artworks based on the filter
   const fetchArtworks = async () => {
     try {
-      const response = await axios.get(`https://dummyapi.com/artworks?filter=${filter}`);//sends the filter status to backend. backend should send the data based on filter.
+      const response = await axios.get(
+        `https://dummyapi.com/artworks?filter=${filter}`,
+      ); //sends the filter status to backend. backend should send the data based on filter.
       setArtworks(response.data);
     } catch (error) {
-      console.error('Error fetching artworks:', error);
+      console.error("Error fetching artworks:", error);
     }
   };
 
   // Delete artwork
   const deleteArtwork = async (id: string) => {
     try {
-      await axios.delete(`https://dummyapi.com/artworks/${id}`);//sends the art id to backend and backend should perform the deletion of database.
+      await axios.delete(`https://dummyapi.com/artworks/${id}`); //sends the art id to backend and backend should perform the deletion of database.
       setArtworks((prev) => prev.filter((artwork) => artwork.id !== id));
     } catch (error) {
-      console.error('Error deleting artwork:', error);
+      console.error("Error deleting artwork:", error);
     }
   };
 
@@ -113,7 +122,11 @@ const Artwork: React.FC = () => {
             {artworks.map((artwork) => (
               <tr key={artwork.id}>
                 <td className="border p-2">
-                  <img src={artwork.image} alt={artwork.name} className="h-16 w-16 object-cover" />
+                  <img
+                    src={artwork.image}
+                    alt={artwork.name}
+                    className="h-16 w-16 object-cover"
+                  />
                 </td>
                 <td className="border p-2">{artwork.name}</td>
                 <td className="border p-2">${artwork.price}</td>
@@ -140,7 +153,8 @@ const Artwork: React.FC = () => {
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this artwork? This action cannot be undone.
+            Are you sure you want to delete this artwork? This action cannot be
+            undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

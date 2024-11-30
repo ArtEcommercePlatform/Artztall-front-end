@@ -69,7 +69,6 @@ const CustomerRoutes = () => {
   );
 };
 
-
 // Admin Routes Component
 const AdminRoutes = () => {
   return (

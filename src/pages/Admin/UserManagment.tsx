@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Pagination, } from "@mui/material";
+import { TextField, Pagination } from "@mui/material";
 
 interface User {
   id: string;
@@ -49,7 +49,7 @@ const UserManagement: React.FC = () => {
   //   }
   // };
 
-  //this is hard coded data 
+  //this is hard coded data
   const fetchUsers = async () => {
     setLoading(true);
 
@@ -127,7 +127,6 @@ const UserManagement: React.FC = () => {
     setLoading(false);
   };
 
-
   useEffect(() => {
     fetchUsers();
   }, [page, search]);
@@ -170,7 +169,10 @@ const UserManagement: React.FC = () => {
               <div className="mb-4">
                 <div className="flex items-center mb-4">
                   <img
-                    src={user.profilePictureUrl || "https://via.placeholder.com/100"}
+                    src={
+                      user.profilePictureUrl ||
+                      "https://via.placeholder.com/100"
+                    }
                     alt={user.name}
                     className="w-16 h-16 rounded-full mr-4"
                   />
@@ -178,7 +180,8 @@ const UserManagement: React.FC = () => {
                     <h3 className="text-lg font-semibold">{user.name}</h3>
                     <p className="text-sm text-gray-500">
                       {/* If the user has an artwork category, they are an Artist */}
-                      {user.artworkCategories && user.artworkCategories.length > 0
+                      {user.artworkCategories &&
+                      user.artworkCategories.length > 0
                         ? "Artist"
                         : "Buyer"}
                     </p>
@@ -197,11 +200,13 @@ const UserManagement: React.FC = () => {
                     <strong>Phone:</strong> {user.phoneNumber}
                   </p>
                 )}
-                {user.artworkCategories && user.artworkCategories.length > 0 && (
-                  <p className="text-sm text-gray-600 py-1">
-                    <strong>Categories:</strong> {user.artworkCategories.join(", ")}
-                  </p>
-                )}
+                {user.artworkCategories &&
+                  user.artworkCategories.length > 0 && (
+                    <p className="text-sm text-gray-600 py-1">
+                      <strong>Categories:</strong>{" "}
+                      {user.artworkCategories.join(", ")}
+                    </p>
+                  )}
               </div>
               <div className="flex justify-start space-x-2 py-2">
                 <button
@@ -221,7 +226,6 @@ const UserManagement: React.FC = () => {
           ))
         )}
       </div>
-
 
       {/* Pagination */}
       <div className="flex justify-center mt-4">
