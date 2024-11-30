@@ -31,7 +31,7 @@ const CATEGORIES = [
   "Abstract",
   "Portrait",
   "Landscape",
-  "Still Life"
+  "Still Life",
 ];
 
 const AVAILABLE_TAGS = [
@@ -46,7 +46,7 @@ const AVAILABLE_TAGS = [
   "Nature",
   "Urban",
   "Portrait",
-  "Landscape"
+  "Landscape",
 ];
 
 const NewArtAdd = () => {
@@ -69,39 +69,40 @@ const NewArtAdd = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
- const handleInputChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-) => {
-  const { name, value } = e.target;
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const { name, value } = e.target;
 
-  if (name.includes(".")) {
-    const [parent, child] = name.split(".");
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
 
-    setProduct((prev) => {
-      const parentValue = prev[parent as keyof Product];
+      setProduct((prev) => {
+        const parentValue = prev[parent as keyof Product];
 
-      // Ensure parentValue is an object before using the spread operator
-      if (typeof parentValue === "object" && parentValue !== null) {
-        return {
-          ...prev,
-          [parent]: {
-            ...parentValue,
-            [child]: value,
-          },
-        };
-      }
+        // Ensure parentValue is an object before using the spread operator
+        if (typeof parentValue === "object" && parentValue !== null) {
+          return {
+            ...prev,
+            [parent]: {
+              ...parentValue,
+              [child]: value,
+            },
+          };
+        }
 
-      // If it's not an object, return the previous state unchanged
-      return prev;
-    });
-  } else {
-    setProduct((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-};
-
+        // If it's not an object, return the previous state unchanged
+        return prev;
+      });
+    } else {
+      setProduct((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
 
   const handleTagToggle = (tag: string) => {
     setProduct((prev) => ({
@@ -141,7 +142,7 @@ const NewArtAdd = () => {
       }, 200);
 
       const imageUrl = await uploadImageToCloudinary(file);
-      
+
       clearInterval(progressInterval);
       setUploadProgress(100);
       setProduct((prev) => ({ ...prev, imageUrl }));
@@ -168,7 +169,7 @@ const NewArtAdd = () => {
     try {
       const response = await apiClient.post("/products", {
         ...product,
-        stockQuantity: 1
+        stockQuantity: 1,
       });
 
       if (response.success) {
@@ -185,11 +186,15 @@ const NewArtAdd = () => {
 
   return (
     <div className="w-full max-w-3xl p-6 mx-auto bg-white rounded-lg shadow-lg">
-      <h2 className="mb-6 text-2xl font-bold text-green-900">Create New Artwork</h2>
+      <h2 className="mb-6 text-2xl font-bold text-green-900">
+        Create New Artwork
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Image Upload Section */}
         <div className="space-y-4">
-          <label className="block text-sm font-medium text-green-900">Artwork Image</label>
+          <label className="block text-sm font-medium text-green-900">
+            Artwork Image
+          </label>
           <div className="p-6 text-center border-2 border-gray-300 border-dashed rounded-lg hover:border-green-900">
             {!previewUrl && !product.imageUrl ? (
               <div className="space-y-4">
@@ -208,9 +213,13 @@ const NewArtAdd = () => {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) => handleImageUpload(e.target.files?.[0] || null)}
+                    onChange={(e) =>
+                      handleImageUpload(e.target.files?.[0] || null)
+                    }
                   />
-                  <p className="mt-2 text-sm text-gray-500">PNG, JPG up to 5MB</p>
+                  <p className="mt-2 text-sm text-gray-500">
+                    PNG, JPG up to 5MB
+                  </p>
                 </div>
               </div>
             ) : (
@@ -251,7 +260,10 @@ const NewArtAdd = () => {
         {/* Basic Information */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-green-900"
+            >
               Artwork Name
             </label>
             <input
@@ -265,7 +277,10 @@ const NewArtAdd = () => {
           </div>
 
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-green-900"
+            >
               Category
             </label>
             <select
@@ -286,7 +301,10 @@ const NewArtAdd = () => {
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-green-900"
+            >
               Price
             </label>
             <input
@@ -303,7 +321,10 @@ const NewArtAdd = () => {
           </div>
 
           <div>
-            <label htmlFor="medium" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="medium"
+              className="block text-sm font-medium text-green-900"
+            >
               Medium
             </label>
             <input
@@ -317,7 +338,10 @@ const NewArtAdd = () => {
           </div>
 
           <div>
-            <label htmlFor="style" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="style"
+              className="block text-sm font-medium text-green-900"
+            >
               Style
             </label>
             <input
@@ -354,7 +378,10 @@ const NewArtAdd = () => {
 
           {/* Dimensions */}
           <div>
-            <label htmlFor="dimensions.length" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="dimensions.length"
+              className="block text-sm font-medium text-green-900"
+            >
               Length (cm)
             </label>
             <input
@@ -370,7 +397,10 @@ const NewArtAdd = () => {
           </div>
 
           <div>
-            <label htmlFor="dimensions.width" className="block text-sm font-medium text-green-900">
+            <label
+              htmlFor="dimensions.width"
+              className="block text-sm font-medium text-green-900"
+            >
               Width (cm)
             </label>
             <input
@@ -387,7 +417,10 @@ const NewArtAdd = () => {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-green-900">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-green-900"
+          >
             Description
           </label>
           <textarea
