@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import {
   Package,
@@ -144,6 +145,7 @@ const CustomerDashboard = () => {
   return (
     <div className="flex bg-gray-50">
       <div className="flex-1">
+
         <div className="p-6 space-y-6">
           {/* Welcome Section */}
           <div className="p-6 text-white rounded-lg bg-gradient-to-r from-green-600 to-green-700">
@@ -152,6 +154,7 @@ const CustomerDashboard = () => {
             </h1>
             <p>Here's what's happening with your account today.</p>
           </div>
+
 
           {/* Order Summary */}
           <div className="p-6 bg-white border rounded-lg shadow-sm">
@@ -174,6 +177,7 @@ const CustomerDashboard = () => {
               ))}
             </div>
             <div className="space-y-3">
+
               {orders
                 .filter(
                   (order) =>
@@ -195,6 +199,7 @@ const CustomerDashboard = () => {
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium capitalize 
                         ${ORDER_STATUS_COLORS[order.status.toLowerCase() as keyof typeof ORDER_STATUS_COLORS] || "bg-gray-100 text-gray-800"}`}
+
                     >
                       {order.status}
                     </span>
@@ -218,6 +223,7 @@ const CustomerDashboard = () => {
             <h2 className="flex items-center mb-4 text-xl font-semibold">
               <Heart size={20} className="mr-2" /> Wishlist
             </h2>
+
             {wishlistItems.length === 0 ? (
               <div className="text-center text-gray-500">
                 Your wishlist is empty
@@ -264,6 +270,7 @@ const CustomerDashboard = () => {
                     >
                       View All Wishlist Items{" "}
                       <ChevronRight className="ml-2" size={20} />
+
                     </button>
                   </div>
                 )}
@@ -300,10 +307,12 @@ const CustomerDashboard = () => {
                     placeholder="Describe your issue..."
                     className="w-full p-2 border rounded-lg"
                   ></textarea>
+
                   <button
                     onClick={() => navigate("/support/ticket")}
                     className="px-4 py-2 mt-2 text-white bg-green-600 rounded-lg hover:bg-green-700 w-full"
                   >
+
                     Submit Ticket
                   </button>
                 </div>
