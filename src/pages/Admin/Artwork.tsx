@@ -131,8 +131,8 @@ const Artwork: React.FC = () => {
       {/* Mobile view - card layout */}
       <div className="md:hidden space-y-4">
         {artworks.map((artwork) => (
-          <div 
-            key={artwork.id} 
+          <div
+            key={artwork.id}
             className="border rounded-lg p-4 shadow-sm flex items-center space-x-4"
           >
             <img
@@ -159,9 +159,12 @@ const Artwork: React.FC = () => {
       {confirmDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full">
-            <h2 className="text-xl font-bold mb-4 text-center">Confirm Delete</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Confirm Delete
+            </h2>
             <p className="text-gray-600 mb-6 text-center">
-              Are you sure you want to delete this artwork? This action cannot be undone.
+              Are you sure you want to delete this artwork? This action cannot
+              be undone.
             </p>
             <div className="flex justify-center space-x-4">
               <button

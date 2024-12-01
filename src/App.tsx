@@ -26,7 +26,6 @@ import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 
-
 //Import Admin Pages
 import AdDashborad from "./pages/Admin/Dashboard";
 import AdArtWork from "./pages/Admin/Artwork";
