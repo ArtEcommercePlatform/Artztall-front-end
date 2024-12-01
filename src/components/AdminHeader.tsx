@@ -9,10 +9,7 @@ interface HeaderProps {
   onToggleSidebar: () => void;
 }
 
-const AdminHeader: React.FC<HeaderProps> = ({
-  userName,
-  onToggleSidebar,
-}) => {
+const AdminHeader: React.FC<HeaderProps> = ({ userName, onToggleSidebar }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -43,10 +40,6 @@ const AdminHeader: React.FC<HeaderProps> = ({
           <Search size={20} />
         </button>
       </div>
-
-      
-
-     
 
       {/* Right Side Actions */}
       <div className="flex items-center space-x-4">

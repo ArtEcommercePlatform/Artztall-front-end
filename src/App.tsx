@@ -20,12 +20,12 @@ import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
 import Settings from "./pages/artisan/Settings";
 
 // Import Customer Dashboard Pages
-import CuDashboard from "./pages/Customer/Dashboard";
+
 import CuProducts from "./pages/Customer/PendingOrders";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
-import CuSettings from "./pages/Customer/settings";
+
 
 //Import Admin Pages
 import AdDashborad from "./pages/Admin/Dashboard";
@@ -34,6 +34,7 @@ import AdAuction from "./pages/Admin/Auction";
 import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
 import AdUserManagment from "./pages/Admin/UserManagment";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
+import CustomerDashboard from "./pages/Customer/Dashboard";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -58,17 +59,15 @@ const CustomerRoutes = () => {
   return (
     <CustomerLayout>
       <Routes>
-        <Route path="dashboard" element={<CuDashboard />} />
+        <Route path="dashboard" element={<CustomerDashboard />} />
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-        <Route path="settings" element={<CuSettings />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
   );
 };
-
 
 // Admin Routes Component
 const AdminRoutes = () => {

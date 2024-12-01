@@ -1,5 +1,15 @@
-import React, { useState } from 'react';
-import { User, Mail, Phone, Home, Lock, Save, X, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  User,
+  Mail,
+  Phone,
+  Home,
+  Lock,
+  Save,
+  X,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 // Define types for our password-related state
 type PasswordVisibilityState = {
@@ -26,34 +36,35 @@ const Settings = () => {
     confirmPassword: "",
   });
 
-  const [passwordVisibility, setPasswordVisibility] = useState<PasswordVisibilityState>({
-    currentPassword: false,
-    newPassword: false,
-    confirmPassword: false,
-  });
+  const [passwordVisibility, setPasswordVisibility] =
+    useState<PasswordVisibilityState>({
+      currentPassword: false,
+      newPassword: false,
+      confirmPassword: false,
+    });
 
   const [notification, setNotification] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPasswordData(prev => ({
+    setPasswordData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const togglePasswordVisibility = (field: PasswordField) => {
-    setPasswordVisibility(prev => ({
+    setPasswordVisibility((prev) => ({
       ...prev,
-      [field]: !prev[field]
+      [field]: !prev[field],
     }));
   };
 
@@ -87,12 +98,12 @@ const Settings = () => {
     setTimeout(() => setNotification(""), 3000);
   };
 
-  const PasswordInput = ({ 
-    label, 
-    name, 
-    value, 
-    onChange, 
-    isVisible 
+  const PasswordInput = ({
+    label,
+    name,
+    value,
+    onChange,
+    isVisible,
   }: {
     label: string;
     name: PasswordField;
@@ -101,7 +112,9 @@ const Settings = () => {
     isVisible: boolean;
   }) => (
     <div>
-      <label className="block mb-1 text-sm font-medium text-gray-700">{label}</label>
+      <label className="block mb-1 text-sm font-medium text-gray-700">
+        {label}
+      </label>
       <div className="relative">
         <input
           type={isVisible ? "text" : "password"}
@@ -116,7 +129,11 @@ const Settings = () => {
           onClick={() => togglePasswordVisibility(name)}
           className="absolute text-gray-500 -translate-y-1/2 right-2 top-1/2 hover:text-gray-700"
         >
-          {isVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          {isVisible ? (
+            <EyeOff className="w-4 h-4" />
+          ) : (
+            <Eye className="w-4 h-4" />
+          )}
         </button>
       </div>
     </div>
@@ -160,8 +177,7 @@ const Settings = () => {
               />
             </div>
 
-            
-            <div className='mt-3'>
+            <div className="mt-3">
               <label className="flex items-center mt-3 mb-1 text-sm font-medium text-gray-700">
                 <User className="w-4 h-4 mr-2 text-green-600" />
                 Name
@@ -175,8 +191,7 @@ const Settings = () => {
               />
             </div>
 
-        
-            <div className='mt-3'>
+            <div className="mt-3">
               <label className="flex items-center mt-3 mb-1 text-sm font-medium text-gray-700">
                 <Mail className="w-4 h-4 mr-2 text-green-600" />
                 Email
@@ -246,7 +261,9 @@ const Settings = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md p-4 bg-white shadow-xl rounded-xl">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-bold text-green-900">Change Password</h2>
+              <h2 className="text-lg font-bold text-green-900">
+                Change Password
+              </h2>
               <button
                 onClick={() => setIsPasswordDialogOpen(false)}
                 className="text-gray-500 hover:text-gray-700"
