@@ -11,6 +11,7 @@ import {
   ShoppingCart,
   LogOut,
   LucideProps,
+  Heart,
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
 
@@ -37,8 +38,8 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
     },
     {
       icon: WrappedIcon(Package),
-      label: "Pending Orders",
-      href: "/customer/products",
+      label: "Orders Management",
+      href: "/customer/orders",
     },
     {
       icon: WrappedIcon(ImageIcon),
@@ -46,6 +47,11 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
       href: "/customer/gallery",
     },
     { icon: WrappedIcon(Gavel), label: "Auctions", href: "/customer/auctions" },
+    {
+      icon: WrappedIcon(Heart),
+      label: "Wishlist",
+      href: "/customer/wish-list",
+    },
     {
       icon: WrappedIcon(Settings),
       label: "Settings",

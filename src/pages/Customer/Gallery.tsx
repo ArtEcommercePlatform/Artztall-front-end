@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Share2, ExternalLink, ShoppingCart } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../../services/apiClient'; 
+import React, { useState, useEffect } from "react";
+import { Heart, Share2, ExternalLink, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { apiClient } from "../../services/apiClient";
 
 interface Product {
   id: string;
@@ -31,8 +31,8 @@ const Gallery: React.FC = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState({
-    category: 'All',
-    priceRange: 'All'
+    category: "All",
+    priceRange: "All",
   });
   const [wishlist, setWishlist] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -42,42 +42,44 @@ const Gallery: React.FC = () => {
       const params = {
         page,
         size: 9,
-        
       };
 
-      const response = await apiClient.get<PaginatedResponse>('/products', params);
-      
+      const response = await apiClient.get<PaginatedResponse>(
+        "/products",
+        params,
+      );
+
       if (response.success) {
         setProducts(response.data.content);
         setTotalPages(response.data.totalPages);
       }
     } catch (error) {
-      console.error('Error fetching products', error);
+      console.error("Error fetching products", error);
     }
   };
 
   const addToWishlist = async (productId: string) => {
     try {
-      const userId = localStorage.getItem('userId'); 
-      
+      const userId = localStorage.getItem("userId");
+
       await apiClient.post(`/users/${userId}/wishlist`, {
         productId,
-        addedOn: new Date().toISOString()
+        addedOn: new Date().toISOString(),
       });
-      
-      setWishlist(prev => 
-        prev.includes(productId) 
-          ? prev.filter(id => id !== productId) 
-          : [...prev, productId]
+
+      setWishlist((prev) =>
+        prev.includes(productId)
+          ? prev.filter((id) => id !== productId)
+          : [...prev, productId],
       );
     } catch (error) {
-      console.error('Error adding to wishlist', error);
+      console.error("Error adding to wishlist", error);
     }
   };
 
   const handleBuyNow = (product: Product) => {
     if (product.available) {
-      navigate('/customer/make-order', { state: { product } });
+      navigate("/customer/make-order", { state: { product } });
     }
   };
 
@@ -85,47 +87,60 @@ const Gallery: React.FC = () => {
     fetchProducts();
   }, [page, filters]);
 
-  const categories = ['All', 'Abstract', 'Landscape', 'Portrait', 'Digital'];
-  const priceRanges = ['All', 'Under LKR 100,000', 'LKR 100,000-LKR 200,000', 'Over LKR 200,000'];
+  const categories = ["All", "Abstract", "Landscape", "Portrait", "Digital"];
+  const priceRanges = [
+    "All",
+    "Under LKR 100,000",
+    "LKR 100,000-LKR 200,000",
+    "Over LKR 200,000",
+  ];
 
   return (
     <div className="p-6 bg-gray-50">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Art Gallery</h1>
-        
+
         <div className="flex space-x-4">
-          <select 
+          <select
             className="px-4 py-2 border rounded-lg"
             value={filters.category}
-            onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, category: e.target.value }))
+            }
           >
-            {categories.map(category => (
-              <option key={category} value={category}>{category}</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
             ))}
           </select>
-          
-          <select 
+
+          <select
             className="px-4 py-2 border rounded-lg"
             value={filters.priceRange}
-            onChange={(e) => setFilters(prev => ({ ...prev, priceRange: e.target.value }))}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, priceRange: e.target.value }))
+            }
           >
-            {priceRanges.map(range => (
-              <option key={range} value={range}>{range}</option>
+            {priceRanges.map((range) => (
+              <option key={range} value={range}>
+                {range}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map(product => (
-          <div 
-            key={product.id} 
-            className={`bg-white rounded-lg shadow-md overflow-hidden ${!product.available ? 'opacity-50' : ''}`}
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className={`bg-white rounded-lg shadow-md overflow-hidden ${!product.available ? "opacity-50" : ""}`}
           >
             <div className="relative">
-              <img 
-                src={product.imageUrl} 
-                alt={product.name} 
+              <img
+                src={product.imageUrl}
+                alt={product.name}
                 className="w-full h-64 object-cover"
               />
               {!product.available && (
@@ -134,12 +149,12 @@ const Gallery: React.FC = () => {
                 </div>
               )}
               <div className="absolute top-4 right-4 flex space-x-2">
-                <button 
+                <button
                   onClick={() => addToWishlist(product.id)}
                   className="p-2 bg-white rounded-full shadow-md"
                 >
-                  <Heart 
-                    size={20} 
+                  <Heart
+                    size={20}
                     className={
                       wishlist.includes(product.id)
                         ? "fill-red-500 text-red-500"
@@ -169,13 +184,14 @@ const Gallery: React.FC = () => {
                   <span className="font-medium">Medium:</span> {product.medium}
                 </p>
                 <p className="text-sm text-gray-500">
-                  <span className="font-medium">Dimensions:</span> 
-                  {product.dimensions.length}" x {product.dimensions.width}" {product.dimensions.unit}
+                  <span className="font-medium">Dimensions:</span>
+                  {product.dimensions.length}" x {product.dimensions.width}"{" "}
+                  {product.dimensions.unit}
                 </p>
 
                 <div className="flex justify-between items-center mt-4">
                   {product.available ? (
-                    <button 
+                    <button
                       onClick={() => handleBuyNow(product)}
                       className="flex items-center space-x-2 bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
                     >
@@ -199,13 +215,13 @@ const Gallery: React.FC = () => {
       {/* Pagination */}
       <div className="flex justify-center mt-8 space-x-4">
         {Array.from({ length: totalPages }, (_, i) => (
-          <button 
-            key={i} 
+          <button
+            key={i}
             onClick={() => setPage(i)}
             className={`px-4 py-2 rounded-lg ${
-              page === i 
-                ? 'bg-green-800 text-white' 
-                : 'bg-gray-200 text-gray-800'
+              page === i
+                ? "bg-green-800 text-white"
+                : "bg-gray-200 text-gray-800"
             }`}
           >
             {i + 1}
