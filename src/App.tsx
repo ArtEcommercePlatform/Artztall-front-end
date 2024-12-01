@@ -21,7 +21,6 @@ import Settings from "./pages/artisan/Settings";
 
 // Import Customer Dashboard Pages
 
-import CuProducts from "./pages/Customer/PendingOrders";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
@@ -34,6 +33,10 @@ import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
 import AdUserManagment from "./pages/Admin/UserManagment";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
 import CustomerDashboard from "./pages/Customer/Dashboard";
+import MakeOrder from "./pages/Customer/MakeOrder";
+import Payment from "./pages/Customer/Payment";
+import Wishlist from "./pages/Customer/WishList";
+import OrdersManagement from "./pages/Customer/OrdersManagement";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -59,9 +62,12 @@ const CustomerRoutes = () => {
     <CustomerLayout>
       <Routes>
         <Route path="dashboard" element={<CustomerDashboard />} />
-        <Route path="products" element={<CuProducts />} />
+        <Route path="orders" element={<OrdersManagement />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
+        <Route path="make-order" element={<MakeOrder />} />
+        <Route path="payment" element={<Payment />} />
+        <Route path="wish-list" element={<Wishlist />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
