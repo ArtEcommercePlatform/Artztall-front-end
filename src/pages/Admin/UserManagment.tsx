@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Pagination } from "@mui/material";
+import React, { useState, useEffect } from 'react';
+import { Search, Ban, AlertOctagon } from 'lucide-react';
 
 interface User {
   id: string;
@@ -31,25 +31,6 @@ const UserManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
-  //uncomment this to actual api call
-
-  // const fetchUsers = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch(
-  //       `https://dummyapi.io/users?page=${page - 1}&size=5&search=${search}`
-  //     );
-  //     const data: PaginatedResponse = await response.json();
-  //     setUsers(data.content);
-  //     setTotalPages(data.totalPages);
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  //this is hard coded data
   const fetchUsers = async () => {
     setLoading(true);
 
@@ -145,21 +126,25 @@ const UserManagement: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-7xl mx-auto">
       {/* Search Bar */}
-      <TextField
-        label="Search Users"
-        variant="outlined"
-        fullWidth
-        className="mb-4"
-        value={search}
-        onChange={handleSearchChange}
-      />
+      <div className="relative mb-4">
+        <input
+          type="text"
+          placeholder="Search Users"
+          className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      </div>
 
       {/* Profile Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-6">
         {loading ? (
-          <p className="text-center text-gray-500">Loading...</p>
+          <div className="col-span-full flex justify-center items-center">
+            <p className="text-gray-500">Loading...</p>
+          </div>
         ) : (
           users.map((user) => (
             <div
@@ -174,14 +159,12 @@ const UserManagement: React.FC = () => {
                       "https://via.placeholder.com/100"
                     }
                     alt={user.name}
-                    className="w-16 h-16 rounded-full mr-4"
+                    className="w-16 h-16 rounded-full mr-4 object-cover"
                   />
                   <div>
                     <h3 className="text-lg font-semibold">{user.name}</h3>
                     <p className="text-sm text-gray-500">
-                      {/* If the user has an artwork category, they are an Artist */}
-                      {user.artworkCategories &&
-                      user.artworkCategories.length > 0
+                      {user.artworkCategories && user.artworkCategories.length > 0
                         ? "Artist"
                         : "Buyer"}
                     </p>
@@ -200,26 +183,27 @@ const UserManagement: React.FC = () => {
                     <strong>Phone:</strong> {user.phoneNumber}
                   </p>
                 )}
-                {user.artworkCategories &&
-                  user.artworkCategories.length > 0 && (
-                    <p className="text-sm text-gray-600 py-1">
-                      <strong>Categories:</strong>{" "}
-                      {user.artworkCategories.join(", ")}
-                    </p>
-                  )}
+                {user.artworkCategories && user.artworkCategories.length > 0 && (
+                  <p className="text-sm text-gray-600 py-1">
+                    <strong>Categories:</strong>{" "}
+                    {user.artworkCategories.join(", ")}
+                  </p>
+                )}
               </div>
               <div className="flex justify-start space-x-2 py-2">
                 <button
-                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center space-x-2"
                   onClick={() => handleSuspend(user.id)}
                 >
-                  Suspend
+                  <AlertOctagon size={16} />
+                  <span>Suspend</span>
                 </button>
                 <button
-                  className="px-4 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+                  className="px-4 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600 flex items-center space-x-2"
                   onClick={() => handleBan(user.id)}
                 >
-                  Ban
+                  <Ban size={16} />
+                  <span>Ban</span>
                 </button>
               </div>
             </div>
@@ -228,13 +212,20 @@ const UserManagement: React.FC = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-4">
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(_, value) => setPage(value)}
-          color="primary"
-        />
+      <div className="flex justify-center mt-4 space-x-2">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+          <button
+            key={pageNum}
+            className={`px-4 py-2 rounded ${
+              page === pageNum
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+            onClick={() => setPage(pageNum)}
+          >
+            {pageNum}
+          </button>
+        ))}
       </div>
     </div>
   );

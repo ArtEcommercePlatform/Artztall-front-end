@@ -2,13 +2,7 @@ import { useState } from 'react';
 import { Package, MessageSquare, 
          Heart, Clock, Mail, Phone } from 'lucide-react';
 
-//import src/assets/images/customerDhashbord folder imagers
-import  image1  from '../../assets/images/customerDhashbord/pexels-anniroenkae-2983141 (1).jpg';
-import  image3  from '../../assets/images/customerDhashbord/pexels-sergey-bosak-1503313829-27049007.jpg';
-import  image2  from '../../assets/images/customerDhashbord/pexels-frank-cone-140140-2258536 (1).jpg';
-import  image4  from '../../assets/images/customerDhashbord/pexels-mccutcheon-1149019.jpg';
 
-import  image5  from '../../assets/images/customerDhashbord/pexels-msaimakin-29429466.jpg';
 
 
 
@@ -18,9 +12,9 @@ const CustomerDashboard = () => {
   
   // Mock data
   const recentItems = [
-    { id: 1, name: "Abstract Art Print", price: "$299", image: image4 },
-    { id: 2, name: "Nature Photography", price: "$199", image: image2 },
-    { id: 3, name: "Modern Sculpture", price: "$599", image:image3 }
+    { id: 1, name: "Abstract Art Print", price: "$299", image: '' },
+    { id: 2, name: "Nature Photography", price: "$199", image: 'image2' },
+    { id: 3, name: "Modern Sculpture", price: "$599", image:'image3' }
   ];
 
   const orders = [
@@ -30,8 +24,8 @@ const CustomerDashboard = () => {
   ];
 
   const wishlistItems = [
-    { id: 1, name: "Abstract Painting", price: "$399", image: image1 },
-    { id: 2, name: "Landscape Photo", price: "$249", image: image5 }
+    { id: 1, name: "Abstract Painting", price: "$399", image: 'image1' },
+    { id: 2, name: "Landscape Photo", price: "$249", image: 'image5' }
   ];
 
  
