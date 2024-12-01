@@ -45,7 +45,7 @@ const ArtisanRoutes = () => {
       <Routes>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="products" element={<Products />} />
-        <Route path="gallery" element={<Gallery />} />
+        <Route path="my-gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
         <Route path="settings" element={<Settings />} />
 

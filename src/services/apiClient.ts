@@ -101,6 +101,36 @@ class ApiClient {
       throw error;
     }
   }
+
+  async delete<T>(url: string, params?: any): Promise<ApiResponse<T>> {
+    try {
+      const response: AxiosResponse<T> = await this.client.delete(url, { params });
+      return { success: true, data: response.data };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  
+  async put<T>(url: string, data: any): Promise<ApiResponse<T>> {
+    try {
+      const response: AxiosResponse<T> = await this.client.put(url, data);
+      return { success: true, data: response.data };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  
+  async patch<T>(url: string, data: any): Promise<ApiResponse<T>> {
+    try {
+      const response: AxiosResponse<T> = await this.client.patch(url, data);
+      return { success: true, data: response.data };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  
+
 }
+
 
 export const apiClient = ApiClient.getInstance();

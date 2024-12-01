@@ -3,12 +3,13 @@ import ArticianHeader from "../../components/ArtisanHeader";
 import {
   LayoutDashboard,
   Package,
-  Image as ImageIcon,
+ 
   Gavel,
   Settings,
   X,
 } from "lucide-react";
 import logo from "../../assets/images/logo.png";
+import { UserData } from "../../types/types";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,19 +18,15 @@ interface LayoutProps {
 const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const userData = {
-    userName: "John Doe",
-    userAvatar: "/api/placeholder/32/2",
-    onToggleSidebar: toggleSidebar,
+  
+  const userData: UserData = {
+    userName: localStorage.getItem("userName") ?? "",
+    userAvatar: localStorage.getItem("profImg") ?? "",
   };
 
   const navigationItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
-    { icon: Package, label: "Products", href: "/artisan/products" },
+    { icon: Package, label: "My Gallery", href: "/artisan/my-gallery" },
 
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
     { icon: Settings, label: "Settings", href: "/artisan/settings" },
@@ -85,7 +82,9 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-hidden">
-        <ArticianHeader {...userData} />
+        <ArticianHeader onToggleSidebar={function (): void {
+          throw new Error("Function not implemented.");
+        } } {...userData} />
         <main className="flex-1 p-6 overflow-y-auto bg-gray-50">
           {children}
         </main>
