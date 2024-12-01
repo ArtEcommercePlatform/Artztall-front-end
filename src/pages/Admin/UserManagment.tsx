@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Ban, AlertOctagon } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Search, Ban, AlertOctagon } from "lucide-react";
 
 interface User {
   id: string;
@@ -164,7 +164,8 @@ const UserManagement: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-semibold">{user.name}</h3>
                     <p className="text-sm text-gray-500">
-                      {user.artworkCategories && user.artworkCategories.length > 0
+                      {user.artworkCategories &&
+                      user.artworkCategories.length > 0
                         ? "Artist"
                         : "Buyer"}
                     </p>
@@ -183,12 +184,13 @@ const UserManagement: React.FC = () => {
                     <strong>Phone:</strong> {user.phoneNumber}
                   </p>
                 )}
-                {user.artworkCategories && user.artworkCategories.length > 0 && (
-                  <p className="text-sm text-gray-600 py-1">
-                    <strong>Categories:</strong>{" "}
-                    {user.artworkCategories.join(", ")}
-                  </p>
-                )}
+                {user.artworkCategories &&
+                  user.artworkCategories.length > 0 && (
+                    <p className="text-sm text-gray-600 py-1">
+                      <strong>Categories:</strong>{" "}
+                      {user.artworkCategories.join(", ")}
+                    </p>
+                  )}
               </div>
               <div className="flex justify-start space-x-2 py-2">
                 <button
@@ -218,8 +220,8 @@ const UserManagement: React.FC = () => {
             key={pageNum}
             className={`px-4 py-2 rounded ${
               page === pageNum
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
             onClick={() => setPage(pageNum)}
           >

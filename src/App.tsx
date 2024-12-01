@@ -26,7 +26,6 @@ import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
 import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
 
-
 //Import Admin Pages
 import AdDashborad from "./pages/Admin/Dashboard";
 import AdArtWork from "./pages/Admin/Artwork";
@@ -35,6 +34,8 @@ import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
 import AdUserManagment from "./pages/Admin/UserManagment";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
 import CustomerDashboard from "./pages/Customer/Dashboard";
+import MakeOrder from "./pages/Customer/MakeOrder";
+import Payment from "./pages/Customer/Payment";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -63,6 +64,10 @@ const CustomerRoutes = () => {
         <Route path="products" element={<CuProducts />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
+        <Route path="auctions" element={<CuAuctions />} />
+        <Route path="make-order" element={<MakeOrder />} />
+        <Route path="payment" element={<Payment />} />
+
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>
