@@ -44,12 +44,11 @@ const MakeOrder: React.FC = () => {
 
       const orderPayload = {
         userId: orderDetails.userId,
-        items: [
-          {
-            productId: product.id,
-            quantity: 1, // Always 1 as per requirement
-          },
-        ],
+        item: {
+          productId: product.id,
+          quantity: 1, // Always 1 as per requirement
+        },
+
         shippingAddress: orderDetails.shippingAddress,
         specialInstructions: orderDetails.specialInstructions || "",
       };
@@ -58,7 +57,6 @@ const MakeOrder: React.FC = () => {
 
       if (response.success) {
         const orderId = response.data.id;
-        console.log(orderId);
 
         // Initiate payment
         const paymentPayload = {

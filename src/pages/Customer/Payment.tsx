@@ -7,6 +7,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { CheckCircle } from "lucide-react";
 import { apiClient } from "../../services/apiClient";
 
 // Replace with your actual Stripe publishable key
@@ -20,9 +21,10 @@ const PaymentForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const { product, paymentData, orderDetails } = location.state || {};
+  const { product, paymentData } = location.state || {};
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -67,13 +69,8 @@ const PaymentForm: React.FC = () => {
       );
 
       if (confirmResponse.success) {
-        navigate("/order-confirmation", {
-          state: {
-            product,
-            orderDetails,
-            paymentDetails: confirmResponse.data,
-          },
-        });
+        setPaymentSuccess(true);
+        setProcessing(false);
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -81,8 +78,46 @@ const PaymentForm: React.FC = () => {
     }
   };
 
+  const handleKeepExploring = () => {
+    navigate("/customer/gallery");
+  };
+
   if (!product || !paymentData) {
     return <div>No payment details available</div>;
+  }
+
+  // Success Popup Component
+  const SuccessPopup = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
+        <CheckCircle
+          className="mx-auto mb-6 text-green-500"
+          size={80}
+          strokeWidth={1.5}
+        />
+        <h2 className="text-3xl font-bold text-green-900 mb-4">
+          Payment Successful!
+        </h2>
+        <p className="text-gray-700 mb-6">
+          Thank you for your purchase. Your transaction has been completed
+          successfully.
+        </p>
+        <button
+          onClick={handleKeepExploring}
+          className="w-full bg-green-800 text-white py-4 rounded-xl 
+                     hover:bg-green-700 transition duration-300 
+                     transform hover:scale-105 focus:outline-none 
+                     focus:ring-2 focus:ring-green-500"
+        >
+          Keep Exploring
+        </button>
+      </div>
+    </div>
+  );
+
+  // Render payment form or success popup
+  if (paymentSuccess) {
+    return <SuccessPopup />;
   }
 
   return (
