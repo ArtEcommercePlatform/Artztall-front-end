@@ -1,5 +1,5 @@
-import  { useState, useEffect } from 'react';
-import { apiClient } from '../../services/apiClient'; // Adjust the import path as needed
+import { useState, useEffect } from "react";
+import { apiClient } from "../../services/apiClient"; // Adjust the import path as needed
 
 interface Product {
   id: string;
@@ -22,14 +22,16 @@ const Gallery = () => {
       try {
         // Get the artist ID from localStorage
         const artistId = localStorage.getItem("userId");
-        
+
         if (!artistId) {
           throw new Error("No artist ID found");
         }
 
         // Fetch products for the artist
-        const response = await apiClient.get<Product[]>(`/products/artist/${artistId}`);
-        
+        const response = await apiClient.get<Product[]>(
+          `/products/artist/${artistId}`,
+        );
+
         if (response.success) {
           setProducts(response.data);
         } else {
@@ -46,18 +48,24 @@ const Gallery = () => {
   }, []);
 
   // Function to update product availability
-  const toggleProductAvailability = async (productId: string, currentAvailability: boolean) => {
+  const toggleProductAvailability = async (
+    productId: string,
+    currentAvailability: boolean,
+  ) => {
     try {
-      const response = await apiClient.patch<Product>(`/products/${productId}/availability`, {
-        available: !currentAvailability
-      });
+      const response = await apiClient.patch<Product>(
+        `/products/${productId}/availability`,
+        {
+          available: !currentAvailability,
+        },
+      );
 
       if (response.success) {
         // Update the product in the state
-        setProducts(prevProducts => 
-          prevProducts.map(product => 
-            product.id === productId ? response.data : product
-          )
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.id === productId ? response.data : product,
+          ),
         );
       }
     } catch (err: any) {
@@ -94,14 +102,14 @@ const Gallery = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
-            <div 
-              key={product.id} 
+            <div
+              key={product.id}
               className="border rounded-lg overflow-hidden shadow-lg"
             >
               {product.imageUrl ? (
-                <img 
-                  src={product.imageUrl} 
-                  alt={product.name} 
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
                   className="w-full h-64 object-cover"
                 />
               ) : (
@@ -109,7 +117,7 @@ const Gallery = () => {
                   No Image
                 </div>
               )}
-              
+
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                 <p className="text-gray-600 mb-2">{product.description}</p>
@@ -121,14 +129,16 @@ const Gallery = () => {
                     </p>
                   </div>
                   <button
-                    onClick={() => toggleProductAvailability(product.id, product.available)}
+                    onClick={() =>
+                      toggleProductAvailability(product.id, product.available)
+                    }
                     className={`px-3 py-1 rounded ${
-                      product.available 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-red-500 text-white'
+                      product.available
+                        ? "bg-green-500 text-white"
+                        : "bg-red-500 text-white"
                     }`}
                   >
-                    {product.available ? 'Available' : 'Unavailable'}
+                    {product.available ? "Available" : "Unavailable"}
                   </button>
                 </div>
               </div>

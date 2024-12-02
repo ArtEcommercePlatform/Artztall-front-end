@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import ArticianHeader from "../../components/ArtisanHeader";
-import {
-  LayoutDashboard,
-  Package,
- 
-  Gavel,
-  Settings,
-  X,
-} from "lucide-react";
+import { LayoutDashboard, Package, Gavel, Settings, X } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import { UserData } from "../../types/types";
 
@@ -18,7 +11,6 @@ interface LayoutProps {
 const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  
   const userData: UserData = {
     userName: localStorage.getItem("userName") ?? "",
     userAvatar: localStorage.getItem("profImg") ?? "",
@@ -82,9 +74,12 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-hidden">
-        <ArticianHeader onToggleSidebar={function (): void {
-          throw new Error("Function not implemented.");
-        } } {...userData} />
+        <ArticianHeader
+          onToggleSidebar={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          {...userData}
+        />
         <main className="flex-1 p-6 overflow-y-auto bg-gray-50">
           {children}
         </main>

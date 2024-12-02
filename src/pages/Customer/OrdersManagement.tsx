@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { apiClient } from "../../services/apiClient";
 
-// Keep existing interfaces and enums from the previous code
+// Updated interfaces to match new data structure
 interface OrderItem {
   productId: string;
   productName: string;
@@ -32,7 +32,7 @@ interface OrderItem {
 interface Order {
   id: string;
   userId: string;
-  items: OrderItem[];
+  item: OrderItem;
   totalAmount: number;
   status: OrderStatus;
   paymentStatus: string;
@@ -52,7 +52,7 @@ enum OrderStatus {
   EXPIRED = "EXPIRED",
 }
 
-// Keep existing status colors and icons
+// Status colors remain the same
 const statusColors = {
   [OrderStatus.PENDING]: "bg-yellow-100 text-yellow-800",
   [OrderStatus.CONFIRMED]: "bg-blue-100 text-blue-800",
@@ -129,7 +129,10 @@ const OrdersManagement: React.FC = () => {
   // Pagination logic
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredOrders.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder,
+  );
 
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -137,7 +140,11 @@ const OrdersManagement: React.FC = () => {
   // Pagination component
   const Pagination = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(filteredOrders.length / ordersPerPage); i++) {
+    for (
+      let i = 1;
+      i <= Math.ceil(filteredOrders.length / ordersPerPage);
+      i++
+    ) {
       pageNumbers.push(i);
     }
 
@@ -155,7 +162,9 @@ const OrdersManagement: React.FC = () => {
             key={number}
             onClick={() => paginate(number)}
             className={`px-4 py-2 border rounded ${
-              currentPage === number ? 'bg-[#094129] text-white' : 'bg-white text-gray-700'
+              currentPage === number
+                ? "bg-[#094129] text-white"
+                : "bg-white text-gray-700"
             }`}
           >
             {number}
@@ -248,7 +257,7 @@ const OrdersManagement: React.FC = () => {
                       Order Details
                     </th>
                     <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                      Items
+                      Product Details
                     </th>
                     <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                       Total Amount
@@ -263,11 +272,6 @@ const OrdersManagement: React.FC = () => {
                     <tr key={order.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
-                          <img
-                            src={order.items[0]?.imageUrl || "/placeholder.jpg"}
-                            alt={order.items[0]?.productName || "Order item"}
-                            className="object-cover w-10 h-10 rounded-md"
-                          />
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
                               {order.id}
@@ -279,12 +283,21 @@ const OrdersManagement: React.FC = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">
-                          {order.items.map((item) => (
-                            <div key={item.productId}>
-                              {item.quantity} x {item.productName}
+                        <div className="flex items-center">
+                          <img
+                            src={order.item.imageUrl || "/placeholder.jpg"}
+                            alt={order.item.productName || "Order item"}
+                            className="object-cover w-10 h-10 rounded-md mr-4"
+                          />
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {order.item.productName}
                             </div>
-                          ))}
+                            <div className="text-sm text-gray-500">
+                              {order.item.quantity} x LKR{" "}
+                              {order.item.price.toLocaleString()}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -307,7 +320,7 @@ const OrdersManagement: React.FC = () => {
               </table>
             </div>
           </div>
-          
+
           {/* Pagination Component */}
           <Pagination />
         </>

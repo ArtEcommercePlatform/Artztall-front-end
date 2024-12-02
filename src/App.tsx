@@ -13,7 +13,7 @@ import ArtistMain from "./pages/ArtistMain";
 
 // Import Artisan Dashboard Pages
 import Dashboard from "./pages/artisan/Dashboard";
-import Products from "./pages/artisan/Products";
+import Products from "./pages/artisan/Orders";
 import Gallery from "./pages/artisan/Gallery";
 import Auctions from "./pages/artisan/Auctions";
 import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
@@ -91,20 +91,6 @@ const AdminRoutes = () => {
   );
 };
 function App() {
-  // const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setIsInitialLoad(false);
-  //   }, 2000);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // if (isInitialLoad) {
-  //   return <SplashScreen />; // Show SplashScreen only on the initial load
-  // }
-
   return (
     <ToastProvider>
       <Router>
