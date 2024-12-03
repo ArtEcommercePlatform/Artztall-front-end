@@ -69,8 +69,7 @@ const CustomerRoutes = () => {
         <Route path="orders" element={<OrdersManagement />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-        <Route path="make-order" element={<MakeOrder />} />
-        <Route path="payment" element={<Payment />} />
+
         <Route path="wish-list" element={<Wishlist />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
@@ -106,6 +105,8 @@ function App() {
               <Route path="/artismain" element={<ArtistMain />} />
               <Route path="/artisan/*" element={<ArtisanRoutes />} />
               <Route path="/customer/*" element={<CustomerRoutes />} />
+              <Route path="/customer/make-order" element={<MakeOrder />} />
+              <Route path="/customer/payment" element={<Payment />} />
               <Route path="/admin/*" element={<AdminRoutes />} />
             </Routes>
           </div>

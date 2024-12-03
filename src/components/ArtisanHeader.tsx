@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, Search, ChevronDown } from "lucide-react";
+import { Menu, X, Search, ChevronDown, LogOut } from "lucide-react";
 import { NotificationDropdown } from "../components/NotificationDropdown";
 
 import userIcon from "../assets/icons/user.png";
@@ -18,11 +18,11 @@ const ArticianHeader: React.FC<HeaderProps> = ({
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const toggleProfileDropdown = () => {
     setIsProfileOpen(!isProfileOpen);
   };
-
-  const navigate = useNavigate();
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -96,7 +96,6 @@ const ArticianHeader: React.FC<HeaderProps> = ({
       {/* Right Side Actions */}
       <div className="flex items-center space-x-4">
         {/* Notifications */}
-
         <button className="relative text-gray-500 hover:text-gray-700">
           <NotificationDropdown />
           <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
@@ -128,20 +127,6 @@ const ArticianHeader: React.FC<HeaderProps> = ({
               ></div>
 
               <div className="absolute -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2 w-80 lg:static lg:transform-none lg:w-48 lg:mt-2 lg:border lg:border-gray-200">
-                <div className="p-4 lg:hidden">
-                  <div className="flex items-center mb-4 space-x-3">
-                    <img
-                      src={"src/assets/icons/user.png"}
-                      alt="Profile"
-                      className="w-12 h-12 rounded-full"
-                    />
-                    <div>
-                      <div className="font-semibold">{userName}</div>
-                      <div className="text-sm text-gray-500">View Profile</div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="py-2">
                   <a
                     href="/profile"
@@ -149,24 +134,21 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                   >
                     Profile
                   </a>
-                  <a
-                    href="/settings"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Settings
-                  </a>
                   <hr className="my-1" />
-                  <button
-                    className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
                 </div>
               </div>
             </div>
           )}
         </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center px-3 py-2 space-x-2 text-red-600 border border-red-600 rounded-lg hover:bg-red-50"
+        >
+          <LogOut size={16} />
+          <span className="hidden md:block">Logout</span>
+        </button>
       </div>
     </header>
   );

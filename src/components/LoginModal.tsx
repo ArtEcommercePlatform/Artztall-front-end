@@ -39,7 +39,6 @@ interface LoginResponse {
 }
 
 const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
-  const [activeTab, setActiveTab] = useState<"buyer" | "artist">("buyer");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -57,10 +56,10 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
     setIsLoading(true);
 
     try {
-      const response = await apiClient.post<LoginResponse>("/auth/login", {
-        ...formData,
-        role: activeTab.toUpperCase(),
-      });
+      const response = await apiClient.post<LoginResponse>(
+        "/auth/login",
+        formData,
+      );
 
       if (response.success && response.data) {
         // Store user data in localStorage
@@ -72,6 +71,8 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
 
         // Show success message
         toast.success(`Welcome back, ${response.data.name}!`);
+
+        // Navigate to respective dashboard based on user type
         if (response.data.userType === "BUYER") {
           navigate("/customer/dashboard");
         } else if (response.data.userType === "ARTISAN") {
@@ -116,32 +117,9 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
           <X className="h-6 w-6" />
         </button>
 
-        <div className="flex mb-6 border-b">
-          <button
-            className={`flex-1 py-3 text-center ${
-              activeTab === "buyer"
-                ? "border-b-2 border-[#094129] text-[#094129] font-medium"
-                : "text-gray-500"
-            }`}
-            onClick={() => setActiveTab("buyer")}
-            disabled={isLoading}
-            type="button"
-          >
-            Buyer
-          </button>
-          <button
-            className={`flex-1 py-3 text-center ${
-              activeTab === "artist"
-                ? "border-b-2 border-[#094129] text-[#094129] font-medium"
-                : "text-gray-500"
-            }`}
-            onClick={() => setActiveTab("artist")}
-            disabled={isLoading}
-            type="button"
-          >
-            Artist
-          </button>
-        </div>
+        <h2 className="text-xl font-semibold text-gray-800 text-center mb-6">
+          Login
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -206,9 +184,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
             }`}
             disabled={isLoading}
           >
-            {isLoading
-              ? "Logging in..."
-              : `Login as ${activeTab === "buyer" ? "Buyer" : "Artist"}`}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
 
           <p className="text-center text-sm text-gray-600">
