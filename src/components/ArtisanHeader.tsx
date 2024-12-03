@@ -158,9 +158,7 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                   <hr className="my-1" />
                   <button
                     className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                    onClick={() => {
-                      handleLogout;
-                    }}
+                    onClick={handleLogout}
                   >
                     Logout
                   </button>
