@@ -37,6 +37,7 @@ import MakeOrder from "./pages/Customer/MakeOrder";
 import Payment from "./pages/Customer/Payment";
 import Wishlist from "./pages/Customer/WishList";
 import OrdersManagement from "./pages/Customer/OrdersManagement";
+import Orders from "./pages/artisan/Orders";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -47,6 +48,7 @@ const ArtisanRoutes = () => {
         <Route path="products" element={<Products />} />
         <Route path="my-gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
+        <Route path="orders" element={<Orders />} />
         <Route path="settings" element={<Settings />} />
 
         {/* Redirect to dashboard if no specific route matches */}

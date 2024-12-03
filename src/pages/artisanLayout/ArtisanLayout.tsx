@@ -19,6 +19,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
   const navigationItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
     { icon: Package, label: "My Gallery", href: "/artisan/my-gallery" },
+    { icon: Package, label: "Received Orders", href: "/artisan/orders" },
 
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
     { icon: Settings, label: "Settings", href: "/artisan/settings" },
