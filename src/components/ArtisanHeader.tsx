@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X, Search, Bell, ChevronDown } from "lucide-react";
+import { NotificationDropdown } from "../components/NotificationDropdown";
 
 import userIcon from "../assets/icons/user.png";
 
@@ -45,7 +46,7 @@ const ArticianHeader: React.FC<HeaderProps> = ({
       </div>
 
       {/* Desktop Search */}
-      <div className="hidden lg:block w-full max-w-md">
+      <div className="hidden w-full max-w-md lg:block">
         <div className="relative">
           <Search
             className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
@@ -61,7 +62,7 @@ const ArticianHeader: React.FC<HeaderProps> = ({
 
       {/* Mobile Search Overlay */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden bg-white">
+        <div className="fixed inset-0 z-50 bg-white lg:hidden">
           <div className="flex items-center p-4 border-b">
             <div className="relative flex-1">
               <Search
@@ -87,8 +88,12 @@ const ArticianHeader: React.FC<HeaderProps> = ({
       {/* Right Side Actions */}
       <div className="flex items-center space-x-4">
         {/* Notifications */}
+
+
+        
         <button className="relative text-gray-500 hover:text-gray-700">
-          <Bell size={20} />
+          
+          <NotificationDropdown/>
           <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
             3
           </span>
@@ -117,9 +122,9 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                 onClick={toggleProfileDropdown}
               ></div>
 
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 bg-white rounded-lg shadow-lg lg:static lg:transform-none lg:w-48 lg:mt-2 lg:border lg:border-gray-200">
+              <div className="absolute -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg top-1/2 left-1/2 w-80 lg:static lg:transform-none lg:w-48 lg:mt-2 lg:border lg:border-gray-200">
                 <div className="p-4 lg:hidden">
-                  <div className="flex items-center space-x-3 mb-4">
+                  <div className="flex items-center mb-4 space-x-3">
                     <img
                       src={"src/assets/icons/user.png"}
                       alt="Profile"
@@ -147,7 +152,7 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                   </a>
                   <hr className="my-1" />
                   <button
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 text-red-500"
+                    className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
                     onClick={() => console.log("Logout clicked")}
                   >
                     Logout
