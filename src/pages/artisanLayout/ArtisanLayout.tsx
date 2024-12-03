@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ArticianHeader from "../../components/ArtisanHeader";
-import { LayoutDashboard, Package, Gavel, Settings, X } from "lucide-react";
+import { LayoutDashboard, Package, Gavel, Settings, X, Wallet } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import { UserData } from "../../types/types";
 
@@ -20,7 +20,7 @@ const ArticianLayout: React.FC<LayoutProps> = ({ children }) => {
     { icon: LayoutDashboard, label: "Dashboard", href: "/artisan/dashboard" },
     { icon: Package, label: "My Gallery", href: "/artisan/my-gallery" },
     { icon: Package, label: "Received Orders", href: "/artisan/orders" },
-
+    { icon: Wallet, label: "Transactions", href: "/artisan/transactions" },
     { icon: Gavel, label: "Auctions", href: "/artisan/auctions" },
     { icon: Settings, label: "Settings", href: "/artisan/settings" },
   ];
