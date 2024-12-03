@@ -1,34 +1,48 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { apiClient } from '../services/apiClient';
-import { Notification, NotificationContextType } from './notificationTypes';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
+import { apiClient } from "../services/apiClient";
+import { Notification, NotificationContextType } from "./notificationTypes";
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
 
-export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
 
   const fetchNotifications = async () => {
     try {
-      const response = await apiClient.get<Notification[]>(`/notifications/user/${userId}`);
+      const response = await apiClient.get<Notification[]>(
+        `/notifications/user/${userId}`,
+      );
       if (response.success) {
         setNotifications(response.data);
-        setUnreadCount(response.data.filter(n => !n.read).length);
+        setUnreadCount(response.data.filter((n) => !n.read).length);
       }
     } catch (error) {
-      console.error('Failed to fetch notifications', error);
+      console.error("Failed to fetch notifications", error);
     }
   };
 
   const fetchUnreadNotifications = async () => {
     try {
-      const response = await apiClient.get<Notification[]>(`/notifications/user/${userId}/unread`);
+      const response = await apiClient.get<Notification[]>(
+        `/notifications/user/${userId}/unread`,
+      );
       if (response.success) {
         setUnreadCount(response.data.length);
       }
     } catch (error) {
-      console.error('Failed to fetch unread notifications', error);
+      console.error("Failed to fetch unread notifications", error);
     }
   };
 
@@ -37,7 +51,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       await apiClient.put(`/notifications/${notificationId}/read`, {});
       await fetchNotifications();
     } catch (error) {
-      console.error('Failed to mark notification as read', error);
+      console.error("Failed to mark notification as read", error);
     }
   };
 
@@ -50,17 +64,17 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     const ws = new WebSocket(`ws://localhost:8080/ws-notifications/${userId}`);
 
     ws.onopen = () => {
-      console.log('WebSocket connection established');
+      console.log("WebSocket connection established");
     };
 
     ws.onmessage = (event) => {
       const newNotification: Notification = JSON.parse(event.data);
-      setNotifications(prev => [newNotification, ...prev]);
-      setUnreadCount(prev => prev + 1);
+      setNotifications((prev) => [newNotification, ...prev]);
+      setUnreadCount((prev) => prev + 1);
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      console.error("WebSocket error:", error);
     };
 
     return () => {
@@ -69,12 +83,12 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   }, [userId]);
 
   return (
-    <NotificationContext.Provider 
-      value={{ 
-        notifications, 
-        unreadCount, 
-        fetchNotifications, 
-        markNotificationAsRead 
+    <NotificationContext.Provider
+      value={{
+        notifications,
+        unreadCount,
+        fetchNotifications,
+        markNotificationAsRead,
       }}
     >
       {children}
@@ -85,7 +99,9 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (context === undefined) {
-    throw new Error('useNotifications must be used within a NotificationProvider');
+    throw new Error(
+      "useNotifications must be used within a NotificationProvider",
+    );
   }
   return context;
 };

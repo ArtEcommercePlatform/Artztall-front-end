@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Menu, X, Search, Bell, ChevronDown } from "lucide-react";
+import { Menu, X, Search, ChevronDown } from "lucide-react";
 import { NotificationDropdown } from "../components/NotificationDropdown";
 
 import userIcon from "../assets/icons/user.png";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   userName: string;
@@ -21,8 +22,15 @@ const ArticianHeader: React.FC<HeaderProps> = ({
     setIsProfileOpen(!isProfileOpen);
   };
 
+  const navigate = useNavigate();
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
   };
 
   return (
@@ -89,11 +97,8 @@ const ArticianHeader: React.FC<HeaderProps> = ({
       <div className="flex items-center space-x-4">
         {/* Notifications */}
 
-
-        
         <button className="relative text-gray-500 hover:text-gray-700">
-          
-          <NotificationDropdown/>
+          <NotificationDropdown />
           <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
             3
           </span>
@@ -153,7 +158,9 @@ const ArticianHeader: React.FC<HeaderProps> = ({
                   <hr className="my-1" />
                   <button
                     className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                    onClick={() => console.log("Logout clicked")}
+                    onClick={() => {
+                      handleLogout;
+                    }}
                   >
                     Logout
                   </button>

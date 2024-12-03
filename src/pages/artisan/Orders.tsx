@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiClient } from "../../services/apiClient";
-import {  Search,  X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 // Define interfaces (remained the same as yours)
 interface Dimensions {
@@ -54,7 +54,9 @@ const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [productDetails, setProductDetails] = useState<ProductDetails | null>(null);
+  const [productDetails, setProductDetails] = useState<ProductDetails | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -138,8 +140,6 @@ const Orders: React.FC = () => {
     setSelectedOrder(order);
     fetchProductDetails(order.item.productId);
   };
-
-
 
   const resetFilters = () => {
     setSearchTerm("");
@@ -226,14 +226,20 @@ const Orders: React.FC = () => {
               />
             </div>
             <div className="flex-grow">
-              <h3 className="text-lg font-semibold">{order.item.productName}</h3>
+              <h3 className="text-lg font-semibold">
+                {order.item.productName}
+              </h3>
               <p className="text-gray-600">{order.item.artistId}</p>
-              <p className="text-sm text-gray-500">Qty: {order.item.quantity}</p>
+              <p className="text-sm text-gray-500">
+                Qty: {order.item.quantity}
+              </p>
               <p className="text-sm text-gray-500">
                 Order Status:{" "}
                 <span
                   className={`${
-                    order.status === "PENDING" ? "text-yellow-500" : "text-green-500"
+                    order.status === "PENDING"
+                      ? "text-yellow-500"
+                      : "text-green-500"
                   } font-semibold`}
                 >
                   {order.status}
@@ -269,8 +275,7 @@ const Orders: React.FC = () => {
             <p className="mt-2 text-gray-600">Price: ${productDetails.price}</p>
             <p className="mt-2 text-gray-500">
               Dimensions: {productDetails.dimensions.length} x{" "}
-              {productDetails.dimensions.width}{" "}
-              {productDetails.dimensions.unit}
+              {productDetails.dimensions.width} {productDetails.dimensions.unit}
             </p>
           </div>
         </div>

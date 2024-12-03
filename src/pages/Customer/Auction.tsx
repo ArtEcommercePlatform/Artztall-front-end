@@ -1,89 +1,214 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Timer, Clock, X } from "lucide-react";
 
-const AuctionPage = () => {
-  const items = [
-    {
-      id: 1,
-      title: "Elephant Wall Art",
-      price: "Rs. 20,000",
-      bids: "0 bids",
-      timeLeft: "4d 20h",
-      imageUrl:
-        "https://i.pinimg.com/control2/736x/ba/dd/b9/baddb9ef421c96bd27a89784568e6f85.jpg",
-    },
-    {
-      id: 2,
-      title: "Abstract Painting",
-      price: "Rs. 35,000",
-      bids: "5 bids",
-      timeLeft: "2d 8h",
-      imageUrl:
-        "https://i.pinimg.com/736x/4f/58/e5/4f58e509d7713f4e1f5ec84e95175c61.jpg",
-    },
-    {
-      id: 3,
-      title: "Vintage Car Model",
-      price: "Rs. 50,000",
-      bids: "10 bids",
-      timeLeft: "1d 12h",
-      imageUrl:
-        "https://i.pinimg.com/control2/736x/ff/da/c6/ffdac619c139d7bd60253550a131fea4.jpg",
-    },
-  ];
+// Type Definitions
+interface Auction {
+  id: string;
+  title: string;
+  description: string;
+  paintingUrl: string;
+  startingPrice: number;
+  currentPrice: number;
+  startTime: string;
+  endTime: string;
+  bidsCount: number;
+}
 
-  return (
-    <div className="max-w-screen-lg p-6 mx-auto">
-      {/* Filters Section */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-4">
-          <select className="px-3 py-2 border rounded">
-            <option value={0}>Buying Format</option>
-            <option>Best Offer</option>
-            <option>Auction</option>
-            <option>Buy It Now</option>
-          </select>
-          <select className="px-3 py-2 border rounded">
-            <option>Condition</option>
-            <option>New</option>
-            <option>Not Specified</option>
-          </select>
-          <select className="px-1 py-2 border rounded">
-            <option>Price</option>
-            <option>Under Rs.30,000</option>
-            <option>Rs.30,000 - Rs.100,000</option>
-            <option>Over Rs.100,000</option>
-          </select>
+import { apiClient } from "../../services/apiClient";
+
+const AuctionPage: React.FC = () => {
+  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedAuction, setSelectedAuction] = useState<Auction | null>(null);
+  const [timeLeft, setTimeLeft] = useState<Record<string, string>>({});
+  const [bidModal, setBidModal] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
+
+  useEffect(() => {
+    const fetchAuctions = async () => {
+      setLoading(true);
+      try {
+        const response = await apiClient.get<Auction[]>("/auctions/active");
+        if (response.success) {
+          setAuctions(response.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        const errorMessage =
+          (error as Error).message || "Unknown error occurred";
+        console.error(errorMessage);
+        setLoading(false);
+        return { success: false, data: null, error: errorMessage };
+      }
+    };
+
+    fetchAuctions();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const newTimeLeft: Record<string, string> = {};
+      auctions.forEach((auction) => {
+        const end = new Date(auction.endTime);
+        const now = new Date();
+        const difference = end.getTime() - now.getTime();
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          );
+          const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) / (1000 * 60),
+          );
+          newTimeLeft[auction.id] = `${days}d ${hours}h ${minutes}m`;
+        } else {
+          newTimeLeft[auction.id] = "Ended";
+        }
+      });
+      setTimeLeft(newTimeLeft);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [auctions]);
+
+  const handlePlaceBid = (auction: Auction) => {
+    setSelectedAuction(auction);
+    setBidModal(true);
+  };
+
+  const submitBid = async (amount: number) => {
+    if (!selectedAuction) return;
+
+    try {
+      const response = await apiClient.post("/auctions/bid", {
+        auctionId: selectedAuction.id,
+        amount,
+      });
+
+      if (response.success) {
+        setBidModal(false);
+        // Refresh auctions to update the latest bid
+        const updatedAuctions = auctions.map((auction) =>
+          auction.id === selectedAuction.id
+            ? { ...auction, currentPrice: amount }
+            : auction,
+        );
+        setAuctions(updatedAuctions);
+      } else {
+        console.error("Failed to place bid");
+      }
+    } catch (error) {
+      const errorMessage = (error as Error).message || "Unknown error occurred";
+      console.error(errorMessage);
+      return { success: false, data: null, error: errorMessage };
+    }
+  };
+
+  const renderBidModal = () =>
+    selectedAuction && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 w-96 relative">
+          <button
+            onClick={() => setBidModal(false)}
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+          >
+            <X size={24} />
+          </button>
+          <h2 className="text-2xl font-bold mb-4 text-green-900">
+            Place a Bid
+          </h2>
+          <p className="mb-4 text-gray-700">
+            Current Price:{" "}
+            <span className="font-bold">
+              LKR {selectedAuction.currentPrice}
+            </span>
+          </p>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {[1000, 5000, 10000].map((amount) => (
+              <button
+                key={amount}
+                onClick={() => submitBid(selectedAuction.currentPrice + amount)}
+                className="bg-green-100 text-green-900 py-2 rounded-md hover:bg-green-200 transition"
+              >
+                +{amount}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
+    );
 
-      <div className="flex flex-col space-y-6">
-        {items.map((item) => (
-          <div key={item.id} className="p-4 border rounded shadow-sm">
-            <div className="flex items-center">
-              <Link to={`/customer/auction/${item.id}`}>
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="object-cover w-40 h-40 mr-4 rounded cursor-pointer"
-                />
-              </Link>
-              <div className="flex justify-between flex-1">
-                <div>
-                  <h2 className="text-xl font-semibold">{item.title}</h2>
-                  <p className="text-2xl font-bold text-green-600">
-                    {item.price}
-                  </p>
-                </div>
-                <div className="text-right text-gray-500">
-                  <p>{item.bids}</p>
-                  <p>{item.timeLeft}</p>
-                </div>
+  const renderImageModal = (auction: Auction) => (
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+      <div className="relative max-w-4xl max-h-[90vh]">
+        <button
+          onClick={() => setImageModal(false)}
+          className="absolute -top-10 right-0 text-white hover:text-gray-300"
+        >
+          <X size={32} />
+        </button>
+        <img
+          src={auction.paintingUrl}
+          alt={auction.title}
+          className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+        />
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin text-green-900">
+          <Clock size={48} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {auctions.map((auction) => (
+          <div
+            key={auction.id}
+            className="bg-white border border-green-100 rounded-lg shadow-md overflow-hidden transform transition hover:scale-105"
+          >
+            <div className="relative">
+              <img
+                src={auction.paintingUrl}
+                alt={auction.title}
+                className="w-full h-64 object-cover"
+                onClick={() => {
+                  setSelectedAuction(auction);
+                  setImageModal(true);
+                }}
+              />
+              <div className="absolute top-4 right-4 bg-white/80 px-3 py-1 rounded-full flex items-center">
+                <Timer size={16} className="mr-2 text-green-900" />
+                <span className="text-green-900 font-semibold">
+                  {timeLeft[auction.id] || "Loading..."}
+                </span>
               </div>
+            </div>
+            <div className="p-4">
+              <h2 className="font-bold text-lg">{auction.title}</h2>
+              <p className="text-gray-600">
+                Current Bid: LKR {auction.currentPrice}
+              </p>
+              <button
+                onClick={() => handlePlaceBid(auction)}
+                className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2 hover:bg-green-600"
+              >
+                Place a Bid
+              </button>
             </div>
           </div>
         ))}
       </div>
+      {bidModal && renderBidModal()}
+      {imageModal && selectedAuction && renderImageModal(selectedAuction)}
     </div>
   );
 };

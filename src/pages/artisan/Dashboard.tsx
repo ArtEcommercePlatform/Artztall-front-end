@@ -1,377 +1,242 @@
-import React, { ReactNode, useState } from "react";
-import {
-  DollarSign,
-  ShoppingBag,
-  Eye,
-  Heart,
-  Gavel,
-  TrendingUp,
-  ChevronUp,
-  ChevronDown,
-  Plus,
-  X,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { DollarSign, ShoppingBag, Eye, Gavel, Plus, X } from "lucide-react";
+import { apiClient } from "../../services/apiClient";
 import NewArtAdd from "../homepage/NewArtAdd";
 
-// Define interfaces for type safety
-interface ArtisanStats {
-  totalEarnings: number;
-  pendingPayouts: number;
-  activeProducts: number;
-  activeAuctions: number;
-  analytics: {
-    totalViews: number;
-    totalFavorites: number;
-    totalBids: number;
-    monthlyGrowth: {
-      views: number;
-      favorites: number;
-      bids: number;
-    };
-  };
-}
-
-interface ArtworkAnalytics {
-  artwork: string;
-  image: string;
-  views: number;
-  favorites: number;
-  bids: number;
+// Interfaces for API responses
+interface Product {
+  id: string;
+  name: string;
+  description: string;
   price: number;
+  imageUrl: string;
+  stockQuantity: number;
+  category: string;
 }
 
-interface CardData {
-  icon: React.ReactNode;
-  title: string;
-  value: string | number;
-  growth: number;
-  bgColor: string;
-  details?: string;
+interface Order {
+  id: string;
+  totalAmount: number;
+  status: string;
 }
 
-interface PerformanceMetric {
-  icon: React.ReactNode;
-  title: string;
-  value: number;
-  growth: number;
+interface Payment {
+  id: string;
+  amount: number;
+  paymentStatus: string;
+  createdAt: string;
 }
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: ReactNode;
-}
-
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
-      <div className="relative z-50 bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 p-2 hover:bg-gray-100 rounded-full"
-        >
-          <X className="w-5 h-5" />
-        </button>
-        <div className="p-6">{children}</div>
-      </div>
-    </div>
-  );
-};
 
 const ArtisanDashboard: React.FC = () => {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  // State management
+  const [products, setProducts] = useState<Product[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showAddArtwork, setShowAddArtwork] = useState(false);
 
-  // Mock data (replace with actual backend data)
-  const artisanStats: ArtisanStats = {
-    totalEarnings: 24750.5,
-    pendingPayouts: 5620.75,
-    activeProducts: 18,
-    activeAuctions: 5,
-    analytics: {
-      totalViews: 4562,
-      totalFavorites: 1237,
-      totalBids: 87,
-      monthlyGrowth: {
-        views: 12.5,
-        favorites: 8.3,
-        bids: 15.2,
-      },
-    },
-  };
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setIsLoading(true);
+        const artistId = localStorage.getItem("userId");
 
-  const recentAnalytics: ArtworkAnalytics[] = [
-    {
-      artwork: "Sunset Landscape",
-      image: "/api/placeholder/300/200",
-      views: 342,
-      favorites: 95,
-      bids: 12,
-      price: 1200,
-    },
-    {
-      artwork: "Abstract Composition",
-      image: "/api/placeholder/300/200",
-      views: 276,
-      favorites: 67,
-      bids: 5,
-      price: 950,
-    },
-    {
-      artwork: "Urban Sketch",
-      image: "/api/placeholder/300/200",
-      views: 213,
-      favorites: 43,
-      bids: 3,
-      price: 750,
-    },
-  ];
+        if (!artistId) {
+          throw new Error("Artist ID not found in local storage");
+        }
 
-  // Explicitly type the percentage parameter
-  const renderGrowthIndicator = (percentage: number) => {
-    return percentage > 0 ? (
-      <span className="text-green-600 flex items-center ml-2">
-        <ChevronUp className="w-4 h-4" />
-        {percentage}%
-      </span>
-    ) : (
-      <span className="text-red-600 flex items-center ml-2">
-        <ChevronDown className="w-4 h-4" />
-        {Math.abs(percentage)}%
-      </span>
+        // Parallel API calls
+        const [productsResponse, ordersResponse, paymentsResponse] =
+          await Promise.all([
+            apiClient.get<Product[]>(`/products/artist/${artistId}`),
+            apiClient.get<Order[]>(`/orders/artisan/${artistId}`),
+            apiClient.get<Payment[]>(`/payments/artisan/${artistId}`),
+          ]);
+
+        setProducts(productsResponse.data);
+        setOrders(ordersResponse.data);
+        setPayments(paymentsResponse.data);
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch dashboard data");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // Compute dashboard metrics
+  const computeMetrics = () => {
+    const totalEarnings = payments.reduce(
+      (sum, payment) =>
+        payment.paymentStatus === "COMPLETED" ? sum + payment.amount : sum,
+      0,
     );
+
+    const pendingEarnings = payments.reduce(
+      (sum, payment) =>
+        payment.paymentStatus === "PENDING" ? sum + payment.amount : sum,
+      0,
+    );
+
+    return {
+      totalProducts: products.length,
+      availableProducts: products.filter((p) => p.stockQuantity > 0).length,
+      totalEarnings,
+      pendingEarnings,
+      totalOrders: orders.length,
+    };
   };
 
-  // Use the handleCardExpand method when creating card data
-  const handleCardExpand = (index: number) => {
-    setExpandedCard(expandedCard === index ? null : index);
-  };
+  const metrics = computeMetrics();
 
-  // Define card data with proper typing and optional details
-  const cardData: CardData[] = [
-    {
-      icon: <DollarSign className="text-green-600" />,
-      title: "Total Earnings",
-      value: `Rs ${artisanStats.totalEarnings.toLocaleString()}`,
-      growth: artisanStats.analytics.monthlyGrowth.views,
-      bgColor: "bg-green-50",
-      details: `Earnings from ${artisanStats.activeProducts} active products`,
-    },
-    {
-      icon: <DollarSign className="text-yellow-600" />,
-      title: "Pending Payouts",
-      value: `Rs ${artisanStats.pendingPayouts.toLocaleString()}`,
-      growth: artisanStats.analytics.monthlyGrowth.favorites,
-      bgColor: "bg-yellow-50",
-      details: "Awaiting payment confirmation",
-    },
-    {
-      icon: <ShoppingBag className="text-green-600" />,
-      title: "Active Products",
-      value: artisanStats.activeProducts,
-      growth: artisanStats.analytics.monthlyGrowth.bids,
-      bgColor: "bg-blue-50",
-      details: "Currently listed artworks",
-    },
-    {
-      icon: <Gavel className="text-green-600" />,
-      title: "Active Auctions",
-      value: artisanStats.activeAuctions,
-      growth: artisanStats.analytics.monthlyGrowth.bids,
-      bgColor: "bg-purple-50",
-      details: "Ongoing art auctions",
-    },
-  ];
+  // Render loading state
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
 
-  // Define performance metrics with proper typing
-  const performanceMetrics: PerformanceMetric[] = [
-    {
-      icon: <Eye className="text-gray-600" />,
-      title: "Total Views",
-      value: artisanStats.analytics.totalViews,
-      growth: artisanStats.analytics.monthlyGrowth.views,
-    },
-    {
-      icon: <Heart className="text-red-600" />,
-      title: "Favorites",
-      value: artisanStats.analytics.totalFavorites,
-      growth: artisanStats.analytics.monthlyGrowth.favorites,
-    },
-    {
-      icon: <Gavel className="text-green-600" />,
-      title: "Total Bids",
-      value: artisanStats.analytics.totalBids,
-      growth: artisanStats.analytics.monthlyGrowth.bids,
-    },
-  ];
+  // Render error state
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-600">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-br from-green-50 to-blue-100">
-      <div className="container mx-auto px-4 py-6 flex-grow overflow-y-auto">
-        {/* Header */}
-        <div className="mb-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-green-900 tracking-tight">
-              Artisan Dashboard
-            </h1>
-            <p className="text-gray-600 text-sm">
-              Insights into your creative journey
-            </p>
+    <div className="container mx-auto px-4 py-6">
+      {/* Dashboard Header */}
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Artisan Dashboard
+          </h1>
+          <p className="text-gray-600">Your artistic journey at a glance</p>
+        </div>
+        <button
+          onClick={() => setShowAddArtwork(true)}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+        >
+          <Plus className="inline-block mr-2" /> Add Artwork
+        </button>
+      </div>
+
+      {/* Key Metrics Grid */}
+      <div className="grid md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-2">
+            <ShoppingBag className="text-blue-600" />
+            <span className="text-green-600">+12.5%</span>
           </div>
-          <div className="flex space-x-4">
-            <button
-              onClick={() => setShowAddArtwork(true)}
-              className="
-                flex items-center 
-                bg-green-600 
-                text-white 
-                px-4 py-2 
-                rounded-lg 
-                text-sm
-                hover:bg-green-700 
-                transition-all 
-                duration-300 
-                shadow-md
-              "
-            >
-              <Plus className="mr-2 w-4 h-4" />
-              Add Artwork
-            </button>
-          </div>
+          <h3 className="text-gray-500 text-sm">Total Products</h3>
+          <p className="text-2xl font-bold">{metrics.totalProducts}</p>
         </div>
 
-        {/* Financial and Product Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {cardData.map((card, index) => (
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-2">
+            <DollarSign className="text-green-600" />
+            <span className="text-green-600">+8.3%</span>
+          </div>
+          <h3 className="text-gray-500 text-sm">Total Earnings</h3>
+          <p className="text-2xl font-bold">
+            LKR {metrics.totalEarnings.toLocaleString()}
+          </p>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-2">
+            <Gavel className="text-purple-600" />
+            <span className="text-green-600">+15.2%</span>
+          </div>
+          <h3 className="text-gray-500 text-sm">Total Orders</h3>
+          <p className="text-2xl font-bold">{metrics.totalOrders}</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-2">
+            <Eye className="text-gray-600" />
+            <span className="text-green-600">+10.1%</span>
+          </div>
+          <h3 className="text-gray-500 text-sm">Available Products</h3>
+          <p className="text-2xl font-bold">{metrics.availableProducts}</p>
+        </div>
+      </div>
+
+      {/* Products and Orders Section */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Recent Products */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4 flex items-center">
+            <ShoppingBag className="mr-2 text-green-600" /> Recent Products
+          </h2>
+          {products.slice(0, 5).map((product) => (
             <div
-              key={index}
-              className="
-                bg-white 
-                rounded-xl 
-                shadow-md 
-                p-4 
-                space-y-2
-                transform 
-                transition-transform 
-                hover:-translate-y-1
-                cursor-pointer
-              "
-              onClick={() => handleCardExpand(index)}
+              key={product.id}
+              className="flex items-center mb-3 pb-3 border-b"
             >
-              <div className="flex justify-between items-center">
-                <div className={`${card.bgColor} p-2 rounded-full`}>
-                  {card.icon}
-                </div>
-                {renderGrowthIndicator(card.growth)}
+              <img
+                src={product.imageUrl || "/placeholder.jpg"}
+                alt={product.name}
+                className="w-16 h-16 object-cover rounded mr-4"
+              />
+              <div className="flex-grow">
+                <h3 className="font-medium">{product.name}</h3>
+                <p className="text-sm text-gray-500">
+                  LKR {product.price.toLocaleString()}
+                </p>
               </div>
-              <div>
-                <h3 className="text-xs text-gray-500 mb-1">{card.title}</h3>
-                <p className="text-xl font-bold text-gray-800">{card.value}</p>
-              </div>
-              {expandedCard === index && card.details && (
-                <div className="mt-2 text-xs text-gray-600 italic">
-                  {card.details}
-                </div>
-              )}
+              <span className="text-sm text-gray-500">
+                {product.stockQuantity} in stock
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Rest of the code remains the same */}
-        {/* Analytics and Artwork Performance */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Overall Performance */}
-          <div className="md:col-span-1 bg-white rounded-xl shadow-md p-4">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <TrendingUp className="mr-2 text-green-600 w-5 h-5" /> Performance
-              Metrics
-            </h2>
-            <div className="space-y-3">
-              {performanceMetrics.map((metric, index) => (
-                <div
-                  key={index}
-                  className="
-                    flex 
-                    items-center 
-                    justify-between 
-                    bg-gray-50 
-                    p-3 
-                    rounded-lg
-                  "
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-white p-2 rounded-full shadow-sm">
-                      {metric.icon}
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">{metric.title}</p>
-                      <p className="font-bold text-gray-800">{metric.value}</p>
-                    </div>
-                  </div>
-                  {renderGrowthIndicator(metric.growth)}
-                </div>
-              ))}
+        {/* Recent Orders */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4 flex items-center">
+            <Gavel className="mr-2 text-green-600" /> Recent Orders
+          </h2>
+          {orders.slice(0, 5).map((order) => (
+            <div
+              key={order.id}
+              className="flex justify-between items-center mb-3 pb-3 border-b"
+            >
+              <div>
+                <h3 className="font-medium">Order #{order.id.slice(-6)}</h3>
+                <p className="text-sm text-gray-500">{order.status}</p>
+              </div>
+              <span className="font-semibold">
+                LKR {order.totalAmount.toLocaleString()}
+              </span>
             </div>
-          </div>
-
-          {/* Recent Artwork Performance */}
-          <div className="md:col-span-2 bg-white rounded-xl shadow-md p-4">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <Eye className="mr-2 text-green-600 w-5 h-5" /> Recent Artwork
-              Performance
-            </h2>
-            <div className="space-y-3">
-              {recentAnalytics.map((artwork, index) => (
-                <div
-                  key={index}
-                  className="
-                    flex 
-                    items-center 
-                    p-3 
-                    rounded-lg 
-                    hover:bg-green-50
-                    transition-colors
-                  "
-                >
-                  <img
-                    src={artwork.image}
-                    alt={artwork.artwork}
-                    className="w-16 h-16 object-cover rounded-md mr-4"
-                  />
-                  <div className="flex-grow">
-                    <h3 className="font-semibold text-sm text-gray-800">
-                      {artwork.artwork}
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      Price: Rs {artwork.price.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="flex space-x-3 text-xs">
-                    <div className="flex items-center text-gray-600">
-                      <Eye className="mr-1 w-4 h-4" />
-                      <span>{artwork.views}</span>
-                    </div>
-                    <div className="flex items-center text-red-600">
-                      <Heart className="mr-1 w-4 h-4" />
-                      <span>{artwork.favorites}</span>
-                    </div>
-                    <div className="flex items-center text-green-600">
-                      <Gavel className="mr-1 w-4 h-4" />
-                      <span>{artwork.bids}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-      <Modal isOpen={showAddArtwork} onClose={() => setShowAddArtwork(false)}>
-        <NewArtAdd />
-      </Modal>
+
+      {/* Modal for Adding Artwork */}
+      {showAddArtwork && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Add New Artwork</h2>
+              <button onClick={() => setShowAddArtwork(false)}>
+                <X className="text-gray-600" />
+              </button>
+            </div>
+            <NewArtAdd />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

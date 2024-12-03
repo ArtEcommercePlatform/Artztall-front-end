@@ -7,7 +7,6 @@ import {
 // import SplashScreen from './components/SplashScreen';
 import Homepage from "./pages/homepage/Homepage";
 import { ToastProvider } from "./assets/components/toast/Toast";
-import AuctionDetails from "./pages/Customer/AuctionInside";
 import Shop from "./pages/common/Shop";
 import ArtistMain from "./pages/ArtistMain";
 
@@ -98,21 +97,20 @@ const AdminRoutes = () => {
 function App() {
   return (
     <NotificationProvider>
-    <ToastProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen bg-gray-100">
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/artismain" element={<ArtistMain />} />
-            <Route path="/artisan/*" element={<ArtisanRoutes />} />
-            <Route path="/customer/*" element={<CustomerRoutes />} />
-            <Route path="/admin/*" element={<AdminRoutes />} />
-            <Route path="/customer/auction/:id" element={<AuctionDetails />} />
-          </Routes>
-        </div>
-      </Router>
-    </ToastProvider>
+      <ToastProvider>
+        <Router>
+          <div className="flex flex-col min-h-screen bg-gray-100">
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/artismain" element={<ArtistMain />} />
+              <Route path="/artisan/*" element={<ArtisanRoutes />} />
+              <Route path="/customer/*" element={<CustomerRoutes />} />
+              <Route path="/admin/*" element={<AdminRoutes />} />
+            </Routes>
+          </div>
+        </Router>
+      </ToastProvider>
     </NotificationProvider>
   );
 }
