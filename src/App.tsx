@@ -39,6 +39,7 @@ import Wishlist from "./pages/Customer/WishList";
 import OrdersManagement from "./pages/Customer/OrdersManagement";
 import Orders from "./pages/artisan/Orders";
 import { NotificationProvider } from "./contexts/NotificationContext";
+import TransactionHistory from "./pages/artisan/TransactionHistory";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -50,6 +51,7 @@ const ArtisanRoutes = () => {
         <Route path="my-gallery" element={<Gallery />} />
         <Route path="auctions" element={<Auctions />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="transactions" element={<TransactionHistory />} />
         <Route path="settings" element={<Settings />} />
 
         {/* Redirect to dashboard if no specific route matches */}
