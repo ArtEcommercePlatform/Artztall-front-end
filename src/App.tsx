@@ -38,6 +38,7 @@ import Payment from "./pages/Customer/Payment";
 import Wishlist from "./pages/Customer/WishList";
 import OrdersManagement from "./pages/Customer/OrdersManagement";
 import Orders from "./pages/artisan/Orders";
+import { NotificationProvider } from "./contexts/NotificationContext";
 
 // Artisan Routes Component
 const ArtisanRoutes = () => {
@@ -94,6 +95,7 @@ const AdminRoutes = () => {
 };
 function App() {
   return (
+    <NotificationProvider>
     <ToastProvider>
       <Router>
         <div className="flex flex-col min-h-screen bg-gray-100">
@@ -109,6 +111,7 @@ function App() {
         </div>
       </Router>
     </ToastProvider>
+    </NotificationProvider>
   );
 }
 

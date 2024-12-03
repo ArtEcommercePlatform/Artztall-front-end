@@ -7,13 +7,13 @@ import {
   Settings,
   X,
   Menu,
-  Bell,
   ShoppingCart,
   LogOut,
   LucideProps,
   Heart,
 } from "lucide-react";
 import { LayoutProps, UserData, NavigationItem } from "../../types/types";
+import { NotificationDropdown } from "../../components/NotificationDropdown"; // Adjust import path as needed
 
 // Wrapper function for lucide-react icons
 const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
@@ -23,7 +23,7 @@ const WrappedIcon = (Icon: React.ComponentType<LucideProps>) => {
 };
 
 export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const userData: UserData = {
     userName: localStorage.getItem("userName") ?? "",
@@ -61,7 +61,8 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleLogout = () => {
     // Add your logout logic here
-    console.log("Logging out...");
+    localStorage.clear(); // Clear all local storage
+    window.location.href = "/login"; // Redirect to login page
   };
 
   return (
@@ -131,12 +132,9 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button className="relative p-2 text-gray-500 hover:text-gray-700">
-                <Bell size={20} />
-                <span className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full">
-                  3
-                </span>
-              </button>
+              {/* Replace Bell icon with NotificationDropdown */}
+              <NotificationDropdown />
+              
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <ShoppingCart size={20} />
                 <span className="absolute top-0 right-0 w-4 h-4 bg-[#094129] rounded-full text-xs text-white flex items-center justify-center">
