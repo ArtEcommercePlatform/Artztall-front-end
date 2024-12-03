@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiClient } from "../../services/apiClient";
-import { Eye, Search, Filter, ChevronUp, ChevronDown, X } from "lucide-react";
+import {  Search,  X } from "lucide-react";
 
 // Define interfaces (remained the same as yours)
 interface Dimensions {
@@ -139,16 +139,7 @@ const Orders: React.FC = () => {
     fetchProductDetails(order.item.productId);
   };
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+
 
   const resetFilters = () => {
     setSearchTerm("");
