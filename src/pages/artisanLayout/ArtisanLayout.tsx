@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import ArticianHeader from "../../components/ArtisanHeader";
-import { LayoutDashboard, Package, Gavel, Settings, X, Wallet } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Gavel,
+  Settings,
+  X,
+  Wallet,
+} from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import { UserData } from "../../types/types";
 

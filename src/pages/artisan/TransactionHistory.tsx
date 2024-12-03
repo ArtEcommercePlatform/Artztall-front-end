@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  CreditCard, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
-  DollarSign 
-} from 'lucide-react';
-import { apiClient } from '../../services/apiClient'; 
-
+import React, { useState, useEffect } from "react";
+import {
+  CreditCard,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  DollarSign,
+} from "lucide-react";
+import { apiClient } from "../../services/apiClient";
 
 interface Transaction {
   id: string;
@@ -16,7 +15,7 @@ interface Transaction {
   amount: number;
   currency: string;
   stripPaymentIntendId: string;
-  paymentStatus: 'PENDING' | 'COMPLETED' | 'FAILED';
+  paymentStatus: "PENDING" | "COMPLETED" | "FAILED";
   expiresAt: string;
   createdAt: string;
   updatedAt: string;
@@ -26,20 +25,22 @@ const TransactionHistory: React.FC<any> = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const artisanId = localStorage.getItem('userId')
+  const artisanId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get<Transaction[]>(`/payments/artisan/${artisanId}`);
-        
+        const response = await apiClient.get<Transaction[]>(
+          `/payments/artisan/${artisanId}`,
+        );
+
         if (response.success && response.data) {
           setTransactions(response.data);
           setError(null);
         }
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch transactions');
+        setError(err.message || "Failed to fetch transactions");
         setTransactions([]);
       } finally {
         setLoading(false);
@@ -50,25 +51,34 @@ const TransactionHistory: React.FC<any> = () => {
   }, [artisanId]);
 
   // Helper function to get status icon and color
-  const getStatusIcon = (status: Transaction['paymentStatus']) => {
+  const getStatusIcon = (status: Transaction["paymentStatus"]) => {
     switch (status) {
-      case 'PENDING':
-        return { icon: <Clock className="text-yellow-500" />, color: 'bg-yellow-100' };
-      case 'COMPLETED':
-        return { icon: <CheckCircle className="text-green-500" />, color: 'bg-green-100' };
+      case "PENDING":
+        return {
+          icon: <Clock className="text-yellow-500" />,
+          color: "bg-yellow-100",
+        };
+      case "COMPLETED":
+        return {
+          icon: <CheckCircle className="text-green-500" />,
+          color: "bg-green-100",
+        };
       default:
-        return { icon: <AlertCircle className="text-red-500" />, color: 'bg-red-100' };
+        return {
+          icon: <AlertCircle className="text-red-500" />,
+          color: "bg-red-100",
+        };
     }
   };
 
   // Helper function to format date
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -82,7 +92,10 @@ const TransactionHistory: React.FC<any> = () => {
 
   if (error) {
     return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <div
+        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
         <AlertCircle className="inline-block mr-2" />
         {error}
       </div>
@@ -106,15 +119,13 @@ const TransactionHistory: React.FC<any> = () => {
           {transactions.map((transaction) => {
             const { icon, color } = getStatusIcon(transaction.paymentStatus);
             return (
-              <div 
-                key={transaction.id} 
+              <div
+                key={transaction.id}
                 className="px-6 py-4 hover:bg-gray-50 transition-colors duration-200"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className={`p-2 rounded-full ${color}`}>
-                      {icon}
-                    </div>
+                    <div className={`p-2 rounded-full ${color}`}>{icon}</div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">
                         Order ID: {transaction.orderId}
@@ -127,7 +138,8 @@ const TransactionHistory: React.FC<any> = () => {
                   <div className="flex items-center space-x-2">
                     <DollarSign className="text-green-600" />
                     <span className="text-lg font-semibold text-gray-900">
-                      {transaction.amount.toLocaleString()} {transaction.currency}
+                      {transaction.amount.toLocaleString()}{" "}
+                      {transaction.currency}
                     </span>
                   </div>
                 </div>

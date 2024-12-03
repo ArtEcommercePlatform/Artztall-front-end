@@ -60,9 +60,8 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   const handleLogout = () => {
-    // Add your logout logic here
-    localStorage.clear(); // Clear all local storage
-    window.location.href = "/login"; // Redirect to login page
+    localStorage.clear();
+    window.location.href = "/";
   };
 
   return (
@@ -134,7 +133,7 @@ export const CustomerLayout: React.FC<LayoutProps> = ({ children }) => {
             <div className="flex items-center space-x-4">
               {/* Replace Bell icon with NotificationDropdown */}
               <NotificationDropdown />
-              
+
               <button className="relative p-2 text-gray-500 hover:text-gray-700">
                 <ShoppingCart size={20} />
                 <span className="absolute top-0 right-0 w-4 h-4 bg-[#094129] rounded-full text-xs text-white flex items-center justify-center">
