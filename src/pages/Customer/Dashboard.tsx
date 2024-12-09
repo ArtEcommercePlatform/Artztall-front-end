@@ -146,7 +146,7 @@ const CustomerDashboard = () => {
       <div className="flex-1">
         <div className="p-6 space-y-6">
           {/* Welcome Section */}
-          <div className="p-6 text-white rounded-lg bg-gradient-to-r from-green-600 to-green-700">
+          <div className="p-6 text-white rounded-lg bg-gradient-to-r from-green-600 to-green-800">
             <h1 className="mb-2 text-3xl font-bold">
               Welcome back, {localStorage.getItem("userName")}!
             </h1>
@@ -165,7 +165,7 @@ const CustomerDashboard = () => {
                   onClick={() => setActiveTab(tab)}
                   className={`px-4 py-2 rounded-full capitalize ${
                     activeTab === tab
-                      ? "bg-green-600 text-white"
+                      ? "bg-green-800 text-white"
                       : "bg-gray-100 hover:bg-gray-200"
                   }`}
                 >
@@ -204,7 +204,7 @@ const CustomerDashboard = () => {
                 <div className="text-center mt-4">
                   <button
                     onClick={() => navigate("/orders")}
-                    className="flex items-center justify-center w-full bg-green-100 text-green-600 hover:bg-green-200 py-2 rounded-lg"
+                    className="flex items-center justify-center w-full bg-green-800 text-white hover:bg-green-900 py-2 rounded-lg"
                   >
                     View All Orders <ChevronRight className="ml-2" size={20} />
                   </button>
@@ -241,12 +241,12 @@ const CustomerDashboard = () => {
                           {item.name}
                         </h3>
                         <p className="text-gray-600 mb-2">
-                          ${item.price.toFixed(2)}
+                          LKR: {item.price.toFixed(2)}
                         </p>
                         <div className="flex justify-center items-center mt-4">
                           <button
                             onClick={() => handleAddToCart(item)}
-                            className="flex items-center bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition-colors w-full justify-center"
+                            className="flex items-center bg-green-800 text-white px-3 py-2 rounded hover:bg-green-900 transition-colors w-full justify-center"
                             disabled={!item.available}
                           >
                             <ShoppingCart className="mr-2" size={20} />
@@ -261,7 +261,7 @@ const CustomerDashboard = () => {
                   <div className="text-center mt-4">
                     <button
                       onClick={() => navigate("/wishlist")}
-                      className="flex items-center justify-center w-full bg-green-100 text-green-600 hover:bg-green-200 py-2 rounded-lg"
+                      className="flex items-center justify-center w-full bg-green-800 text-white hover:bg-green-900 py-2 rounded-lg"
                     >
                       View All Wishlist Items{" "}
                       <ChevronRight className="ml-2" size={20} />
@@ -281,15 +281,15 @@ const CustomerDashboard = () => {
               <div className="space-y-4">
                 <h3 className="font-medium">Contact Us</h3>
                 <div className="flex items-center space-x-2">
-                  <Mail size={16} className="text-green-600" />
+                  <Mail size={16} className="text-green-800" />
                   <span>support@example.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Phone size={16} className="text-green-600" />
+                  <Phone size={16} className="text-green-800" />
                   <span>1-800-123-4567</span>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 ">
                 <h3 className="font-medium">Submit a Ticket</h3>
                 <div>
                   <input
@@ -304,7 +304,7 @@ const CustomerDashboard = () => {
 
                   <button
                     onClick={() => navigate("/support/ticket")}
-                    className="px-4 py-2 mt-2 text-white bg-green-600 rounded-lg hover:bg-green-700 w-full"
+                    className="px-4 py-2 mt-2 text-white bg-green-800 rounded-lg hover:bg-green-900 w-full"
                   >
                     Submit Ticket
                   </button>

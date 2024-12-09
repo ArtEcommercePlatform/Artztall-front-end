@@ -4,43 +4,43 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-// import SplashScreen from './components/SplashScreen';
-import Homepage from "./pages/homepage/Homepage";
+import PrivateRoute from "./contexts/PrivateRoutes";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import { ToastProvider } from "./assets/components/toast/Toast";
+
+// Public Pages
+import Homepage from "./pages/homepage/Homepage";
 import Shop from "./pages/common/Shop";
 import ArtistMain from "./pages/ArtistMain";
 
-// Import Artisan Dashboard Pages
+// Artisan Pages
+import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
 import Dashboard from "./pages/artisan/Dashboard";
 import Products from "./pages/artisan/Orders";
 import Gallery from "./pages/artisan/Gallery";
 import Auctions from "./pages/artisan/Auctions";
-import ArtisanLayout from "./pages/artisanLayout/ArtisanLayout";
 import Settings from "./pages/artisan/Settings";
+import Orders from "./pages/artisan/Orders";
+import TransactionHistory from "./pages/artisan/TransactionHistory";
 
-// Import Customer Dashboard Pages
-
+// Customer Pages
+import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
+import CustomerDashboard from "./pages/Customer/Dashboard";
 import CuGallery from "./pages/Customer/Gallery";
 import CuAuctions from "./pages/Customer/Auction";
-import CustomerLayout from "./pages/CustomerLayout/CustomerLayout";
+import MakeOrder from "./pages/Customer/MakeOrder";
+import Payment from "./pages/Customer/Payment";
+import Wishlist from "./pages/Customer/WishList";
+import OrdersManagement from "./pages/Customer/OrdersManagement";
 
-//Import Admin Pages
+// Admin Pages
+import AdminLayout from "./pages/AdminLayout/AdminLayout";
 import AdDashborad from "./pages/Admin/Dashboard";
 import AdArtWork from "./pages/Admin/Artwork";
 import AdAuction from "./pages/Admin/Auction";
 import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
 import AdUserManagment from "./pages/Admin/UserManagment";
-import AdminLayout from "./pages/AdminLayout/AdminLayout";
-import CustomerDashboard from "./pages/Customer/Dashboard";
-import MakeOrder from "./pages/Customer/MakeOrder";
-import Payment from "./pages/Customer/Payment";
-import Wishlist from "./pages/Customer/WishList";
-import OrdersManagement from "./pages/Customer/OrdersManagement";
-import Orders from "./pages/artisan/Orders";
-import { NotificationProvider } from "./contexts/NotificationContext";
-import TransactionHistory from "./pages/artisan/TransactionHistory";
 
-// Artisan Routes Component
 const ArtisanRoutes = () => {
   return (
     <ArtisanLayout>
@@ -52,15 +52,12 @@ const ArtisanRoutes = () => {
         <Route path="orders" element={<Orders />} />
         <Route path="transactions" element={<TransactionHistory />} />
         <Route path="settings" element={<Settings />} />
-
-        {/* Redirect to dashboard if no specific route matches */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </ArtisanLayout>
   );
 };
 
-// Cuatomer Routes Component
 const CustomerRoutes = () => {
   return (
     <CustomerLayout>
@@ -69,7 +66,6 @@ const CustomerRoutes = () => {
         <Route path="orders" element={<OrdersManagement />} />
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
-
         <Route path="wish-list" element={<Wishlist />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
@@ -77,7 +73,6 @@ const CustomerRoutes = () => {
   );
 };
 
-// Admin Routes Component
 const AdminRoutes = () => {
   return (
     <AdminLayout>
@@ -87,12 +82,12 @@ const AdminRoutes = () => {
         <Route path="artwork" element={<AdArtWork />} />
         <Route path="order" element={<AdOrderTransaction />} />
         <Route path="user" element={<AdUserManagment />} />
-
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </AdminLayout>
   );
 };
+
 function App() {
   return (
     <NotificationProvider>
@@ -103,11 +98,20 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/artismain" element={<ArtistMain />} />
-              <Route path="/artisan/*" element={<ArtisanRoutes />} />
-              <Route path="/customer/*" element={<CustomerRoutes />} />
-              <Route path="/customer/make-order" element={<MakeOrder />} />
-              <Route path="/customer/payment" element={<Payment />} />
-              <Route path="/admin/*" element={<AdminRoutes />} />
+
+              <Route element={<PrivateRoute allowedRoles={['ARTISAN']} />}>
+                <Route path="/artisan/*" element={<ArtisanRoutes />} />
+              </Route>
+
+              <Route element={<PrivateRoute allowedRoles={['BUYER']} />}>
+                <Route path="/customer/*" element={<CustomerRoutes />} />
+                <Route path="/customer/make-order" element={<MakeOrder />} />
+                <Route path="/customer/payment" element={<Payment />} />
+              </Route>
+
+              <Route element={<PrivateRoute allowedRoles={['ADMIN']} />}>
+                <Route path="/admin/*" element={<AdminRoutes />} />
+              </Route>
             </Routes>
           </div>
         </Router>

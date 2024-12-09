@@ -82,7 +82,7 @@ const Wishlist: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-green-800"></div>
       </div>
     );
   }
@@ -120,12 +120,12 @@ const Wishlist: React.FC = () => {
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
-                <p className="text-gray-600 mb-2">${item.price.toFixed(2)}</p>
+                <p className="text-gray-600 mb-2">LKR:{item.price.toFixed(2)}</p>
 
                 <div className="flex justify-between items-center mt-4">
                   <button
                     onClick={() => handleAddToCart(item)}
-                    className="flex items-center bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 transition-colors"
+                    className="flex items-center bg-green-800 text-white px-3 py-2 rounded hover:bg-green-900 transition-colors"
                     disabled={!item.available}
                   >
                     <ShoppingCart className="mr-2" size={20} />
