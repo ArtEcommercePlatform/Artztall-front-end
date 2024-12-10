@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { apiClient } from "../services/apiClient";
 
 interface Product {
   id: string;
@@ -38,26 +38,25 @@ const ProductList: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const pageSize = 8; // Display 8 products per page
+  const pageSize = 8; 
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get<ProductResponse>(
-          "http://localhost:8080/api/products",
-          {
-            params: {
-              page,
-              size: pageSize,
-            },
-          },
-        );
+        const response = await apiClient.get<ProductResponse>("/products", {
+          page,
+          size: pageSize,
+        });
 
-        setProducts(response.data.content);
-        setTotalPages(response.data.totalPages);
-      } catch (err) {
-        setError("Failed to fetch products");
+        if (response.success) {
+          setProducts(response.data.content);
+          setTotalPages(response.data.totalPages);
+        } else {
+          throw new Error(response.message || "Failed to fetch products");
+        }
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch products");
         console.error(err);
       } finally {
         setIsLoading(false);
