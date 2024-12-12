@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import React from 'react';
 
 const Hero = () => {
   // State for fade-in animation
@@ -11,10 +12,10 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-emerald-900 overflow-hidden">
+    <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-emerald-900">
       {/* Background image with zoom effect */}
       <div
-        className="absolute inset-0 bg-center bg-cover transition-transform duration-500 hover:scale-105"
+        className="absolute inset-0 transition-transform duration-500 bg-center bg-cover hover:scale-105"
         style={{
           backgroundImage:
             "url('https://c0.wallpaperflare.com/preview/807/214/326/4k-wallpaper-abstract-expressionism-abstract-painting-acrylic-paint.jpg')",

@@ -6,7 +6,8 @@ import React, {
   useEffect,
   useTransition,
 } from "react";
-import { AlertCircle, CheckCircle, XCircle, X } from "lucide-react";
+import { AlertCircle, CheckCircle, XCircle, X } from "lucide-react";\
+
 
 // Types
 export type ToastType = "success" | "error" | "warning";
@@ -108,14 +109,14 @@ const Toast: React.FC<ToastProps> = ({
 
       <button
         onClick={() => startTransition(() => onClose())}
-        className="flex-shrink-0 rounded-full p-1 transition-colors duration-200 hover:bg-gray-200"
+        className="flex-shrink-0 p-1 transition-colors duration-200 rounded-full hover:bg-gray-200"
         aria-label="Close notification"
       >
         <X className="w-4 h-4 text-gray-600" />
       </button>
 
       <div
-        className="absolute bottom-0 left-0 h-1 rounded-b-lg transition-all duration-300 ease-in-out"
+        className="absolute bottom-0 left-0 h-1 transition-all duration-300 ease-in-out rounded-b-lg"
         style={{
           width: `${progress}%`,
           backgroundColor: variant.progressBar.split(" ")[1],
@@ -137,14 +138,14 @@ const ToastContainer: React.FC = () => {
 
   return (
     <div
-      className="fixed top-4 right-4 z-50 space-y-4"
+      className="fixed z-50 space-y-4 top-4 right-4"
       role="region"
       aria-label="Notifications"
     >
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="transform transition-all duration-500 ease-in-out"
+          className="transition-all duration-500 ease-in-out transform"
           style={{
             animation: "slideIn 0.5s ease-out",
           }}

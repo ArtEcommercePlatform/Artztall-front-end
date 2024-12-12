@@ -14,12 +14,12 @@ import {
   Users,
   Heart,
 } from "lucide-react";
-
+import React from 'react';
 const Footer = () => {
   const footerSections = {
     shop: {
       title: "Shop",
-      icon: <ShoppingBag className="h-4 w-4 inline mr-2" />,
+      icon: <ShoppingBag className="inline w-4 h-4 mr-2" />,
       links: [
         "Paintings",
         "Sculptures",
@@ -30,7 +30,7 @@ const Footer = () => {
     },
     about: {
       title: "About",
-      icon: <Info className="h-4 w-4 inline mr-2" />,
+      icon: <Info className="inline w-4 h-4 mr-2" />,
       links: [
         "Our Story",
         "Artists Community",
@@ -41,7 +41,7 @@ const Footer = () => {
     },
     support: {
       title: "Support",
-      icon: <HeadphonesIcon className="h-4 w-4 inline mr-2" />,
+      icon: <HeadphonesIcon className="inline w-4 h-4 mr-2" />,
       links: [
         "Contact Us",
         "Shipping Info",
@@ -53,31 +53,31 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: <Facebook className="h-5 w-5" />, href: "#", label: "Facebook" },
-    { icon: <Instagram className="h-5 w-5" />, href: "#", label: "Instagram" },
-    { icon: <Twitter className="h-5 w-5" />, href: "#", label: "Twitter" },
+    { icon: <Facebook className="w-5 h-5" />, href: "#", label: "Facebook" },
+    { icon: <Instagram className="w-5 h-5" />, href: "#", label: "Instagram" },
+    { icon: <Twitter className="w-5 h-5" />, href: "#", label: "Twitter" },
   ];
 
   const contactInfo = [
     {
-      icon: <Mail className="h-4 w-4" />,
+      icon: <Mail className="w-4 h-4" />,
       text: "contact@artsshop.com",
     },
     {
-      icon: <MapPin className="h-4 w-4" />,
+      icon: <MapPin className="w-4 h-4" />,
       text: "123 Gallery Street, Art District",
     },
     {
-      icon: <Phone className="h-4 w-4" />,
+      icon: <Phone className="w-4 h-4" />,
       text: "+1 (555) 234-5678",
     },
   ];
 
   return (
     <footer className="bg-white border-t">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ const Footer = () => {
             </p>
 
             {/* Contact Information */}
-            <div className="space-y-2 pt-4">
+            <div className="pt-4 space-y-2">
               {contactInfo.map((item, index) => (
                 <div
                   key={index}
@@ -127,8 +127,8 @@ const Footer = () => {
         </div>
 
         {/* Social Links & Copyright */}
-        <div className="mt-12 pt-8 border-t">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="pt-8 mt-12 border-t">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex items-center gap-6">
               {socialLinks.map((social, index) => (
                 <a
@@ -144,10 +144,10 @@ const Footer = () => {
 
             <div className="flex items-center gap-4 text-gray-600">
               <span>Payment Partners:</span>
-              <CreditCard className="h-5 w-5" />
-              <Truck className="h-5 w-5" />
-              <Users className="h-5 w-5" />
-              <Heart className="h-5 w-5" />
+              <CreditCard className="w-5 h-5" />
+              <Truck className="w-5 h-5" />
+              <Users className="w-5 h-5" />
+              <Heart className="w-5 h-5" />
             </div>
 
             <p className="text-gray-600">

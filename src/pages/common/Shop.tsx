@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from 'react';
 import { apiClient } from "../../services/apiClient";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import DetailedCard from "../../components/DetailedCard";
@@ -84,7 +85,7 @@ const Shop = () => {
           <p className="text-lg font-semibold text-red-500">{error}</p>
           <button
             onClick={() => fetchProducts(currentPage)}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700"
           >
             Try Again
           </button>
@@ -97,8 +98,8 @@ const Shop = () => {
     <>
       <div className="min-h-screen bg-gray-50">
         <Header />
-        <div className="bg-green-900 py-12 px-4 mb-8">
-          <h1 className="text-4xl font-bold text-center text-white mb-2">
+        <div className="px-4 py-12 mb-8 bg-green-900">
+          <h1 className="mb-2 text-4xl font-bold text-center text-white">
             Our Featured Arts
           </h1>
           <p className="text-center text-green-100">Discover unique Arts</p>
@@ -106,23 +107,22 @@ const Shop = () => {
 
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[400px]">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
                 <DetailedCard key={product.id} {...product} onBuy={handleBuy} />
               ))}
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center mt-8 gap-4">
+            <div className="flex items-center justify-center gap-4 mt-8">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 0}
-                className="flex items-center px-4 py-2 rounded-md border border-gray-300 
-                        disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="flex items-center px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 <ChevronLeft className="w-4 h-4 mr-1" />
                 Previous
@@ -133,8 +133,7 @@ const Shop = () => {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages - 1}
-                className="flex items-center px-4 py-2 rounded-md border border-gray-300 
-                        disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="flex items-center px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />

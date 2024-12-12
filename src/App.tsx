@@ -4,6 +4,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import React from 'react';
 import PrivateRoute from "./contexts/PrivateRoutes";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { ToastProvider } from "./assets/components/toast/Toast";

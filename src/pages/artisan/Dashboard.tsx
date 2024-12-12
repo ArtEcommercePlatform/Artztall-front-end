@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { DollarSign, ShoppingBag, Eye, Gavel, Plus, X } from "lucide-react";
 import { apiClient } from "../../services/apiClient";
 import NewArtAdd from "../homepage/NewArtAdd";
+import React from 'react';
 
 // Interfaces for API responses
 interface Product {
@@ -97,7 +98,7 @@ const ArtisanDashboard: React.FC = () => {
   // Render loading state
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex items-center justify-center h-screen">
         <p>Loading dashboard...</p>
       </div>
     );
@@ -106,16 +107,16 @@ const ArtisanDashboard: React.FC = () => {
   // Render error state
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-600">
+      <div className="flex items-center justify-center h-screen text-red-600">
         <p>Error: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container px-4 py-6 mx-auto">
       {/* Dashboard Header */}
-      <div className="mb-6 flex justify-between items-center">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-800">
             Artisan Dashboard
@@ -124,69 +125,69 @@ const ArtisanDashboard: React.FC = () => {
         </div>
         <button
           onClick={() => setShowAddArtwork(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+          className="px-4 py-2 text-white transition bg-green-600 rounded-lg hover:bg-green-700"
         >
           <Plus className="inline-block mr-2" /> Add Artwork
         </button>
       </div>
 
       {/* Key Metrics Grid */}
-      <div className="grid md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="flex justify-between items-center mb-2">
+      <div className="grid gap-4 mb-6 md:grid-cols-4">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between mb-2">
             <ShoppingBag className="text-blue-600" />
             <span className="text-green-600">+12.5%</span>
           </div>
-          <h3 className="text-gray-500 text-sm">Total Products</h3>
+          <h3 className="text-sm text-gray-500">Total Products</h3>
           <p className="text-2xl font-bold">{metrics.totalProducts}</p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="flex justify-between items-center mb-2">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between mb-2">
             <DollarSign className="text-green-600" />
             <span className="text-green-600">+8.3%</span>
           </div>
-          <h3 className="text-gray-500 text-sm">Total Earnings</h3>
+          <h3 className="text-sm text-gray-500">Total Earnings</h3>
           <p className="text-2xl font-bold">
             LKR {metrics.totalEarnings.toLocaleString()}
           </p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="flex justify-between items-center mb-2">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between mb-2">
             <Gavel className="text-purple-600" />
             <span className="text-green-600">+15.2%</span>
           </div>
-          <h3 className="text-gray-500 text-sm">Total Orders</h3>
+          <h3 className="text-sm text-gray-500">Total Orders</h3>
           <p className="text-2xl font-bold">{metrics.totalOrders}</p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="flex justify-between items-center mb-2">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between mb-2">
             <Eye className="text-gray-600" />
             <span className="text-green-600">+10.1%</span>
           </div>
-          <h3 className="text-gray-500 text-sm">Available Products</h3>
+          <h3 className="text-sm text-gray-500">Available Products</h3>
           <p className="text-2xl font-bold">{metrics.availableProducts}</p>
         </div>
       </div>
 
       {/* Products and Orders Section */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid gap-6 md:grid-cols-2">
         {/* Recent Products */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4 flex items-center">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <h2 className="flex items-center mb-4 text-lg font-semibold">
             <ShoppingBag className="mr-2 text-green-600" /> Recent Products
           </h2>
           {products.slice(0, 5).map((product) => (
             <div
               key={product.id}
-              className="flex items-center mb-3 pb-3 border-b"
+              className="flex items-center pb-3 mb-3 border-b"
             >
               <img
                 src={product.imageUrl || "/placeholder.jpg"}
                 alt={product.name}
-                className="w-16 h-16 object-cover rounded mr-4"
+                className="object-cover w-16 h-16 mr-4 rounded"
               />
               <div className="flex-grow">
                 <h3 className="font-medium">{product.name}</h3>
@@ -202,14 +203,14 @@ const ArtisanDashboard: React.FC = () => {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4 flex items-center">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <h2 className="flex items-center mb-4 text-lg font-semibold">
             <Gavel className="mr-2 text-green-600" /> Recent Orders
           </h2>
           {orders.slice(0, 5).map((order) => (
             <div
               key={order.id}
-              className="flex justify-between items-center mb-3 pb-3 border-b"
+              className="flex items-center justify-between pb-3 mb-3 border-b"
             >
               <div>
                 <h3 className="font-medium">Order #{order.id.slice(-6)}</h3>
@@ -225,9 +226,9 @@ const ArtisanDashboard: React.FC = () => {
 
       {/* Modal for Adding Artwork */}
       {showAddArtwork && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full">
-            <div className="flex justify-between items-center mb-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-full max-w-md p-6 bg-white rounded-lg">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Add New Artwork</h2>
               <button onClick={() => setShowAddArtwork(false)}>
                 <X className="text-gray-600" />

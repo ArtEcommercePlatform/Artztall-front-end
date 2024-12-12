@@ -3,6 +3,7 @@ import { X, Eye, EyeOff } from "lucide-react";
 import { apiClient } from "../services/apiClient";
 import { useToast } from "../assets/components/toast/Toast";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 interface LoginModalProps {
   isOpen: boolean;
