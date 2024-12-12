@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../../services/apiClient";
-import react from "react";
+import React from "react";
 
 interface WishlistItem {
   productId: string;
@@ -125,8 +125,8 @@ const CustomerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-green-500"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-10 h-10 border-t-2 border-green-500 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -134,7 +134,7 @@ const CustomerDashboard = () => {
   if (error) {
     return (
       <div
-        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        className="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded"
         role="alert"
       >
         {error}
@@ -185,7 +185,7 @@ const CustomerDashboard = () => {
                 .map((order) => (
                   <div
                     key={order.id}
-                    className="p-4 border rounded-lg flex justify-between items-center"
+                    className="flex items-center justify-between p-4 border rounded-lg"
                   >
                     <div>
                       <h3 className="font-medium">Order #{order.id}</h3>
@@ -202,10 +202,10 @@ const CustomerDashboard = () => {
                   </div>
                 ))}
               {orders.length > 3 && (
-                <div className="text-center mt-4">
+                <div className="mt-4 text-center">
                   <button
                     onClick={() => navigate("/orders")}
-                    className="flex items-center justify-center w-full bg-green-800 text-white hover:bg-green-900 py-2 rounded-lg"
+                    className="flex items-center justify-center w-full py-2 text-white bg-green-800 rounded-lg hover:bg-green-900"
                   >
                     View All Orders <ChevronRight className="ml-2" size={20} />
                   </button>
@@ -230,24 +230,24 @@ const CustomerDashboard = () => {
                   {wishlistItems.slice(0, 3).map((item) => (
                     <div
                       key={item.productId}
-                      className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                      className="overflow-hidden transition-shadow duration-300 border rounded-lg shadow-lg hover:shadow-xl"
                     >
                       <img
                         src={item.imageUrl}
                         alt={item.name}
-                        className="w-full h-48 object-cover"
+                        className="object-cover w-full h-48"
                       />
                       <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">
+                        <h3 className="mb-2 text-lg font-semibold">
                           {item.name}
                         </h3>
-                        <p className="text-gray-600 mb-2">
+                        <p className="mb-2 text-gray-600">
                           LKR: {item.price.toFixed(2)}
                         </p>
-                        <div className="flex justify-center items-center mt-4">
+                        <div className="flex items-center justify-center mt-4">
                           <button
                             onClick={() => handleAddToCart(item)}
-                            className="flex items-center bg-green-800 text-white px-3 py-2 rounded hover:bg-green-900 transition-colors w-full justify-center"
+                            className="flex items-center justify-center w-full px-3 py-2 text-white transition-colors bg-green-800 rounded hover:bg-green-900"
                             disabled={!item.available}
                           >
                             <ShoppingCart className="mr-2" size={20} />
@@ -259,10 +259,10 @@ const CustomerDashboard = () => {
                   ))}
                 </div>
                 {wishlistItems.length > 3 && (
-                  <div className="text-center mt-4">
+                  <div className="mt-4 text-center">
                     <button
                       onClick={() => navigate("/wishlist")}
-                      className="flex items-center justify-center w-full bg-green-800 text-white hover:bg-green-900 py-2 rounded-lg"
+                      className="flex items-center justify-center w-full py-2 text-white bg-green-800 rounded-lg hover:bg-green-900"
                     >
                       View All Wishlist Items{" "}
                       <ChevronRight className="ml-2" size={20} />
@@ -305,7 +305,7 @@ const CustomerDashboard = () => {
 
                   <button
                     onClick={() => navigate("/support/ticket")}
-                    className="px-4 py-2 mt-2 text-white bg-green-800 rounded-lg hover:bg-green-900 w-full"
+                    className="w-full px-4 py-2 mt-2 text-white bg-green-800 rounded-lg hover:bg-green-900"
                   >
                     Submit Ticket
                   </button>
