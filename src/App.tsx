@@ -19,7 +19,6 @@ import Dashboard from "./pages/artisan/Dashboard";
 import Products from "./pages/artisan/Orders";
 import Gallery from "./pages/artisan/Gallery";
 import Auctions from "./pages/artisan/Auctions";
-import Settings from "./pages/artisan/Settings";
 import Orders from "./pages/artisan/Orders";
 import TransactionHistory from "./pages/artisan/TransactionHistory";
 
@@ -40,6 +39,8 @@ import AdArtWork from "./pages/Admin/Artwork";
 import AdAuction from "./pages/Admin/Auction";
 import AdOrderTransaction from "./pages/Admin/OrderAndTransaction";
 import AdUserManagment from "./pages/Admin/UserManagment";
+import CustomerProfile from "./pages/Customer/CustomerProfile";
+import ArtsanSettings from "./pages/Customer/ArtsanSettings";
 
 const ArtisanRoutes = () => {
   return (
@@ -51,7 +52,7 @@ const ArtisanRoutes = () => {
         <Route path="auctions" element={<Auctions />} />
         <Route path="orders" element={<Orders />} />
         <Route path="transactions" element={<TransactionHistory />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="settings" element={<ArtsanSettings />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </ArtisanLayout>
@@ -67,6 +68,7 @@ const CustomerRoutes = () => {
         <Route path="gallery" element={<CuGallery />} />
         <Route path="auctions" element={<CuAuctions />} />
         <Route path="wish-list" element={<Wishlist />} />
+        <Route path="settings" element={<CustomerProfile />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>
     </CustomerLayout>

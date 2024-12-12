@@ -8,6 +8,12 @@ const MakeOrder: React.FC = () => {
   const navigate = useNavigate();
   const product = location.state?.product;
 
+  const [addressDetails, setAddressDetails] = useState({
+    street: "",
+    city: "",
+    country: "",
+  });
+
   const [orderDetails, setOrderDetails] = useState({
     userId: localStorage.getItem("userId"),
     shippingAddress: "",
@@ -18,6 +24,25 @@ const MakeOrder: React.FC = () => {
   const [paymentInitiated, setPaymentInitiated] = useState(false);
   const [paymentData, setPaymentData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const handleAddressChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+    const updatedAddressDetails = {
+      ...addressDetails,
+      [name]: value,
+    };
+
+    // Combine address parts into a single string
+    const combinedAddress = `${updatedAddressDetails.street}, ${updatedAddressDetails.city}, ${updatedAddressDetails.country}`.trim();
+    
+    setAddressDetails(updatedAddressDetails);
+    setOrderDetails((prev) => ({ 
+      ...prev, 
+      shippingAddress: combinedAddress 
+    }));
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -32,9 +57,9 @@ const MakeOrder: React.FC = () => {
   };
 
   const handlePlaceOrder = async () => {
-    // Validate shipping address
-    if (!orderDetails.shippingAddress.trim()) {
-      setError("Please provide a shipping address");
+    // Validate shipping address components
+    if (!addressDetails.street.trim() || !addressDetails.city.trim() || !addressDetails.country.trim()) {
+      setError("Please provide a complete shipping address");
       return;
     }
 
@@ -181,15 +206,41 @@ const MakeOrder: React.FC = () => {
             <div className="space-y-4">
               <input
                 type="text"
-                name="shippingAddress"
-                value={orderDetails.shippingAddress}
-                onChange={handleInputChange}
-                placeholder="Shipping Address"
+                name="street"
+                value={addressDetails.street}
+                onChange={handleAddressChange}
+                placeholder="Street Address"
                 className="w-full border-2 border-green-200 rounded-xl 
                            px-4 py-3 focus:outline-none focus:ring-2 
                            focus:ring-green-500 transition"
                 required
               />
+
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  name="city"
+                  value={addressDetails.city}
+                  onChange={handleAddressChange}
+                  placeholder="City"
+                  className="w-full border-2 border-green-200 rounded-xl 
+                             px-4 py-3 focus:outline-none focus:ring-2 
+                             focus:ring-green-500 transition"
+                  required
+                />
+
+                <input
+                  type="text"
+                  name="country"
+                  value={addressDetails.country}
+                  onChange={handleAddressChange}
+                  placeholder="Country"
+                  className="w-full border-2 border-green-200 rounded-xl 
+                             px-4 py-3 focus:outline-none focus:ring-2 
+                             focus:ring-green-500 transition"
+                  required
+                />
+              </div>
 
               <textarea
                 name="specialInstructions"
