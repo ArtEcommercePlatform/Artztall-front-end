@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../../services/apiClient";
+import react from "react";
 
 interface WishlistItem {
   productId: string;

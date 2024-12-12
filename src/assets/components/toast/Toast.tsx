@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useTransition,
 } from "react";
-import { AlertCircle, CheckCircle, XCircle, X } from "lucide-react";\
+import { AlertCircle, CheckCircle, XCircle, X } from "lucide-react";
 
 
 // Types

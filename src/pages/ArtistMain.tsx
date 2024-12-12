@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Star, Phone, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { apiClient } from "../services/apiClient";
 import Header from "../components/Header";
+import React from "react";
 
 interface Artist {
   id: string;
