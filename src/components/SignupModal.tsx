@@ -104,7 +104,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // Check file size (max 5MB)
+    
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
@@ -231,10 +231,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label  className="block mb-1 text-sm font-medium text-gray-700" 
+        htmlFor="name">
           Full Name
         </label>
         <input
+        id="name"
           type="text"
           name="name"
           value={formData.name}
@@ -245,10 +247,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block mb-1 text-sm font-medium text-gray-700"
+        htmlFor="email">
           Email
         </label>
         <input
+        id="email"
           type="email"
           name="email"
           value={formData.email}
@@ -259,10 +263,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block mb-1 text-sm font-medium text-gray-700"
+        htmlFor="password">
           Password
         </label>
         <input
+        id="password"
           type="password"
           name="password"
           value={formData.password}
@@ -278,10 +284,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   const renderStep2 = () => (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block mb-1 text-sm font-medium text-gray-700"
+        htmlFor="PhoneNumber">
           Phone Number
         </label>
         <input
+        id="phoneNumber"
           type="tel"
           name="phoneNumber"
           value={formData.phoneNumber}
@@ -292,10 +300,11 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="profile"  className="block mb-1 text-sm font-medium text-gray-700">
           Profile Image
         </label>
         <input
+         id="profile"
           type="file"
           accept="image/*"
           onChange={handleFileChange}
@@ -311,7 +320,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
             </div>
           </div>
         )}
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="mt-1 text-xs text-gray-500">
           Maximum file size: 5MB. Supported formats: JPG, PNG, GIF
         </p>
       </div>
@@ -323,10 +332,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
       {formData.userType === "BUYER" ? (
         <>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700"
+            htmlFor="StreetAddress">
               Street Address
             </label>
             <input
+            id="StreetAddress"
               type="text"
               name="street"
               value={formData.address?.street}
@@ -338,10 +349,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="city">
                 City
               </label>
               <input
+              id="city"
                 type="text"
                 name="city"
                 value={formData.address?.city}
@@ -351,10 +364,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="state">
                 State
               </label>
               <input
+              id="state"
                 type="text"
                 name="state"
                 value={formData.address?.state}
@@ -367,10 +382,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="country">
                 Country
               </label>
               <input
+              id="country"
                 type="text"
                 name="country"
                 value={formData.address?.country}
@@ -380,10 +397,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="postalcode">
                 Postal Code
               </label>
               <input
+              id="postalcode"
                 type="text"
                 name="postalCode"
                 value={formData.address?.postalCode}
@@ -396,10 +415,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
         </>
       ) : (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block mb-1 text-sm font-medium text-gray-700"
+          htmlFor="Artistbio">
             Artist Bio
           </label>
           <textarea
+          id="Artisanbio"
             name="bio"
             value={formData.bio}
             onChange={handleInputChange}
@@ -416,7 +437,8 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     <div className="space-y-4">
       {formData.userType === "ARTISAN" && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block mb-2 text-sm font-medium text-gray-700"
+          htmlFor="artwork">
             Artwork Categories
           </label>
           <div className="flex flex-wrap gap-2">
@@ -433,9 +455,9 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               >
                 {category}
                 {formData.artworkCategories?.includes(category) ? (
-                  <Check className="h-4 w-4" />
+                  <Check className="w-4 h-4" />
                 ) : (
-                  <Plus className="h-4 w-4" />
+                  <Plus className="w-4 h-4" />
                 )}
               </button>
             ))}
@@ -446,14 +468,15 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   );
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-md p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="relative w-full max-w-md p-6 bg-white rounded-lg">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          data-testid="close-modal"
+          className="absolute text-gray-500 right-4 top-4 hover:text-gray-700"
           disabled={isLoading}
         >
-          <X className="h-6 w-6" />
+          <X className="w-6 h-6" />
         </button>
 
         <div className="mb-6">
@@ -505,7 +528,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg
-                    className="animate-spin h-5 w-5 text-white"
+                    className="w-5 h-5 text-white animate-spin"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
