@@ -1,3 +1,4 @@
+import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { apiClient } from "../services/apiClient";

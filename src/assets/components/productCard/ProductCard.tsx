@@ -1,3 +1,4 @@
+import React from "react";
 import { Heart } from "lucide-react";
 
 const ProductCard = ({
@@ -8,14 +9,14 @@ const ProductCard = ({
   isNew = false,
 }) => {
   return (
-    <div className="relative group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-      <div className="relative overflow-hidden aspect-square rounded-t-lg">
+    <div className="relative transition-all duration-300 bg-white rounded-lg shadow-md group hover:shadow-xl">
+      <div className="relative overflow-hidden rounded-t-lg aspect-square">
         <img
           src={imageUrl}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
         />
-        <button className="absolute top-3 right-3 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+        <button className="absolute p-2 transition-opacity bg-white rounded-full opacity-0 top-3 right-3 group-hover:opacity-100">
           <Heart className="w-5 h-5 text-[#094129]" />
         </button>
         {isNew && (
@@ -25,8 +26,8 @@ const ProductCard = ({
         )}
       </div>
       <div className="p-4">
-        <h3 className="font-semibold text-lg mb-1">{title}</h3>
-        <p className="text-gray-600 text-sm mb-2">by {artist}</p>
+        <h3 className="mb-1 text-lg font-semibold">{title}</h3>
+        <p className="mb-2 text-sm text-gray-600">by {artist}</p>
         <p className="font-bold text-[#094129]">LKR {price}</p>
       </div>
     </div>

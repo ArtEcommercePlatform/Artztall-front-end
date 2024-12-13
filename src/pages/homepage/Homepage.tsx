@@ -1,9 +1,10 @@
-import ArtsCollection from "../../components/ArtsCollection";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import Hero from "../../components/Hero";
-import Newsletter from "../../components/Newsletter";
-import react from "react";
+import react from 'react';
+import ArtsCollection from '../../components/ArtsCollection';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Hero from '../../components/Hero';
+import Newsletter from '../../components/Newsletter';
+
 
 const Homepage = () => {
   return (

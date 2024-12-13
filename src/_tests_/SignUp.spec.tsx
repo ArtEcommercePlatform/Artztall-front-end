@@ -1,10 +1,11 @@
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import  SignupModal  from "../components/SignupModal"; // Adjust path if necessary
 import { useToast } from "../assets/components/toast/Toast";
 import { apiClient } from "../services/apiClient";
 import { uploadImageToCloudinary } from "../services/cloudinary";
 import { MemoryRouter } from "react-router-dom";
-import React from 'react';  // Add this import to resolve the issue
+
 
 
 // Mock dependencies

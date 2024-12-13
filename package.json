@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "test": "jest",
+    "test:clear": "jest --clearCache",
     "test:cov": "jest --coverage --watchAll",
     "lint": "eslint .",
     "preview": "vite preview",
