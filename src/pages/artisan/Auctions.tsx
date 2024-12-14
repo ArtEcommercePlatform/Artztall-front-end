@@ -20,14 +20,17 @@ interface Auction {
   startTime: string;
   endTime: string;
   auctionStatus: "PENDING" | "ACTIVE" | "COMPLETED" | "CANCELLED";
+  bids: BidHistory[];
   winnerIds?: string[];
 }
 
 interface BidHistory {
+  id: string;
   auctionId: string;
   userId: string;
   amount: number;
   bidTime: string;
+  userDetails?: UserDetails;
 }
 
 interface UserDetails {
@@ -80,7 +83,7 @@ const BidsModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-2xl font-bold text-gray-800">Bid History</h2>
           <button 
@@ -133,15 +136,30 @@ const BidsModal = ({
                   key={index} 
                   className="bg-gray-100 p-4 rounded-lg flex justify-between items-center"
                 >
-                  <div>
-                    <p className="font-semibold">
-                      Bid Amount: LKR {bid.amount.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {new Date(bid.bidTime).toLocaleString()}
-                    </p>
+                  <div className="flex items-center space-x-4 w-full">
+                    <div>
+                      {bid.userDetails?.profilePictureUrl ? (
+                        <img 
+                          src={bid.userDetails.profilePictureUrl} 
+                          alt={bid.userDetails.name} 
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <UserIcon size={48} className="text-gray-400" />
+                      )}
+                    </div>
+                    <div className="flex-grow">
+                      <p className="font-semibold text-lg">
+                        {bid.userDetails?.name || 'Anonymous Bidder'}
+                      </p>
+                      <p className="text-gray-600 mb-1">
+                        Bid Amount: LKR {bid.amount.toLocaleString()}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(bid.bidTime).toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <UserIcon size={20} className="text-gray-500" />
                 </div>
               ))}
             </div>
@@ -182,47 +200,59 @@ const Auctions: React.FC = () => {
     }
   };
 
-  const fetchBidHistory = async (auctionId: string) => {
+  const fetchBidderDetails = async (bids: BidHistory[]) => {
     try {
-      const bidsResponse = await apiClient.get<BidHistory[]>(
-        `/auctions/${auctionId}/bid-history`
+      // Fetch details for each unique user in bids
+      const userIds = [...new Set(bids.map(bid => bid.userId))];
+      const userDetailsPromises = userIds.map(userId => 
+        apiClient.get<UserDetails>(`/users/buyers/${userId}`)
       );
-      
-      if (bidsResponse.success) {
-        setSelectedAuctionBids(bidsResponse.data || []);
-      }
-    } catch (error) {
-      console.error("Failed to fetch bid history:", error);
-    }
-  };
 
-  const fetchWinnerDetails = async (winnerId: string) => {
-    try {
-      const winnerResponse = await apiClient.get<UserDetails>(
-        `/users/buyers/${winnerId}`
-      );
-      
-      if (winnerResponse.success) {
-        setSelectedAuctionWinner(winnerResponse.data || null);
-      }
+      const userDetailsResponses = await Promise.all(userDetailsPromises);
+      const userDetailsMap = userDetailsResponses.reduce((acc, response) => {
+        if (response.success && response.data) {
+          acc[response.data.id] = response.data;
+        }
+        return acc;
+      }, {} as Record<string, UserDetails>);
+
+      // Attach user details to bids
+      const bidsWithUserDetails = bids.map(bid => ({
+        ...bid,
+        userDetails: userDetailsMap[bid.userId]
+      }));
+
+      return bidsWithUserDetails;
     } catch (error) {
-      console.error("Failed to fetch winner details:", error);
+      console.error("Failed to fetch bidder details:", error);
+      return bids;
     }
   };
 
   const handleViewBids = async (auction: Auction) => {
-    await fetchBidHistory(auction.id);
+    // Use auction's bids directly and fetch their details
+    const bidsWithDetails = await fetchBidderDetails(auction.bids);
+    setSelectedAuctionBids(bidsWithDetails);
     
     // If auction is completed and has a winner, fetch winner details
     if (auction.auctionStatus === "COMPLETED" && auction.winnerIds && auction.winnerIds.length > 0) {
-      await fetchWinnerDetails(auction.winnerIds[0]);
+      try {
+        const winnerResponse = await apiClient.get<UserDetails>(
+          `/users/buyers/${auction.winnerIds[0]}`
+        );
+        
+        if (winnerResponse.success) {
+          setSelectedAuctionWinner(winnerResponse.data || null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch winner details:", error);
+      }
     } else {
       setSelectedAuctionWinner(null);
     }
     
     setIsBidsModalOpen(true);
   };
-
 
   useEffect(() => {
     fetchArtistAuctions();
